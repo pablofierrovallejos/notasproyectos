@@ -1,0 +1,11 @@
+Kubernates es un orquestador de contenedores
+   https://www.linkedin.com/learning/kubernetes-para-administradores-it-esencial/kubernetes-como-orquestador-de-contenedores-2?autoAdvance=true&autoSkip=true&autoplay=true&resume=false&u=2177250
+   
+   -contenedores, replicadores, volumenes de almacenamiento
+   
+   Otros similares a Kubernates (google)->  
+	   Docker Swarm
+	   Apache Mesos
+	   OpenShift  (de redhat)
+
+   

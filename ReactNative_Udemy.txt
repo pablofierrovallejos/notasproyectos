@@ -1,0 +1,176 @@
+================================================
+1.-Instalaciones recomendadas
+ -Visual Studio Code
+   Plugin:
+      --Activitus Bar
+	  --Bracket Pair Colorizer 2
+	  --Monokai Night
+	  --Material Icon Theme
+	  --ES7 React/Redux/GraphQL/React-Native snippets
+      --Simple React Snippets
+	  --Auto Close Tag
+	  --Paste JSON as Code
+	  --TypeScript Importer
+	  
+ -PostMan (se puede usar el modo online)
+ -Mongo Compass
+ -Git
+    $ git --version
+	git version 2.35.1.windows.2
+
+	Gamer@DESKTOP-MAIN1 MINGW64 ~
+	$ pwd
+	/c/Users/Gamer
+
+    -> Agregar usuario
+	git config --global user.name "pablofierrovallejos"
+	
+ -Node
+    node -v   -> Para validar si está instalada  
+	
+ 
+  -Android Studio
+
+  -Xcode ( solo para mac )
+  
+  -Boostrap:  https://getbootstrap.com/
+              el ccs compilado:  <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+================================================
+2.- Reforzamiento  
+    1.-TypeSctript 
+	   Ventajas
+	    - Tipado estricto
+	    - Mutación controlada  (conversión de tipos de datos explícito)
+	   Desventajas:
+        -El objeto que se recibe extiende de otro Qué hago?   	   
+	
+	2.-	Crear un nuevo proyecto react (create-react-app.dev/docs/gettomg-started
+	
+	    >cd C:\proyectos\reactNativeUdemy>
+		>npx create-react-app reforzamiento --template typescript
+		
+		Iniciar servidor, desde carpeta de proyecto:
+		>npm start
+		Abrir explorador: http://localhost:3000/
+		
+		- declarar Variables
+		let nombre = 'Fernando';
+		let nombre:string = 'Fernando';
+		let nombre:string | number ='Fernando'  ->La variable puede ser string o number (mutación explícita)
+		const nombre = 'Fernando';    ->Para crear una constante
+		
+		let estadoActivo: boolean = false;
+		
+		Arreglos -> 
+			let poderes:string[]=[];   Arreglo vacío
+			
+			const poderes =['Velocidad','Volar','Respirar'];
+		
+		- Objetos literales
+		   const persona ={
+				nombre: 'Pablo',
+				apellido: 'Fierro',
+				direccion: {
+					calle:'las rosas',
+					numero:22
+				}
+		   }
+		   
+		- Interfaces   (Solo sirve para poner reglas de validación , no sirve para genera instancias, para ello se ocupan las clases)
+		   interface Personas {
+			  nombre:string;
+			  edad:number;
+			  direccion:Direccion;
+		   }
+		
+		-Funciones:
+		 const sumar = () =>{
+			return 5 + 2;
+		 }
+		 
+	     const sumar =(a:number, b:number):number =>{  //Con parámtros y retorno explícito de tipo de datos
+			return a + b;
+		 }
+
+         -Custom Hooks  useState
+		    const [valor, setValor] = useState(10);
+			const contar=()=>{
+				setValor(valor + 1);
+			}
+			
+			
+		-- -> Servicos API gratis: 
+					  https://reqres.in/
+           -> Para llamas APIS  :  axios
+                      npm install axios
+		   -> Para tipear request de API:
+					  https://app.quicktype.io/	
+		              
+                		   
+     3.-Instalación y configuración de React Native
+        EXPO cli
+        REACT Native cli	
+
+        Para crear una plantilla React Native typescript:
+        ->npx react-native init rn_04tsx_pject --template react-native-template-typescript
+		
+	 4.-Mi primera aplicación (contador)
+	    -tips  En la pantalla metro presionar "R" para refrescar emulador
+		
+	 5.-Flex, Position y Box Object Model	
+	  - Box Object Model
+	     Propiedades
+		    -Margin
+			-Border
+			-Padding
+
+			
+	  - Position
+	  - Flex Box
+	     En video 66 explica brevemente como crear un snippet (un autocompletar personalizado)
+	     -justifyContent
+		 
+	6.-Proyecto Calculadora
+	7.-NavegaciónApp, todos los tipos de navegación.
+	   -> Stack Navigation "Paquete de terceros"  -> https://reactnavigation.org/docs/getting-started/
+			
+          	->npm install @react-navigation/native                                    //Instalación de paquetes
+		    ->npm install @react-navigation/native-stack
+			->npm install @react-navigation/stack
+			
+			->npm install react-native-screens react-native-safe-area-context         //Instalación de dependencias
+           	->npm install react-native-gesture-handler
+			
+	   -> Drawer
+           Instalación adicional
+		   ->npm install @react-navigation/drawer
+		   
+		   Para desinstalar un paquete
+		   ->npm remove react-native-reanimated   (verlo en package.json  sección dependencias)
+ 		   para agregar una versión determinada
+		   ->npm add react-native-reanimated@1.4.0
+		   
+	   -> Toggle Drawer
+	   
+	   -> Autenticación y Productos-Backend
+	      Instalación del backend
+		  1.- Descargar y descomprimir zip de: https://github.com/Klerith/RN-Backend-MERN-CAFE
+		  2.- Vamos a la ruta del proyecto y ejecutamos instalador
+		      ->npm i
+		  4.-Importar datos APIS postman
+		      https://documenter.getpostman.com/view/343088/TW74j5T2#caaa23c1-d64d-44ce-b870-36f38533821b
+			  
+	      5.-Crear base de datos en mongodb atlas y pegar la url en archivo .env
+		  6.-Crear cuenta Cloudinary para fotos ir a dashmanager y copiar url API-> API Environment variable-> CLOUDINARY_URL=cloudinary://216736291243473:yhIuNeD16GdL0makHzlu_u7Zo_Q@casapablofierro
+		     pegar en archivo .env
+		  7.-Arrancar aplicación desde ruta del proyecto con:
+			 npm start    
+			 Mostrará:
+			    -> Servidor corriendo en puerto 8080
+                -> Base de datos online
+			 
+			 
+22.- Despliegue en Google play Store y Apple app Store
+     1.- Iconos
+	 2.- SplashScreen  ->  https://github.com/crazycodeboy/react-native-splash-screen

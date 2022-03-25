@@ -1,0 +1,145 @@
+0.-Inicializar nuevo proyecto spring con lo siguiente
+https://start.spring.io/
+
+Se agregan las siguientes dependencias
+-Spring Web
+-Rest repositories
+-Spring Data JPA (sql)
+-H2 Database
+
+1.-Instalar maven
+Se requiere jdk 17 como mínimo
+1a.- mvn install  (desde línea de comando desde carpeta de proyecto)
+1b.- se creará la carpeta target con las nuevas clases
+
+2.-Iniciar el servidor
+Nombre de nuestro proyecto: explorecali
+-->java -jar target/explorecali-0.0.1-SNAPSHOT.jar  Se lanza la app en puerto 8080
+
+Para lanzar con otro puerto se usa:
+java -Dserver.port=9090 -jar target/explorecali-0.0.1-SNAPSHOT.jar
+
+
+
+Docker
+store.docker.com
+
+------------------------
+PROYECTO1
+	Proyecto spring boot productos
+	https://www.youtube.com/watch?v=-ksmE3KoX9U
+	1.-Creamos el inicializador del proyecto   https://start.spring.io/
+	  Se agregan las siguientes dependencias
+	  a.-Lombok ->Para las anotaciones
+	  b.-Spring web para servicios REST
+	  c.-Spring Data MongoDB
+	  
+	 PostMan, hay que cambiar esto en header (agregar para que no se autogenere como text/plain
+	 Content-Type ->  text/plain
+	 Content-Type ->  application/json 
+
+PROYECTO2
+Discovery Server  --> Spring Cloud Eureka  (evita harcodear url de acceso a apis)
+
+PROYECTO3
+Config Server     --> Spring Cloud Config
+
+PROYECTO4
+Auto Refresh de properties --> Spring Cloud Starter Actuator
+
+PROYECTO5
+VAULT                      -> para ocultar pass de base de datos
+vaultproject.io
+
+PROYECTO6
+Message Broker  (Cambia enfoque refresh cuando hay muchas instancias de microservicios)
+RabbitMQ o ActiveMQ Kafka   ->rabbitmq.com
+spring-cloud-starter-bus-amqp
+
+--------------------------------------------------
+
+Instalar ubuntu en máquina virtual
+1.- Cambiar resolición pantalla:
+desde la barra de herramientas
+  -presionas flecha abajo que está al lado de icono power
+  -ir a pantalla y seleccionar resolución ej 1400x1050 
+
+2.- Habilitar ssh server
+sudo apt update
+sudo apt install openssh-server
+sudo systemctl status ssh   -> para ver el estado de ssh
+sudo ufw allow ssh          -> para habilitar el cortafuego en ubuntu 
+ssh username@ip_address     -> para conectar a la maquina 
+
+3.-Instalar Docker (https://docs.docker.com/engine/install/ubuntu/)  y  https://www.youtube.com/watch?v=NVvZNmfqg6M
+  -Desinstalar cualquier versión previa
+    sudo apt-get remove docker docker-engine docker.io containerd runc
+  -Actualizar repo
+    sudo apt-get update
+	sudo apt-getstenctl install ca-certificates curl gnupg lsb-release
+  -Obtener llave
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+	sudo apt-get update
+	sudo apt-get install docker-ce docker-ce-cli containerd.io
+  
+   -Validar instalación
+    Docker version
+      -si da error y solo se ejecuta con sudo hacer lo siguiente
+	  -sudo groupadd docker
+	  -sudo usermod -aG docker $USER   ->en mi caso user es pablo
+	  -newgrp docker
+	  
+   -ejecutar un contenedor de prueba
+	  docker run hello-world
+	  
+   -Para ver las imagenes instaladas:
+      docker images
+	  
+   -Para ver los contenedores en ejecución
+      docker ps
+   -Para ver histórico de ejecuciones
+      docker ps -a   
+	  
+   -Para eliminar procesos y contenedor
+      docker rm PID     o con nombre que aparece en docker ps -a
+	  docker rm $(dockerps -aq) -f    Elimina todo los procesos forzados
+	  docker rm1 $(docker images -aq) -f
+	  
+4.- Instalar un web server
+   - docker pull nginx
+   - docker run -p 3000:80 nginx   -> el puerto 3000 es el externo para que accdedamos y el 80 es el interno del contenedor para el webserver
+   
+   Ejecutar el server sin que tome la cosonla, se usa -d o detach
+      -docker run -p 80:80 -d nginx   
+	  
+   Para detener todos los contenedores que se ven corriendo con docker ps
+      -docker stop $(docker ps -aq)   q para ver todos los id del histórico
+	  
+   Para instalar y ejecutar mysql
+   docker run -d -p 3306:3306  --name mydatabase mysql
+   
+Poniendo contenido en contenedor
+   Para entrar al contenedor nginx
+   - docker run -d -p 80:80 nginx
+   - docker exec -it  website bash   ->website es el nombre del contenedor
+   - cd /usr/share/nginx/html        -> La ruta de los archivos html que se está sirviendo
+          
+   Para traspasar archivos de un proyecto al contenedor:
+   -docker run -d -p 80:80 --name website -v $(pwd):/usr/share/nginx/html:ro nginx
+   
+    Esto ejecuta un contenedor tipo detach (que no se cierra) en el puerto 80
+    con nombre website y que se le pasa el volumen (-v) de la ruta actual $(pwd)	
+	al destino de la ruta en el contenedor -> /usr/share/nginx/html  y que serán
+	de solo lectura  y cuyo contenedor es nginx
+	
+	-docker stop website
+	-docker rm website
+Distribuir un proyecto simple
+Archivo: Dockerfile	
+usar docker compose
+
+---------------------
+Dockerizar
+https://www.youtube.com/watch?v=dzNK6ja0qts
+

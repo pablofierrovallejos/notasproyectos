@@ -1,0 +1,167 @@
+desde la web de git:
+create repository
+
+
+
+
+USO DE GIT PARA SUBIR CAMBIOS DE RASPBERRY
+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  <- tOKEN 	POR 90 DÍAS para raspberry a partir del 26 feb 2022
+
+
+git config --global user.name "pablofierrovallejos"
+git config --global user.email "pablofierrovallejos@hotmail.com"
+
+git init
+
+git add --all
+git status
+
+git commit -am "Un comentario"
+
+Para ver si el repositorio se encuentra seteado
+git remote -v
+origin  https://github.com/pablofierrovallejos/powermeasure.git (fetch)
+origin  https://github.com/pablofierrovallejos/powermeasure.git (push)
+
+Si no aparece nada seteado se debe setear la dirección del git:
+git remote add origin https://github.com/pablofierrovallejos/powermeasure.git
+
+ahora hacer el push al master
+git push -u origin master
+
+
+
+----------------OTROS comandos git
+✨Comandos básicos de git✨
+
+$ git init Creará un nuevo repositorio local GIT. Usando git init [nombre del proyecto] También puedes crear un repositorio dentro de un directorio especificando el nombre del proyecto.
+$ git clone Lo usas para clonar un repositorio.
+$ git add Lo usas para agregar archivos al área de  preparación.
+$ git commit Lo usas para crear un cambio que se guardará en el directorio git.
+$ git config Lo usas para establecer una configuración específica de usuario, podría ser el email, usuario o tipo de formato.
+$ git status Lo usas para que muestre la lista de archivos que has cambiado, junto con archivos que serán preparados y confirmados.
+$ git push Lo usas para enviar confirmaciones a la rama maestra/principal del repositorio remoto.
+$ git remote Nos permite ver todos los repositorios remotos.
+$ git checkout Nos permite crear ramas y navegar entre ellas.
+$ git pull Lo usas para fusionar todos los cambios que hiciste en el repositorio local con el directorio de trabajo local.
+
+Ya por último te dejo una lista con todos los comandos existentes de GIT para que #NuncaParesDeAprender
+
+app password bitbucket: gaJVN6hQFJuQ4VcTunzd
+
+0.----------------------------------------------------------------------------------------------
+crar repo en bitbucket
+user: pcfv
+loginuser: pablofierrovallejos@gmail.com
+pass     : 96552333Aa
+
+1.--------------------------Crear key ssh windows bitbucket -----------------------------------
+--Crear llave ssh
+  >ssh-keygen             (todas las preguntas se dejan por default, siguiente siguiente)
+  Se generan 2 archivos en:  C:\Users\Gamer\.ssh
+     -> id_rsa        //Llave privada   
+	 -> id_rsa.pub    //Llave pública
+
+--Agregar key privado al agente ssh-key
+  > eval $(ssh-agent) 
+   Agent pid 9700 	 
+
+  > ssh-add ~/.ssh/id_rsa     	 
+   Identity added: /c/Users/Gamer/.ssh/id_rsa (Gamer@DESKTOP-MAIN1)
+
+--Agregar clave pública en bitbucket
+  Desde Personal Settings en web bitbucket click en ssh key, copiar y pegar contenido de id_rsa.pub    
+  
+--Validar login con:
+  ssh -T git@bitbucket.org
+  
+  Si aparece este error
+  The authenticity of host 'bitbucket.org (104.192.141.1)' can't be established.
+  RSA key fingerprint is SHA256:zzXQOXSRBEiUtuE8AikJYKwbHaxvSc0ojez9YXaGp1A.
+  This key is not known by any other names
+  Are you sure you want to continue connecting (yes/no/[fingerprint])? yes   <-- Se debe poner yes para que agregue a host conocidos
+ 
+---------------------------------------------------------------------------------------------- 
+2.- Inicializar y Clonar repo    --> https://git-scm.com/book/es/v2/Fundamentos-de-Git-Obteniendo-un-repositorio-Git
+1.- Clonar                       
+    git clone git@bitbucket.org:pcfv/repo.git     --> repo.git donde repo es el nombre del repositorio
+	
+2.- cd repo                      --> https://gist.github.com/dasdo/9ff71c5c0efa037441b6
+    git add .
+	git commit -m 'agregar archivo modificado'
+	git status
+	git branch
+	git push origin main
+	
+	git branch rama1     -> Crea una rama
+	git checkout rama1   -> Cambiamos a rama1
+	echo 'test' > archivo2.dat
+	git add .
+	git commit -m 'Agrega archivo a rama'
+	git push origin rama1
+	
+	Luego desde la web de bitbucket solicitar Merge
+	
+--------------------------------------------------------------------------	
+	
+	
+git init
+
+git add .   (o un nombre de archivo)  <-- Para rastrear cambios en archivos
+
+git commit -m 'initial project version'   <-- Para generar un  punto de cambio
+
+git clone git@bitbucket.org:pcfv/repo.git
+
+
+-------------------
+git branch                   -------> Para ver las ramas
+git checkout NOMBRE-RAMA     -------> Para cambiar de rama
+git branch NOMBRE-NUEVA-RAMA -------> Crear nueva rama
+
+
+===================================================================
+======================== BITBUCKET ================================
+===================================================================
+ WORKING         STAGING       LOCAL           REMOTE
+DIRECTORY          AREA        REPO             REPO 
+    |                |           |                |
+    |    git add     |           |                |
+    |    -------->   |git commit |                |
+    |                | ----->    |                |
+    |                |           |   git push     |
+    |                |           |    ----->      |
+    |                |           |                |
+    |                |           |   git fetch    |
+    |                |           |    <-----      |
+    |        git checkout        |                |
+    |    <-------------------    |                |
+    |        git merge           |                |
+    |    <-------------------    |                |
+    |                |           |                |
+    |                |           |                |
+	
+===================================================================
+===================================================================
+===================================================================
+
+1.- Para crear un nuevo proyecto (version react-native 0.67)
+    > npx react-native init miproyecto
+
+2.- Para ejecutar
+    > cd repo
+    > npx react-native run-andoid
+
+3.-	Para subir el fuente a un repositiro github (público)
+    -- crear repositorio en github web
+	> git init
+	> git add .
+	> git commit -m "pruebs"
+	> git remote add origin https://github.com/pablofierrovallejos/react.git
+	> git push origin master
+		
+Para clonar un repositorio público.
+    1.- git clone https://github.com/pablofierrovallejos/react-native1.git
+    2.- cd repo
+	3.- npm install
+	4.- npx react-native run-android

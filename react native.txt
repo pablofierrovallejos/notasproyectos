@@ -1,0 +1,303 @@
+---------------------------------------------------------------------------
+---INSTALAR REACT NATIVE-------------------no funciona---------------------
+---------------------------------------------------------------------------
+React Native
+1.- instalar npm en visual studio code (npm viene empaquetado con nodejs)
+  Descargar instalador nodejs.org
+  para validar ejecutar en cmd -> node -v
+  
+2.- Instalar npm
+  en cmd ->  npm install npm@latest -g 
+  para validar cmd -> npm -v
+  
+3.- Instalar React Native
+  en cmd ->npm install -g create-react-native-app
+  
+4.- Crear la aplicacion
+
+✅ Your project is ready!
+
+To run your project, navigate to the directory and run one of the following npm commands.
+en cmd -> primero crear una carpeta y desde ahí ejecutar:
+          create.react.native-app
+		  
+- cd miLiga
+- npm run android
+- npm run ios # you need to use macOS to build the iOS project - use the Expo app if you need to do iOS development without a Mac
+- npm run web 
+
+Para abir proyecto desde la carpeta del proyecto creada ejecutar
+   cmd -> code .
+   
+Para iniciar el servidor:
+npm start
+
+5.- Primero hay que descargar el emulador sino da error
+www.genymotion.com
+Abrir virtual box para ver si está corriendo
+-tuve que poner tarjeta gráfica rtx3070 dado que con la integrada de intel no funciona
+-tuve que poner la aplicación genymotion forzado para que la tome nvidia desde config de pantalla
+  (botón derecho-> config de pantalla->Pantalla->configuracion de graficos->Elige una aplicación para establecer preferencias->seleccionar  C:\Program Files\Genymobile\Genymotion\genymotion.exe
+    poner en alto rendimiento)
+	
+6.-Se reintenta nuevamente con npm start opción a obteniendo el siguiente error
+› Opening on Android...
+Couldn't adb reverse: device 'adb' not found
+Couldn't open Android app with activity "com.miliga/.MainActivity" on device "Device adb".
+device 'adb' not found	
+
+Se instala android studio y se agrega la variable de entorno adb, generando el siguiente erro
+› Opening on Android...
+Couldn't adb reverse: adb.exe: error: closed
+Couldn't open Android app with activity "com.miliga/.MainActivity" on device "Samsung".
+The app might not be installed, try installing it with: expo run:android -d Samsung
+Activity class {com.miliga/com.miliga.MainActivity} does not exist.
+  
+  
+  npm install -g react-native-cli
+  
+  
+PS C:\proyectos\react1\miLiga> expo run:android -d Samsung
+expo : No se puede cargar el archivo C:\Users\Gamer\AppData\Roaming\npm\expo.ps1 porque la ejecución de scripts está deshabilitada en este 
+sistema. Para obtener más información, consulta el tema about_Execution_Policies en https:/go.microsoft.com/fwlink/?LinkID=135170.
+En línea: 1 Carácter: 1
++ expo run:android -d Samsung
++ ~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+  
+Para ver la directiva de seguridad de script windows   (https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.2)
+  Get-ExecutionPolicy
+  
+Para eliminar las directivas de seguridad  (esto no funciona)
+  Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope LocalMachine
+
+Esto funciona  
+PS C:\WINDOWS\system32> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+PS C:\WINDOWS\system32> Get-ExecutionPolicy
+RemoteSigned
+PS C:\WINDOWS\system32> cd C:\Users\Gamer\AppData\Roaming\npm\
+PS   Unblock-File -Path .\expo.ps1        <---Con esto se desbloquea el archivo en politicas de seguridad de power shell
+
+
+Intentamos nuevamente:
+PS C:\proyectos\react1\miLiga> expo run:android -d Samsung  
+› Building app...
+
+ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+
+Please set the JAVA_HOME variable in your environment to match the
+location of your Java installation.
+
+Finalmente se desinstala java 17 y se instala java 18
+
+se ejecuta nuevamente teniendo el siguiente error
+> Could not create task ':app:lint'.
+   > SDK location not found. Define location with an ANDROID_SDK_ROOT environment variable or by setting the sdk.dir path in your project's local 
+properties file at 'C:\proyectos\react1\miLiga\android\local.properties'.
+
+
+PS C:\proyectos\react1\miLiga> expo run:android -d Samsung   <-- Al parecer estamos ejecutando reacnative (expo) sin instalarlo por lo que ejecutamos lo siguiente
+
+npm install -g expo-cli
+
+Luego si da warning de vulnerabilidades se ejecuta
+24 vulnerabilities (2 low, 17 moderate, 5 high)
+
+npm audit fix --force    <-- se puede ejecutar varias veces hasta que desaparezca el warning crítico
+
+
+Luego se ejecuta npm start obteniendo el siguiente error
+Cannot find module 'expo/metro-config'
+
+---------------------------------------------------------------------------
+----------------------no funciona------------------------------------------
+---------------------------------------------------------------------------
+Lo anterior no funcion asi que se sigue el siguiente instructivo
+https://www.youtube.com/watch?v=NdwghbFNITY
+https://reactnative.dev/docs/environment-setup
+
+1.- Instalar utilidades de react (previa instalación de nodej)
+npm install -g expo-cli
+
+2.- Crear proyecto con react
+expo init AwesomeProject
+
+3.- Al ejecutar da el siguiente error
+› Opening on Android...
+Couldn't adb reverse: adb.exe: error: closed
+
+--------------
+   
+CSS
+https://www.youtube.com/watch?v=wZniZEbPAzk
+
+Funciona con selectores
+
+bootstrap
+
+---------------------ok-----------
+Crear y ejecutar un proyecto react WEb (no mobile)  ok
+npx
+1.- requiere:
+    ->node --version
+	->npm --version
+2.- crear una carpeta para la app
+3.- crear el proyecto
+    ->npx create-react-app miapp
+	->cd miapp
+	->npm start
+	
+
+
+---------------------------------------------------------------------------
+------------------------OK-------------------------------------------------
+---------------------------------------------------------------------------
+ 
+Crear y ejecutar proyecto React Native
+1.-Requiere
+    -Visual Studio Code
+	   -> Extensiones -> React Native Snipped  (para que autocomplete con react native)
+	                  -> Bracket Pair Colorizer 2  (Pinta del mismo colo apertura y cierre de una llave para ver mejor el código anidado)
+					  -> Prettier  (para formatear el fuente o indentar una vez que guardamos)
+                      -> Material Icon Theme  (Para poner iconos a las carpetas del proyecto)
+	   -> Para eliminar el error marcado en el import: 'import type' declarations can only be used in TypeScript files  (App.js)
+	   File->Preferences->Settings –> User –> Extentsions –> TypeScript –> JavaScript –> Validate: Enable
+	   
+
+	->java -version    ->Jdk 11  (no sirve la 17)
+	    Si tienes la 17 se debe desinstalar, yo usé la 1.8
+		->después de desinstalar la 17 se debe eliminar su carpeta (de C:\Program Files\Java)
+		  Sino al ejecutar npx react-native run-android la sigue tomando
+		-> Las variables de entorno son:
+		    JAVA_HOME  -> C:\Program Files\Java\jdk1.8.0_311
+		    Path  ->  %JAVA_HOME%\bin
+		->Probar con cmd> echo %JAVA_HOME  y cmd> javac	
+		  
+	->Android Studio
+	   -> Crear AVD (Androdi Virtual Device)
+	   -> Copiar la ruta Andoid studio en "User Variable for pablo" en Path:  C:\Users\Gamer\AppData\Local\Android\Sdk
+	   -> De android studio seleccionar el JDK correcto
+	   
+	->Instalar nodej y validar con 
+	   ->Descargar instalador nodejs.org, luego validar con:
+         -> npm --version
+         -> npx --version	   
+    ->Crear nuevo proyecto 
+       -> npx react-native init testApp
+	->Posicionarse en carpeta de proyecto
+       -> cd testApp
+	-> Ejecutar entorno base desde cmd
+	   -> npx react-native start	            -> Si puerto está ocupado se debe hacer >npx react-native start --port 8082
+	-> Abrir visual studio y arrancar entorno
+       -> code .   
+	-> Ejecutar aplicación android
+	   -> npx react-native run-android          -> Si se arrancó el server en otro puerto > npx react-native run-android --port 8082 
+	   
+
+Lo siguiente es para MAC
+Validar que emulador de android studio esté correctamente instalado:
+>adb    -> si da error se debe setear las variables de entorno con lo siguiente:
+          cd --  (Para ir al home)
+          nano ~/.bash_profile
+                y agregar las siguientes líneas
+                      -> export ANDROID_HOME=/Users/pfierro/Library/Android/sdk           -> Esto lo sacaos de Android Studio->Preferences->Appearence->System->Android SDK->Location
+                         export PATH=$PATH:$ANDROID_HOME/platform_tools
+				y ejecutar:		 
+                ->source ~/.bash_profile
+				Probar:  echo $ANDROID_HOME
+				y adb
+				
+           
+	   
+	
+---------------------------------------------------------------------------
+-------------------------OK-React native resumen una vez ya instalado------
+---------------------------------------------------------------------------
+
+Seguir este instructivo, en el fondo hay que habilitar Android studio y su emulador
+https://reactnative.dev/docs/environment-setup
+
+Para crear nueva aplicación
+--> npx react-native init testapp2
+
+To start Metro, run  (es el empaquetador de javascript que contiene react native)
+--> npx react-native start
+     matar un puerto en este caso si está ocupado el 8081   -> Si no funciona se puede lanzar:  npx react-native star --port 8082   pejemplo
+	 ->netstst -vanp tcp
+	 ->kill -9 PID
+	 
+
+Para iniciar nuestra aplicación
+C:\proyectos\testApp>
+-->npx react-native run-android   <--ejecutar esto desde la carpeta del proyecto en react
+
+
+------------
+https://www.youtube.com/watch?v=GuvloW3eimY   -> login con expo 2022
+https://www.youtube.com/c/ProgrammingwithMash/videos
+
+---------------------------
+
+https://www.youtube.com/watch?v=FWUfmIdSpJ4&list=PLC8ntN5__iMLKFGge64ZXIwFtlMYKh50k&index=1   ->curso de react native en español
+  ->Librerías a usar  ver:  https://reactnavigation.org/docs/getting-started
+	react navigation  ->reactnavigation.org
+	->npm install @react-navigation/native
+	->npm install react-native-screens react-native-safe-area-context
+	->npm install @react-navigation/stack
+	->npm install react-native-gesture-handler
+
+1.-Instalación y config del entorno  (ej de queryClient)
+2.-Uso de ReactNavigation
+3.-Lista de elementos FlatList                      -> https://www.youtube.com/watch?v=_HjM1GUYdIg
+4.-Estilos con flex, imágenes, iconos y touchable   -> https://www.youtube.com/watch?v=yf4162IUj14&list=PLC8ntN5__iMLKFGge64ZXIwFtlMYKh50k&index=4
+     Para instalar iconos:
+	     npm install react-native-ionicons@^4.x     -> https://www.npmjs.com/package/react-native-ionicons
+	 Se debe linkear con:
+         react-native link react-native-ionicons    (si no se hace da error solo al poner el import Icon  (ver doc en  	 https://www.npmjs.com/package/react-native-ionicons)
+		                                             Para elegir icono ir a: https://ionic.io/ionicons
+5.-Hooks y llamadas a la API mediante fetch		    -> https://www.youtube.com/watch?v=c0K1xY2ImTI&list=PLC8ntN5__iMLKFGge64ZXIwFtlMYKh50k&index=5
+											 
+		 
+		 
+---------------------------------------------------------------------------
+------------------------REACT QUERY----------------------------------------
+---------------------------------------------------------------------------	
+	
+ReactQuery
+  https://react-query.tanstack.com/
+     ->https://www.youtube.com/watch?v=u6TuxMhQwNg
+	 
+	 Instalar con:
+	 
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+  
+Base de datos en línea con JSON  
+https://reqres.in/  
+
+Base de datos de imagenes
+https://picsum.photos/
+
+Link de reactNavigation
+https://reactnavigation.org/docs/getting-started
+
+
+
+
+
+
+
+
+
+-------------
+J2C
+las herramientas J2C ofrecen varias calidades de servicio que puede proporcionar un servidor de aplicaciones:
+gestión de credenciales de seguridad
+agrupación de conexiones
+gestión de transacciones
+
+
+-

@@ -1,0 +1,38 @@
+Mongodb  ->  https://www.youtube.com/watch?v=SUtH1LGfa8o&list=PLvimn1Ins-43y_9RNEo4JIFdpA5SJCYey&index=1
+www.mongodb.com
+Mongodb compass es el administrador gráfico
+Se debe descargar el "Comunity Server"
+Instalar msi y agregar ruta bin al path de windows (sistema)
+
+-Para que mongodb sea remoto se debe crear la siguiente carpeta en windows
+   -->c:/data/db
+-Luego se debe iniciar el servidor con el siguiente parámetro dado que por defaul solo acepta conexiones locales
+   --> mongod --bind_ip_all   (esto se encuentra en la ruta     C:\Program Files\MongoDB\Server\5.0\bin
+                      mongod.cfg -> puede ser que configurando este archivo sea lo mismo
+					  
+1.- Probar versión
+mongod -version
+2.-Insertar datos con Mongodb compass
+3.-Para manejar la base de datos con comandos
+   >mongo  --abre el terminal  de mongo
+   >show databases
+   >show collections
+   >use demo            ->Selecciona la colección o tabla a usar
+   >db.personas.find()  ->Hace un select a la colección personas  (siempre se usa db. por tanto se debe seleccionar la base)
+   >db.personas.find({"nombre":"Pablo"})   ->Busca la palabra "Pablo" en la columna "nombre"
+   
+   >db                  ->muestra la base de datos actual
+   >db.dropDatabase()   ->Borra base de datos actual
+   >db.help()
+
+7.- Operaciones CRUD
+
+MONGODB ATLAS, servicio en la nube para practicar  -> https://www.youtube.com/watch?v=97FfXEy1zas
+mongodb.com/cloud/atlas
+->user: pfierro   pass: uBxO3HZmJvaO6s6K
+  ->Para conectar con compass se debe tener el link de conección desde atlas opcion ->Network Access->Add IP  (ip access list) sino no conectará
+  -> mi url de conexión->   mongodb+srv://pfierro:uBxO3HZmJvaO6s6K@cluster0.2ifpy.mongodb.net/test 
+  -> Pegar  esta url en compass -> New connection     (también se puede crear otro usuario desde Atlas ->Database Access->ADD NEW DATABASE USER
+  
+comandos
+https://geekflare.com/es/mongodb-queries-examples/
