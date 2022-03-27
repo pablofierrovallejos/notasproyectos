@@ -1,0 +1,20 @@
+APDEX: Application Performance Index)
+Selenium
+
+1.- Intruducción
+Pruebas de Carga
+  Conocer la cantidad de usuarios que soporta un producto
+  
+Pruebas de Capacidad
+  Evaluar el punto de quiebre de la aplicación, es
+  decir cuando va a colapsar.
+  
+Pruebas de Stress
+  El objetivo es saturar el programa hasta un punto de 
+  quiebre para ver si el sistema se puede auto recuperar.
+  (ver si aparecen bugs de seguridad).
+  
+Instalar 
+   JDK 8 a 11 ( 7 9 y 10 no es soportada por jenkis)  -> jdk.java.net/archive
+   CMDER  (emulador comand linux)  --> cmder.net
+   Jmeter
