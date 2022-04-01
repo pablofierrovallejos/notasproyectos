@@ -26,6 +26,9 @@ origin  https://github.com/pablofierrovallejos/powermeasure.git (push)
 Si no aparece nada seteado se debe setear la dirección del git:
 git remote add origin https://github.com/pablofierrovallejos/powermeasure.git
 
+para eliminar repositorio remoto
+git remote remove origin
+
 ahora hacer el push al master
 git push -u origin master
 

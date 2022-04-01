@@ -1,0 +1,8 @@
+
+Spring Tool Suit 3 (actual a abril 2022 es la versión 4 para spring boot 2)
+https://github.com/spring-projects/toolsuite-distribution/wiki/Spring-Tool-Suite-3
+
+Creación de servicio Rest con weblogic
+
+1.- New Project->Maven Project->Next-> mave.archetype-wabapp ->
+2.-Crear folder Proyecto->src->main->java
