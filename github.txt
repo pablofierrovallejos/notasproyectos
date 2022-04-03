@@ -59,7 +59,7 @@ loginuser: pablofierrovallejos@gmail.com
 pass     : 96552333Aa
 
 1.--------------------------Crear key ssh windows bitbucket -----------------------------------
---Crear llave ssh
+--Crear llave ssh  (es igual para unix)
   >ssh-keygen             (todas las preguntas se dejan por default, siguiente siguiente)
   Se generan 2 archivos en:  C:\Users\Gamer\.ssh
      -> id_rsa        //Llave privada   
@@ -69,9 +69,12 @@ pass     : 96552333Aa
   > eval $(ssh-agent) 
    Agent pid 9700 	 
 
-  > ssh-add ~/.ssh/id_rsa     	 
+  > ssh-add ~/.ssh/id_rsa     	 (para que lo reconozca el sistema operativo)   
+                                  En unix es mejor ir s la ruta cd .ssh   y luego ejecutar ssh-add filekey   (file sin extension pub) 
    Identity added: /c/Users/Gamer/.ssh/id_rsa (Gamer@DESKTOP-MAIN1)
 
+  > cat id_rsa.pub | pbcopy      //Copiar la key pública en portapapeles
+   
 --Agregar clave pública en bitbucket
   Desde Personal Settings en web bitbucket click en ssh key, copiar y pegar contenido de id_rsa.pub    
   
