@@ -66,7 +66,7 @@ pass     : 96552333Aa
 	 -> id_rsa.pub    //Llave pública
 
 --Agregar key privado al agente ssh-key
-  > eval $(ssh-agent) 
+  > eval $(ssh-agent)              --> en windows hay que cargar el agente cada vez y en la misma ventana que se hace el push, ver como agregar al arranque de windows
    Agent pid 9700 	 
 
   > ssh-add ~/.ssh/id_rsa     	 (para que lo reconozca el sistema operativo)   

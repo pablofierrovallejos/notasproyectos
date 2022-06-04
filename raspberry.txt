@@ -1,3 +1,48 @@
+0.-Abrir configuración rasp
+> sudo raspi-config
+>  ps -fea | grep vncserver    //Para saber si está corriendo vnc
+
+Created symlink /etc/systemd/system/multi-user.target.wants/vncserver-x11-serviced.service → /lib/systemd/system/vncserver-x11-serviced.service.  <- Lo que se ejecuta al habilitar vnc desde el menu
+
+vncserver -geometry 1280x720 :1
+
+/lib/systemd/system $ sudo nano vncserver-x11-serviced.service
+
+---
+instalar thigtvncserver    https://pimylifeup.com/raspberry-pi-vnc-server/
+
+sudo apt update
+sudo apt upgrade
+sudo apt install tightvncserver
+
+> vncserver :1               
+pass:raspberr
+
+Crear archivo:
+sudo nano /etc/systemd/system/vncserver.service
+
+[Unit]
+Description=TightVNC remote desktop server
+After=network.target
+ 
+[Service]
+User=pi
+Type=forking
+ExecStart=/usr/bin/vncserver :1
+ExecStop=/usr/bin/vncserver -kill :1
+ 
+[Install]
+WantedBy=multi-user.target
+
+
+0.-Instalar Teamviewer (No funciona bien con raspbery pi 3 se bloquea)
+sudo apt-get update
+sudo apt-get upgrade
+wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb
+sudo dpkg -i teamviewer-host_armhf.deb
+sudo apt  --fix-broken  install
+
+
 1.- Instalar apache web server (https://noviello.it/es/como-instalar-el-servidor-web-apache-en-raspberry-pi/)
 	Primero, actualice el índice del paquete y luego instale el apache2 ejecutando los siguientes comandos:
 	sudo apt update

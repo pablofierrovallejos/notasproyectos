@@ -59,6 +59,8 @@ spring-cloud-starter-bus-amqp
 --------------------------------------------------
 
 Instalar ubuntu en máquina virtual
+   Imagen:  https://ubuntu.com/download/desktop/thank-you?version=22.04&architecture=amd64 (el de amd funciona ok para intel)
+   
 1.- Cambiar resolición pantalla:
 desde la barra de herramientas
   -presionas flecha abajo que está al lado de icono power
@@ -71,6 +73,11 @@ sudo systemctl status ssh   -> para ver el estado de ssh
 sudo ufw allow ssh          -> para habilitar el cortafuego en ubuntu 
 ssh username@ip_address     -> para conectar a la maquina 
 
+
+3.- docker
+    Listado de contenedores docker
+	https://hub.docker.com/search?q=
+	
 3.-Instalar Docker (https://docs.docker.com/engine/install/ubuntu/)  y  https://www.youtube.com/watch?v=NVvZNmfqg6M
   -Desinstalar cualquier versión previa
     sudo apt-get remove docker docker-engine docker.io containerd runc
@@ -140,6 +147,36 @@ Archivo: Dockerfile
 usar docker compose
 
 ---------------------
+---------------------
+
 Dockerizar
+
 https://www.youtube.com/watch?v=dzNK6ja0qts
+
+
+Instalar Swagger editor
+docker pull swaggerapi/swagger-editor
+docker run -d -p 80:8080 swaggerapi/swagger-editor
+
+
+You can now open swagger-editor on your machine via 80
+
+
+docker pull swaggerapi/swagger-ui
+docker run -d -p 81:8080 swaggerapi/swagger-ui
+
+
+CASTLE MOCK-----------     https://hub.docker.com/r/castlemock/castlemock
+
+Instalar contenedor
+   > docker pull castlemock/castlemock
+
+Start Castle Mock by running the following command:
+   > docker run -d -p 82:8080 castlemock/castlemock
+
+Castle Mock is now accessible from the following IP address:
+    http://{CONTAINER IP}:8080/castlemock
+
+
+
 
