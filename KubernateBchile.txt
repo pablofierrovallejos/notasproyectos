@@ -1,0 +1,18 @@
+1.-Kubernates  k8s  (traducción del grigo PILOTO)
+Para administrar contenedores
+1.-Service discovery
+2.-Rollouts and Rollbacks
+3.-Optimización de recursos en los nodos
+4.-Self-healing
+5.-Configuración de secretos
+6.-Escalamiento horizontal
+
+2.-Arquitectura
+1.-Kubernetes Master (API)
+2.-Kubernetes node (kubelet-> servicio que corre en cada nodo)->docker se instala en cada nodo(runtime)
+                      Kubeproxy controla la red
+kubectl --> json
+kubeScheduler
+etcd -> base de datos llave valor
+
+3.-Instalación de Minikube (simulador cluster local)

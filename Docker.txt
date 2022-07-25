@@ -1,0 +1,4 @@
+1.-Instalación de Docker en Ubuntu (Ubuntu 14, 16 o 17)
+lsb_release -a   //Para vers la versión de ubuntu
+
+sudo apt-get update

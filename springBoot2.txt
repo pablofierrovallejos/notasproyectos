@@ -1,0 +1,26 @@
+1.- Instalación
+-Instalación de jdk 8
+-Springtool ( spring.io )
+
+2.-Microservicios: la base
+Características
+- Ventajas
+   - Se pueden usar distintos lenguajes en los microservicios
+   - Las entregas son más rápidas
+   - Es más facil escalar en la nube
+   - Se pueden tener varias instancias de un mismo microservicio
+- Cada Microservicio tiene su propio webserver
+- Cada servicio se le asigna un nombre, no na ip registrado en un servidor de nombre ej EUREKA.
+- Autoescalado y agilida ej por mucha carga de usuario. Se despliegan más instancias de microservicios
+- Tolerancia a fallos (latencia, - > HYSTRIX ) Dar camiones alternativos
+- Balanceo de cargas.  (RIBBON o RIVEN)
+- Spring Cloud Config (guarda las configuraciones de los microservicios)
+
+Actualización Wizard (Create new Spring starter proyect)
+  - Spring Boot Dev Tools (para no tener que estar reiniciando el servidor web ante un cambio en el codigo)
+  - Spring Web
+  - Spring Data JPA
+  - H2 Database  (base de datos en memoria)
+  
+ Spring Data JPA (sql o transaccional)(o Solo Spring Data) Para hacer un crud, o patron de acceso a datos (DAO)
+ 

@@ -1,0 +1,46 @@
+1.-Introducción
+Instalaciones necesarias
+->https://gist.github.com/Klerith/607dd6bb60b5a70bc5e4d9c81ef6501e
+  a.-Google Chrome
+  b.-Visual Studio Code
+  c.-Postman
+  d.-Mongo Compass
+  e.-Git
+  f.-Crear cuenta en GitHub
+  g.-Angular y extensiones
+  
+Angular CLI
+>npm install -g @angular/cli    (Instalación global)  
+ng -version
+
+2.-Conceptos generales
+Tipado extricto que ayuda a desarrolladores nuevos a comprender el código
+Inyección de dependencias: Para no estar buscando una clase
+
+3.-Bases de typescript
+  a.-Introducción a TypeScript
+      proyecto base:  https://github.com/Klerith/curso-angular-intro-typescript-ecmascript/releases/tag/v1.0.1
+      1.-subir a carpeta de proyecto de ejemplo
+	  2.-Ejecutar > npm install  (debe estar package.json)-> Para instalar las dependencias de package.json
+	  
+	  Al querer ejecutar el ejemplo desde el menu a la izquierda "NPM SCRIPTS" aparece el siguiente error
+	     PS C:\proyectos\proyectosAngular\curso-angular-intro-typescript-ecmascript\curso-angular-intro-typescript-ecmascript-1.0.1> auto run start        
+         auto : El término 'auto' no se reconoce como nombre de un cmdlet, función, archivo de script o programa ejecutable. Compruebe si escribió         
+         correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta es correcta e inténtelo de nuevo.
+		 
+     Mejor ejecutar del terminal:
+     > npm start
+         Para que eso funcione, recuerden que deben de ejecutar ese comando en el mismo directorio donde se encuentra el ```package.json```
+
+  b.-Tipos básicos
+        https://www.typescriptlang.org/docs/handbook/basic-types.html
+  c.-Objetos, arreglos e interfaces
+  d.-Funciones y sus argumentos
+  e.-Desestructuración de arreglos y objetos
+  f.-Importaciones y exportaciones
+  g.-Clases, constructores
+  h.-Tipos genéricos
+
+Decoradores
+
+Encadenamiento opcional
