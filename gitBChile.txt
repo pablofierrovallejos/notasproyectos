@@ -1,0 +1,39 @@
+1.-Instalación> https://gist.github.com/Klerith/90a612344dc2d4e4455ea810fdacbe69
+Instalaciones recomendadas - Curso de Git y GitHub
+-VSCode - Visual Studio Code
+-Google Chrome
+-Git
+
+Extensiones de VSCode
+-Activitus Bar
+
+Tema que estoy usando en VSCode
+-Tokio Night
+-Iconos
+
+Sitio oficial git
+-> git-scm.com
+
+Comandos
+>git --version  (-- palabra completa - abreviaciones)
+>git help
+>git config -global user.name "Pablo Fierro"
+>git config -global user.email "pablofierrovallejos@hotmail.com"
+>git config --global -e   ->listar variables seteadas
+
+>git init                       -> Inicializa el repositorio
+>git status                     -> info de status del repositorio
+>git add index.html             -> Agrega un archivo para seguimiento git (lo envía al stage)
+>git add .                      -> Agrega todo
+>git reset index.html           -> Saca un archivo del seguimiento (queda en rojo)
+>git commit -m "Primer commit"  -> Toma foto de los archivos y se guarda en .git para poder volver atrás
+>git log                        -> Revisar los comandos commit ejecutados
+
+En caso de siguiente error "LF will be replaced by CRLF in index.php"
+                            The file will have its original line endings in your working directory
+Ejecutar: git config core.autocrlf true	
+
+>git checkout -- .   ->Vuelve al commit anterior	
+>git branch          -> Para saber en que rama estamos
+>git branch -m master main  -> Cambia nombre de rama de master a main	(local)
+>git config --global init.defaultBranch main   ->Cambia nombre de rama principal de forma global				

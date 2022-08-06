@@ -1,0 +1,5 @@
+Instalar serverless framework
+->Tener instalado node
+> npm install -g serverless
+
+serverless.com  <- instrucciones para empezar

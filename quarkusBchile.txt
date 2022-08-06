@@ -1,0 +1,7 @@
+1.-Instalación de IntelliJ
+File->Setting->Pluggin
+		->Quarkus tools
+		->Spring Assistant  (El oficial no está disponible en comunity por eso usamos este)
+		->Lonbok  (Ver en instalados)
+
+File->Setting->Build,Execution,Deployment->Compiler>Annotarion Processors->Default->  ccheck  en Enable annotation processing (Para que lonbok pueda funcionar)

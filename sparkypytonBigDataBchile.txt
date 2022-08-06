@@ -1,0 +1,92 @@
+A.-Hadoop
+   ->Hive sobrea hadop
+B.-Apache Spark es más moderno, reemplaza a MapReduce
+    ->Utiliza interface pyspark
+C.-Computación en la NUBE
+  aws, azure, google cloud
+  
+       almacenamiento         computacion               base de datos
+  aws     aws s3                aws ec2                  aws rds
+  azure   azure blob storage   azure virtual machines   azure sql database
+  google  google cloud storage google compute engine    google cloud sql
+  
+ Apache Spark
+RDD:
+   Datos distribuidos
+   tolerante a fallos
+
+
+Descarga e Instala anaconda:
+$ wget http://repo.continuum.io/archive/Anaconda3-4.1.1-Linux-x86_64.sh
+$ bash Anaconda3-4.1.1-Linux-x86_64.sh
+
+
+Ver que version de Python estás utilizando y cambiarlo:
+$ which python3
+$ source .bashrc
+$ which python3
+
+Configuración Jupyter Notebook:
+$ jupyter notebook --generate-config
+
+Crear certificados:
+$ mkdir certs
+$ cd certs
+$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
+
+Editar archivo de configuración:
+$ cd ~/.jupyter/
+$ vi jupyter_notebook_config.py
+
+c = get_config()
+ 
+# Notebook config this is where you saved your pem cert
+c.NotebookApp.certfile = u'/home/ubuntu/certs/mycert.pem' 
+ 
+# Run on all IP addresses of your instance
+c.NotebookApp.ip = '*'
+ 
+# Don't open browser by default
+c.NotebookApp.open_browser = False 
+ 
+# Fix port to 8888
+c.NotebookApp.port = 8888
+
+
+Lanzar Jupyter Notebook:
+$ jupyter notebook
+
+Instalar Java:
+$ sudo apt-get update
+$ sudo apt-get install default-jre
+$ java -version
+
+Instalar Scala:
+$ sudo apt-get install scala
+$ scala -version
+
+
+Instalar py4j:
+$ export PATH=$PATH:$HOME/anaconda3/bin
+$ conda install pip
+$ which pip
+$ pip install py4j
+
+
+Instalar Spark y Hadoop:
+$ wget http://archive.apache.org/dist/spark/spark-2.0.0/spark-2.0.0-bin-hadoop2.7.tgz
+$ sudo tar -zxvf spark-2.0.0-bin-hadoop2.7.tgz
+
+
+Decirle a Python donde encontrar Spark:
+$ export SPARK_HOME='/home/ubuntu/spark-2.0.0-bin-hadoop2.7'
+$ export PATH=$SPARK_HOME:$PATH
+$ export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
+
+Lanzar Jupyter Notebook:
+$ jupyter notebook
+
+Lanzar Spark:
+from pyspark import SparkContext
+sc = SparkContext()
+   

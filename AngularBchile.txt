@@ -9,9 +9,18 @@ Instalaciones necesarias
   f.-Crear cuenta en GitHub
   g.-Angular y extensiones
   
+INSTALACION ANGULAR  
+#########################################################
+Instalar node desde la pagina web https://nodejs.org/en/
+> node -v
+  
 Angular CLI
->npm install -g @angular/cli    (Instalación global)  
-ng -version
+>npm install --location=global @angular/cli
+>ng v
+>ng --help
+>ng new bases   //Crear nuvo proyecto base
+>ng serve -o    //Para compilar y levantar el proyecto
+#########################################################
 
 2.-Conceptos generales
 Tipado extricto que ayuda a desarrolladores nuevos a comprender el código
@@ -44,3 +53,11 @@ Inyección de dependencias: Para no estar buscando una clase
 Decoradores
 
 Encadenamiento opcional
+
+4.- Intro a Angular
+-Componentes
+-Servicios 
+-Directivas (de componentes, estructurales , de atributos)
+-Rutas
+-Módulos
+   
