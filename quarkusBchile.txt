@@ -4,4 +4,14 @@ File->Setting->Pluggin
 		->Spring Assistant  (El oficial no está disponible en comunity por eso usamos este)
 		->Lonbok  (Ver en instalados)
 
-File->Setting->Build,Execution,Deployment->Compiler>Annotarion Processors->Default->  ccheck  en Enable annotation processing (Para que lonbok pueda funcionar)
+File->Setting->Build,Execution,Deployment->Compiler>Annotarion Processors->Default->  ccheck  en Enable annotation processing (Para que lombok pueda funcionar)
+
+2.-Creación de un proyecto
+File->New Project->Quarkus ->Next->Next->
+					web->RestEasy Jax-RS
+
+                    compilar según readme-> ./mvnw compile quarkus:dev
+					
+3.-HotReload
+
+4.- Eventos StartUp y ShutDown
