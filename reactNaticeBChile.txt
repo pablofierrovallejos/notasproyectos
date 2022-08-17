@@ -1,0 +1,49 @@
+Instalación
+- Node js
+    > node --version  (descargar de internet)
+	
+- Yarn  https://yarnpkg.com/ (instalador de paquetes de facebook) (reemplaza npm) (para agregar mas dependencias)
+    > npm i -g corepack    (para instalar yarn)
+	
+- VS code
+- Expo (Framework para react native , monta un servidor para enviarlo al simulador sin compilar)
+    > yarn global add expo-cli   
+- Pluggin
+	Auto Close Tag
+	Bracket Pair Clorizer
+	Debugge for Chrome -> Deprecado usar JavaScript Debugger
+	DotENV
+	Editor Zoom
+	EditorConfig  (para tener misma config y evitar cambios en github)
+	FireBase
+	Material Theme
+	Prettier
+	TODO Highlight
+- Mac OS (XCode para los simuladores en ios)
+- Android Studio (Para utilizar sus simuladores android)
+
+Seccion 3 (para ejecutar un js: > node index.js  (en el terminal de vs)
+- import en javascript
+- Fat arrow function (EMAC Script 6)
+- async/await  (Reemplaza Promise)
+
+Seccion 4 Comenzamos
+>expo init HolaMundo  
+>cd HolaMundo
+>yarn start
+>yarn android
+>yarn ios
+>yarn web
+- Las props
+- children
+- El state
+- Hook useState
+
+
+
+Sección 12
+-Instalar Vercel Function as a Service
+ >npm i -g vercel
+ >vercel init   (seleccionar custom build)
+ 
+  
