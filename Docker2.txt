@@ -1,0 +1,20 @@
+para avanzar el lunes, necesitamos estos datos para la factura:
+
+razon social: PABLO FIERRO NEIRA
+RUT : 6.817.492-9
+giro :  heladeria ,cafeteria y abarrote
+dirección : Ignacio Serrano  137, Laja, 8va Región del Biobío.
+teléfono: +56 90796304
+mail:  pfierroneira@gmail.com
+persona de contacto : Pablo Fierro Neira
+
+Estaba revisando los ingredientes de un helado de agua trendy
+1.-Agua
+2.-Azucar
+3.-polidextrosa
+4.-Ácido cítrico
+5.-Goma Guar
+6.-Saborizante
+7.-Sucralosa
+8.-Acesulfamo Potasico
+9.-Colorantes artificiales

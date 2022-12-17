@@ -4,18 +4,18 @@
 
 Created symlink /etc/systemd/system/multi-user.target.wants/vncserver-x11-serviced.service → /lib/systemd/system/vncserver-x11-serviced.service.  <- Lo que se ejecuta al habilitar vnc desde el menu
 
-vncserver -geometry 1280x720 :1
+vncserver -geometry 1280x720 :1    <-- Inicia vnc server con resolucion indicada
 
 /lib/systemd/system $ sudo nano vncserver-x11-serviced.service
 
 ---
 instalar thigtvncserver    https://pimylifeup.com/raspberry-pi-vnc-server/
 
-sudo apt update
-sudo apt upgrade
-sudo apt install tightvncserver
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install tightvncserver
 
-> vncserver :1               
+> vncserver :1           <-- Inicia vnc server sin indicar resolución de pantalla
 pass:raspberr
 
 Crear archivo:
@@ -61,3 +61,90 @@ sudo apt  --fix-broken  install
 	reinicie el servicio Apache:
 
     sudo systemctl restart apache2
+	
+
+GPIO
+Para ver estado de puerto
+>gpio readall
+>raspi-gpio get
+>raspi-gpio get X    -->  prints the state of GPIO pin X
+>raspi-gpio set X op -->  sets GPIO pin X as an output
+>raspi-gpio set X dh -->  sets GPIO pin X to drive high
+>raspi-gpio set X dl -->  sets GPIO pin X to drive low
+
+Para conocer el modelo de raspberry
+cat /proc/device-tree/model   -->  Raspberry Pi 3 Model B Rev 1.2
+o
+cat /proc/cpuinfo | grep Model
+En la penúltima línea "Revision" --> Revision        : a02082
+
+Comparar con siguiente tabla
+https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/
+
+PINOUT
+https://community.element14.com/products/raspberry-pi/m/files/17428
+
+pi@raspberrypi:~ $ gpio readall  --> Considerar BCM como el nro del GPIO no el Name
+ +-----+-----+---------+------+---+---Pi 3---+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ |     |     |    3.3v |      |   |  1 || 2  |   |      | 5v      |     |     |
+ |   2 |   8 |   SDA.1 |   IN | 1 |  3 || 4  |   |      | 5V      |     |     |
+ |   3 |   9 |   SCL.1 |   IN | 1 |  5 || 6  |   |      | 0v      |     |     |
+ |   4 |   7 | GPIO. 7 |   IN | 1 |  7 || 8  | 1 | IN   | TxD     | 15  | 14  |
+ |     |     |      0v |      |   |  9 || 10 | 1 | IN   | RxD     | 16  | 15  |
+ |  17 |   0 | GPIO. 0 |   IN | 1 | 11 || 12 | 1 | IN   | GPIO. 1 | 1   | 18  |
+ |  27 |   2 | GPIO. 2 |   IN | 1 | 13 || 14 |   |      | 0v      |     |     |
+ |  22 |   3 | GPIO. 3 |   IN | 1 | 15 || 16 | 0 | IN   | GPIO. 4 | 4   | 23  |
+ |     |     |    3.3v |      |   | 17 || 18 | 0 | IN   | GPIO. 5 | 5   | 24  |
+ |  10 |  12 |    MOSI |   IN | 1 | 19 || 20 |   |      | 0v      |     |     |
+ |   9 |  13 |    MISO |   IN | 1 | 21 || 22 | 1 | IN   | GPIO. 6 | 6   | 25  |
+ |  11 |  14 |    SCLK |   IN | 1 | 23 || 24 | 1 | IN   | CE0     | 10  | 8   |
+ |     |     |      0v |      |   | 25 || 26 | 1 | IN   | CE1     | 11  | 7   |
+ |   0 |  30 |   SDA.0 |  OUT | 0 | 27 || 28 | 0 | OUT  | SCL.0   | 31  | 1   |
+ |   5 |  21 | GPIO.21 |   IN | 1 | 29 || 30 |   |      | 0v      |     |     |
+ |   6 |  22 | GPIO.22 |   IN | 1 | 31 || 32 | 1 | IN   | GPIO.26 | 26  | 12  |
+ |  13 |  23 | GPIO.23 |   IN | 1 | 33 || 34 |   |      | 0v      |     |     |
+ |  19 |  24 | GPIO.24 |   IN | 1 | 35 || 36 | 1 | IN   | GPIO.27 | 27  | 16  |
+ |  26 |  25 | GPIO.25 |   IN | 1 | 37 || 38 | 1 | IN   | GPIO.28 | 28  | 20  |
+ |     |     |      0v |      |   | 39 || 40 | 1 | IN   | GPIO.29 | 29  | 21  |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+---Pi 3---+---+------+---------+-----+-----+
+
+raspi-gpio set 14 op
+gpio readall
+raspi-gpio set 14 dh
+raspi-gpio set 14 dl
+---
+Instalar GPIO
+sudo apt-get install python-rpi.gpio
+sudo apt-get install python-dev python3-dev
+sudo apt-get install python3-dev python3-rpi.gpio
+sudo apt-get install picap
+
+Instalar Python3 ide
+sudo apt-get install python3
+sudo apt-get install idle3
+
+Instalar Arduino en raspberry (https://www.raspberrypi-spy.co.uk/2020/12/install-arduino-ide-on-raspberry-pi/)
+	1-Descargar arduino de:  https://www.arduino.cc/en/software
+		Then click on the download labelled “Linux ARM 32 bits”. 
+	2-Install Arduino IDE
+		tar -xf arduino-version-linuxarm.tar.xz
+
+	3-Move the folder to /opt using:
+		sudo mv arduino-#### /opt
+
+	4-Ejecutar el instalador
+		sudo /opt/arduino-####/install.sh
+		
+		
+Instalar Teamviewer en raspberry
+	sudo apt-get update
+	sudo apt-get upgrade 
+	wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb
+	sudo dpkg -i teamviewer-host_armhf.deb
+	sudo apt --fix-broken install
+	sudo teamviewer setup    --> Se ingresa el mail y pass del portal teammview y queda con sesion automatica
+	sudo teamviewer info		

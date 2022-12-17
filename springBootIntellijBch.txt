@@ -1,0 +1,243 @@
+1.-Instalación de jdk
+a.-Descargar jdk 11 en adelante y descomrimir en alguna carpeta
+b.-propiedades del sistema->
+    -Variables de usuario (tambien puede ser en var de sistema)
+	    - agregar Path= la ruta de java.exe
+		-agregar JAVA_HOME = ruta del jdk sin el bin y sin el "\" al final
+
+		
+2.-Crear proyecto con spring boot si no tengo licencia IntelliJ
+https://start.spring.io/
+group: org.pfierro.springcloud.msvc.usuarios
+artifact:msvc-usuarios
+name:    msvc-usuarios
+Description: Demo project for spring
+Package name:  org.pfierro.springcloud.msvc.usuarios
+
+-Agregar dependencias: 
+	- Spring Boot DevTools (para refresco automatico)
+	- Spring Web (api rest)
+    - Agregar Spring Data JPA (para spring data e hibernate)
+	- MySql Driver
+	- OpenFeign
+
+	
+-Crear nuevo proyecto de intellij base
+  -tipo maven
+  -ir al pom y poner debajo de version: (por que es un proyecto principal)
+  <packaging>pom</packaging>
+  -copiar el zip creado en initializer, pegar al lado del pom y descomprimir
+  -modificar el parent del micro y llevarlo al pom del proyecto principal
+  - En el microservicio archivo application.properties poner nombre de micro
+     spring.application.name=msvc-usuarios  
+	 server.port=8001
+  - Generar las clases Entity del micro para acceso a base de datos
+  
+ 
+Seccion 2 ->Crear microservicio usuario
+-Agregar properties
+ 
+Sección 3 ->Crear microservicio curso
+https://start.spring.io/
+group: org.pfierro.springcloud.msvc.cursos
+artifact:msvc-cursos
+name:    msvc-cursos
+Description: Demo project for spring
+Package name:  org.pfierro.springcloud.msvc.cursos
+
+-Agregar dependencias: 
+	- Spring Boot DevTools (para refresco automatico)
+	- Spring Web (api rest)
+    - Agregar Spring Data JPA (para spring data e hibernate)
+	- postgreSQL Driver
+	- OpenFeign
+	- Validation I/O (bean validation)
+	
+-Copiamos id del pom principal y lo pegamos reemplazando dentro de <PARENT> en el pom hijo
+	<groupId>org.pfierro.springcloud.msvc</groupId>
+    <artifactId>curso-kubernates</artifactId>
+    <version>1.0-SNAPSHOT</version>
+-Agregamos en <MODULE> el micro hijo dentro del pom principal
+	<modules>
+        <module>msvc.usuarios</module>
+        <module>msvc-auth</module>
+        <module>msvc-cursos</module>
+    </modules>	
+-Agregar en application.properties del micro:
+	spring.application.name=msvc-cursos
+	server.port=8002
+-Crear package org.pfierro.springcloud.msvc.cursos.msvccursos.entity
+	-Crear clase Curso.java
+-Crear package org.pfierro.springcloud.msvc.cursos.msvccursos.repositories
+	-Crear interface CursoRepository.java
+-Crear package org.pfierro.springcloud.msvc.cursos.msvccursos.services	
+	-Crear interface CursoService.java
+ 	-Crear clase     CursoServiceImpl.java    
+-Crear package org.pfierro.springcloud.msvc.cursos.msvccursos.controllers
+	-Crear clase CursoController.java
+	
+--Agregar la siguiente config a properties
+	spring.application.name=msvc-cursos
+	server.port=8002
+	spring.datasource.url=jdbc:postgresql://localhost:5432/msvc_cursos
+	spring.datasource.username=postgres
+	spring.datasource.password=sasa
+	spring.datasource.driver-class-name=org.postgresql.Driver
+	spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL10Dialect
+	spring.jpa.generate-ddl=true
+	logging.level.org.hibernate.SQL=debug
+	spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true	
+--Instalar postgreSQL -> https://www.postgresql.org/	
+
+
+Sección 5 Cliente HTTP Feign
+-Escribiendo el cliente HTTP con spring cloud feing
+	-Debe estar la siguiente dependencia en el pom del micro
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		
+   	-Anotar Feing en clase principal con @EnableFeignClients
+	-Agregar package nuevo org.pfierro.springcloud.msvc.cursos.msvccursos.clients
+	   - Agregar nueva clase 
+			UsuarioClientRest.java
+	   - Anotar la ruta del micro a consumit -> 
+			@FeignClient(name="msvc-usuarios", url="localhost:8001")
+	
+6 Intro Docker (Para administrar contenedores)
+   1-Install Hyper-V on Windows 10
+   https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v
+   Ejecutar powershell como administrar
+   Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+   
+   2 Ejecutar
+   Enable-WindowsOptionalFeature -Online -FeatureName containers -All
+   
+   3.-Descargar docker para windows 10 pro
+   https://www.docker.com/
+   
+   Para instalar docker en mac ir a docker.com y descargar
+   Para instalar en ubuntu
+      sudo snap install docker
+	  
+   4.-Probar ejecutando ->docker
+   5.-Generando archivo jar para dockerizar desde terminal intellij
+         -> Desde la carpeta del microservicio
+		     .\mvnw clean package
+			 
+   6.-Creando archivo Dockerfile
+     1.- ir a https://hub.docker.com/ y obtener el openjdk 11 pejemplo
+	 2.- Crear archivo Dockerfile en raíz del micro
+	 3.- Agregar en Dockerfile: (instalar plugin si pregunta de docker)
+		FROM openjdk:11-ea-9-jdk
+		WORKDIR /app
+		COPY ./target/msvc.usuarios-0.0.1-SNAPSHOT.jar .
+		EXPOSE 8001
+		ENTRYPOINT ["java" , "-jar", "msvc.usuarios-0.0.1-SNAPSHOT.jar"]
+
+	7.-Construyendo imagen
+	   1.- Ejecutar el build desde la raiz del micro (donde está el archivo Dockerfile)
+	       >docker build .
+	   2.- Listar las imagenes construidas
+           >docker images
+	   3.- Ejecutar contenedor a partir del id del build anterior
+	       >docker run bef92ca91e69
+		   (esto da error dado que el micro no encuentra mysql)
+	   4.-Cambiar la url de mysql para que micro se conecte al localhost (anfitrión)
+	       Cambiar esta línea
+		   spring.datasource.url=jdbc:mysql://localhost:3306/msvc_usuarios?serverTimezone=America/Santiago
+		   por esta:
+		   spring.datasource.url=jdbc:mysql://host.docker.internal:3306/msvc_usuarios?serverTimezone=America/Santiago
+	   5.-Recompilar con una bandera (saltar pruebas unitarias) sino da error: "Host 'host.docker.internal' is not allowed to connect to this MySQL server"
+	   >.\mvnw clean package -DskipTests
+	   >docker build .
+	   >docker images
+	   >docker run 678fcceb7ec5    <-- levanta el contenedor nuevo pero no indicamos el puerto del contenedor
+	   >CTRL+C
+	   >docker ps                  <-- Para ver los contenedores corriendo
+	   >docker stop naughty_ellis  <-- Detenemos el contenedor (por el name o container id) 
+	   >docker run -p 8001:8001 678fcceb7ec5    (8001:8001 --> Puerto externo: Puerto Interno)
+	   
+
+Sección 7 Optimizando Dokerfile
+	 1.- Generar imagen con el  mvnw integrado en Dokerfile
+		FROM openjdk:11-ea-9-jdk
+		WORKDIR /app/msvc-usuarios
+		COPY ./pom.xml /app
+		COPY ./msvc-usuarios .
+		RUN ./mvnw clean package -DskipTests
+		EXPOSE 8001
+		ENTRYPOINT ["java" , "-jar", "./target/msvc.usuarios-0.0.1-SNAPSHOT.jar"]
+	 2.-Ejecutar build de imagen:
+	     > curso-kubernates> docker build -t usuarios .  -f  .\msvc-usuarios\Dokerfile
+	     > docker run -p 8001:8001 usuarios
+		 
+	 3.-Optimizando aún más, solo descarga dependencias la primera vez
+		FROM openjdk:11-ea-9-jdk
+		WORKDIR /app/msvc-usuarios
+		COPY ./pom.xml /app
+		COPY ./msvc-usuarios/.mvn ./.mvn
+		COPY ./msvc-usuarios/mvnw .
+		COPY ./msvc-usuarios/pom.xml .
+		RUN ./mvnw clean package -Dmaven.test.skip -Dmaven.main.skip -Dspring-boot.repackage.skip && rm -r ./target/
+		#RUN ./mvnw dependency:go-offline   <-- Esto es similar a la línea anterior (reutiliza las dependencias locales que ya existen)
+		COPY ./msvc-usuarios/src ./src
+		RUN ./mvnw clean package -DskipTests
+		EXPOSE 8001
+		ENTRYPOINT ["java", "-jar", "./target/msvc-usuarios-0.0.1-SNAPSHOT.jar"]	 
+	 4.-Ejecutar build de imagen:
+	     > curso-kubernates> docker build -t usuarios .  -f  .\msvc-usuarios\Dokerfile
+	     > docker run -p 8001:8001 usuarios
+	
+
+	 5.- Más optmizado
+		FROM openjdk:17-jdk-alpine as builder
+		WORKDIR /app/msvc-usuarios
+		COPY ./pom.xml /app
+		COPY ./msvc-usuarios/.mvn ./.mvn
+		COPY ./msvc-usuarios/mvnw .
+		COPY ./msvc-usuarios/pom.xml .
+		RUN ./mvnw clean package -Dmaven.test.skip -Dmaven.main.skip -Dspring-boot.repackage.skip && rm -r ./target/
+		#RUN ./mvnw dependency:go-offline
+		COPY ./msvc-usuarios/src ./src
+		RUN ./mvnw clean package -DskipTests
+		FROM openjdk:17-jdk-alpine
+		WORKDIR /app
+		COPY --from=builder /app/msvc-usuarios/target/msvc-usuarios-0.0.1-SNAPSHOT.jar .
+		EXPOSE 8001
+		ENTRYPOINT ["java", "-jar", "msvc-usuarios-0.0.1-SNAPSHOT.jar"]
+
+	
+	   
+sección 16
+ Kubernates (ConfigMap y Secret)
+ 
+ Sección 20
+  Kubernates Security JWT con OAUTH 2.21
+  
+  -exportar imagen para copiar en pendrive
+     >docker save nameimage > archivosalida.tar
+  -eliminar una imagen
+  -importar una imagen a partir de un archivo
+     >docker load -i archivoimagen.tar
+	 
+Listar todos contenedores en todos sus estados
+> docker ps -a	 
+
+Elimina un contenedor cargado
+> docker rm idcontenedor
+  
+Eliminar una imagen
+> docker rmi idimagen
+
+Detener un contenedor
+> docker stop idcontenedor
+  
+Iniciar un contenedor
+>docker run idimagen
+
+>Ejecutar un bat al inicio de windows (tecla windows + R)
+en ejecutar escribir:
+ shell:startup
+Luego pegar el bat 
