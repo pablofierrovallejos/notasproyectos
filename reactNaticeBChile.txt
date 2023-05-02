@@ -39,11 +39,65 @@ Seccion 4 Comenzamos
 - El state
 - Hook useState
 
+Sección 5: Manejo de Data
+	
 
+
+Castlemock:  https://www.youtube.com/watch?v=FLb3yxOvULk
+
+1.- Instalar contenedor:  
+>docker run -d -p 8080:8080 castlemock/castlemock
+
+2.- Ejecutar
+http://localhost:8080/castlemock
+Username: admin 
+Password: admin
+
+3.- New Project
+4.- New application
+5.- New Resource (el path que queremos mockear (sin host ni puerto)
+	Name    : users
+	resource: /users/{id}
+6.- New Method
+	Name: getUsers
+	Method: GET
+	
+7.- Create Response
+	Name: adultResponse
+	Status: ENABLED
+	Body:
+		{
+			"id": 1,
+			"firstName": "Pablo",
+			"lastName": "Fierro"
+		}	
+		
+8.- Dinamismo en respuestas
+	check "Use Expression"
+	Body:
+		{
+			"id":  ${PATH_PARAMETER(parameter="id")},
+			"firstName": "Pablo",
+			"lastName": "Fierro"
+		}		
+		
+-------------------------
 
 Sección 12
 -Instalar Vercel Function as a Service
  >npm i -g vercel
  >vercel init   (seleccionar custom build)
  
+ 
   
+Seccion 17
+Para iniciar la app ya creada solo ir al codigo y dentro de la carpeta raiz del
+  proyecto ejecutat:
+	> yarn android
+Redux en react nativem  
+  Crear proyecto
+	>expo init redux-react
+	    Error Input is required, but Expo CLI is in non-interactive mode
+	   (Solucion, no usar bash git)
+	>cd redux-react
+	>yarn add redux react-redux    (Instalar redux)
