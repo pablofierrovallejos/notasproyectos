@@ -216,3 +216,13 @@ Para clonar un repositorio público.
     - git tag -a v1.0.0 -m "version release"  -> crea tag con comentario
     - git tag -a v1.0.0 701c885    -> agrega tag a un id commit específico
     - git show v0.1.0              -> muestra detalle extenso de un tag
+
+    Stash
+      - Lugar para mover cambios que no se han hecho commit para no perder cambios
+          - Es dificili recordarse que tiene el stash cuando tenemos muchos
+    Rebase
+      - Para unir commit o seprar commit, renombrar commits, solo se usa si no hemos subido cambios
+        en repositorio. Puede generar conflictos.
+        -git stash    (WIP work in progress)
+        -git stash list  (para ver los stash)
+        -git stash pop   (vuelve a la rama lo guardado en stash)
