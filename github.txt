@@ -208,4 +208,11 @@ Para clonar un repositorio público.
     - git checkout master
     - git merge mi-nueva-rama   (trae mi-nueva-rama a la master) 
     - git branch -d mi-nueva-rama  (elimina la rama secundaria)  con -f lo fuerza a borrar
-    
+
+  Hacer una etiqueta
+    - git tag super-release     -> para crear un tag
+    - git tag                   -> para ver todos los tags
+    - git tag -d super-release  -> para borrar un tag
+    - git tag -a v1.0.0 -m "version release"  -> crea tag con comentario
+    - git tag -a v1.0.0 701c885    -> agrega tag a un id commit específico
+    - git show v0.1.0              -> muestra detalle extenso de un tag
