@@ -225,7 +225,19 @@ Para clonar un repositorio público.
         en repositorio. Puede generar conflictos.
         -git stash    (WIP work in progress)
         -git stash list  (para ver los stash)
-        -git stash pop   (vuelve a la rama lo guardado en stash)
+            stash@{0}: WIP on master: c041611 nuevo archivo
+            stash@{1}: WIP on master: c041611 nuevo archivo
 
+        -git stash pop   (vuelve a la rama lo guardado en stash, devuelve 
+                          el último stash realizado (es una pila))
+        -git stash apply stash@{0}  -> para sacar un stash que desee
+        -git stash drop stash@{0}   -> elimina un stash específico
+        -git stash show stash@{0}   -> Para ver que archivo se modificó
+
+        -git stash add "Un nombre referencia" -> Permite poner un nombre al stash para cuando haga un list
+        -git stash clear     -> borra todos los stash
     Para ver las referencias
       -git reflog    
+
+
+    - Rebase  
