@@ -226,3 +226,6 @@ Para clonar un repositorio público.
         -git stash    (WIP work in progress)
         -git stash list  (para ver los stash)
         -git stash pop   (vuelve a la rama lo guardado en stash)
+
+    Para ver las referencias
+      -git reflog    
