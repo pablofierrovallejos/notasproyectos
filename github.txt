@@ -183,6 +183,29 @@ Para clonar un repositorio público.
     - git add .
 
   Creando alias
-    - git status --short   -> git config --global alias.s status --short 
+    - git status --short   -> git config --global alias.s "status --short"
+
   Editar alias
     - git config --global -e
+
+  log abreviado
+    - git log --oneline --decorate --all --graph
+
+  log abreviado con fecha
+      git config --global alias.lg "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"  
+
+  Merges
+      Se pueden presentar 3 casos
+        - 1.-Fast Forward  : No hay cambios en la master y mi rama secundaria se une sin problemas -> Fast Forward (se une rama sec como si nunca se hubiera separado (se puede desactivar))
+        - 2.-Uniones Automáticas (estrategia recursiva)
+        - 3.-Uniones Manuales
+
+  Crear una nueva rama  
+    - git branch mi-nueva-rama
+    - git checkput mi-nueva-rama  -> me cambio a la nueva rama
+
+  Hacer un merge de ramas (parado en la master) 
+    - git checkout master
+    - git merge mi-nueva-rama   (trae mi-nueva-rama a la master) 
+    - git branch -d mi-nueva-rama  (elimina la rama secundaria)  con -f lo fuerza a borrar
+    
