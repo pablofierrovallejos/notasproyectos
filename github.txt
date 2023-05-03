@@ -171,3 +171,18 @@ Para clonar un repositorio público.
     2.- cd repo
 	3.- npm install
 	4.- npx react-native run-android
+
+  Para agregar una carpeta vacía
+    - Agregar un archivo .gitkeep
+    - git add upload/.gitkeep
+  
+  Agregar directorio y subdirectorios
+    - git add css/
+
+  Agregar todo
+    - git add .
+
+  Creando alias
+    - git status --short   -> git config --global alias.s status --short 
+  Editar alias
+    - git config --global -e
