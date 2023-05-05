@@ -240,4 +240,27 @@ Para clonar un repositorio público.
       -git reflog    
 
 
-    - Rebase  
+    - Rebase
+
+    -  GitHub remoto (primero crear el repo remoteo)
+    -git init   -> inicializa el proyecto
+    -git add README.modificado
+    -git commit -m "first commit"
+    -git branch -M main    -> cambia el nombre a la rama
+    -git remote add origin https:/github.com/nombreuser/nombrerepo.git
+    -git remote -v   -> para ver los repos remotos
+    -git push -u origin main    -u-> fija master como default
+
+    - En caso que ya tenemos inicializado un proyecto (podemos tener multiples repos remotos)
+    -git remote add origin https:/github.com/nombreuser/nombrerepo.git
+    -git remote -v   -> para ver los repos remotos
+    -git branch -M main    -> cambia el nombre a la rama principal
+    -git push -u origin main    -u-> fija master como default
+    -git push --tags  -> sube todos los tags locales
+
+    Estrategias de reconciliación para Merges
+      git config pull.rebase false  #merge
+      git config pull.rebase true   #rebase
+      git config pull.ff only       #solo usar Fast Forward
+
+     -git config --global pull.ff only  -->configutamos a FastForward
