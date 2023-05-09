@@ -208,11 +208,56 @@ Sección 7 Optimizando Dokerfile
 		EXPOSE 8001
 		ENTRYPOINT ["java", "-jar", "msvc-usuarios-0.0.1-SNAPSHOT.jar"]
 
+Seccion 9
+	-Docker Networks: Comunicación entre contenedores
+	-docker network create spring  			//Crear una red
+	-docker network ls						//Ver las redes instaladas
+	-docker run -p 8001:8001 -d --rm msvc-usuarios --network spring usuarios   //Ejecutar un contendor en la red spring
+	-docker run -p 8001:8001 -d --rm msvc-cursos   --network spring cursos
+	-docker ps								//Listar los contenedores
+	-docker container inspect msvc-cursos   //para ver la red del microservicio
 	
-	   
+	-Dockerizar Mysql
+		-docker pull mysql			//bajar el contenedo del repo
+		-docker images				//para ver las imagenes descargadas
+		-docker run -d -p 3306:3306 --name mysql8 --network spring -e MYSQL_ROOT_PASSWORD=sasa -e MYSQL_DATABASE=msvc_usuarios mysql:8 //Ejecutar mysql -d que vaya en backroud (detach)   -p 3307(externa):3306(interna)
+		-docker logs -f mysql8		//Para ver el log de ejecución de mysql
+		
+	
+Sección 14
+		- Un contenedor está dentro de un pod y puede tener varios contenedores y un pod esta dentro de un nodo
+
+CLUSTER
+		---WORKER NODE --------
+		|                      | 
+		| Kubelet   Kube´proxy |    
+		|                      | 
+		|         POD          |
+        |      CONTAINER       |<---------MASTER NODE --------------------------->Base Datos ETCD
+        |                      |            -CONTROL PLANE
+        |         POD          |            -API SERVER -> recibe los yaml
+        |      CONTAINER       |            -Scheduler 
+        -----------------------				-Kube controller Manager
+	KUBECTL										- Asegura una cantidad de pod en una máquina
+	(nos permite hablar con la infra)	
+		
+		
+		-Kubelet se encarga de que un pod esté corriendo correctamente
+		   - Notifica al API server si un pod está saturado para que lo de de baja
+		   
+		-Kubectl manda comandos al Master node.   
+		-MiniKube (cluster de kubernate para desarrollar)
+			-1 solo master node
+			-1 solo worker node
+			
+	Instalación
+		- MiniKube
+		- Kubectl
+		
+		
 sección 16
  Kubernates (ConfigMap y Secret)
- 
+
  Sección 20
   Kubernates Security JWT con OAUTH 2.21
   
