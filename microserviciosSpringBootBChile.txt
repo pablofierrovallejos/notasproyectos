@@ -1,2 +1,61 @@
+
+2 Microservicios: La base
+	-se agregan los siguientes componentes
+		- Spring Boot DevTools
+		- Spring Web
+		- Spring Data JPA
+		- Hibernate (Para javax.persistence.Entity"
+		- H2 (base de datos en memoria)(no es para producción)
+	-Configurar microservicio en resources/application.properties
+		spring.application.name=servicio-productos
+		server.port=8001
+	-Creando el repositorio JPA para los productos
+		-Crear Interface ProductoDao.java -> en package productos.models.dao
+		-Crear clase IProductoService     -> en package productos.models.service
+	-Balanceo de carga con Ribbon
+	
+	- Para obtener datos del properties
+	@Autowired
+	pirivate Environment env;
+	Integet puerto = Integer.parseInt(env.getProperty("nombredelproperty"));
+	
+	
 9 Oauth2 y jwt
 Proveedor de Seguridad LDAP
+
+14 Despliegue
+	-docker --version  //Para conocer versión de docker instalada
+	-C:\springcloud\workspace\springboot-servicio-productos   //IR a la ruta del proyecto
+	
+	- .\mvnw clean package    //limpiar proyecto y generar jar   --> se genera el jar en carpeta target de nuestro proyecto
+	
+		- Fatal error compiling: error: invalid target release: 17 -> [Help 1]
+		     - Esto es por que el proyecto tiene una versión java 17 que es distinta a mvn
+			 - mvn -version    //Para saber la versión de java que usa mvn aca da 11
+			 - podemos revisar la version de java en ide desde:
+				-Propiedades del proyecto->Java Compiler
+				-Windows->Preference->Java->Compiler
+			 -En este caso cambiamos el jdk de maven a 17
+				-Se instala el jdk y se valida que quede en C:\Program Files\Java\jdk-17
+				-Se cambia variable entorno 	
+					-Variable de usuario JAVA_HOME = C:\Program Files\Java\jdk-17
+					-Variable de sistema JAVA_HOME = C:\Program Files\Java\jdk-17
+			 
+	- Creamos archivo Docker en nuestro proyecto
+		- Obtenemos jdk de dockerhub -> https://hub.docker.com/search?q=openjdk
+		Generamos el Dockerfile con:
+			FROM openjdk:17
+			VOLUME /tmp
+			EXPOSE 8888
+			ADD ./target/springboot-servicio-productos-0.0.1-SNAPSHOT.jar servicio-producto.jar
+			ENTRYPOINT ["JAVA", "-jar", "servicio-producto.jar"]
+	-Ejecutamos el build y desplegamos:
+		- docker build -t servicio-producto:v1 .
+		- docker images							//Para ver que el contenedor se haya generado ok
+		- docker network create springcloud 	//Para crear la red donde estará el contenedor
+		       - e17df80419484f9dc0d32b36c121c33bb6f86bb3cd40e03b030704c6ed3b4a9d
+		- docker run -p 8001:8001 --name servicio-producto --network springcloud servicio-producto:v1
+		- docker container ls		//Para ver los contenedores
+		- docker container --help  	//Para ver comandos de container
+	    - docker ps -a				//Para ver todos los contenedores no importa su estado
+		- docker start fe2c1aac5b4a //Para iniciar un contenedor de la lista anterior que esté detenido

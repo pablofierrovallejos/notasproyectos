@@ -250,10 +250,67 @@ CLUSTER
 			-1 solo master node
 			-1 solo worker node
 			
-	Instalación
-		- MiniKube
-		- Kubectl
+	Instalación MiniKube y - Kubectl
 		
+		Instalar en windows con choco (USar powerShell como admin)
+		- choco install kubernetes-cli  //Instala cliente
+		- kubectl version --client    	//Verifica instalacion
+			- Instalar cluster minikube (https://minikube.sigs.k8s.io/docs/start/)
+				-choco install minikube
+				-minikube start
+			
+		(lo siguiente se crea solo)
+		- cd ~   //ir a home
+		- mkdir .kube		//Crear dir de kube
+		- cd .kube
+		- New-Item config -type file 	//Crear un nuevo archivo de config
+		
+			
+	 Intro to objets of kubernates
+		-Pods
+		-Deployments
+		-Services
+		-Namespaces : cada grupo de desarrollo tiene su propio namespace
+		-Volume:  Para tener persistente los datos
+		
+		-Configuración Imperativa (comandos) y declarativas (archivos yaml)
+			-Pods
+				- Pod contien contendores, más de uno, lo típico es uno , es un wrapper)
+					- Si hay varios contenedores en el pod estos se pueden comunicar entre si con localhost
+					- Los pods tienen una ip adress para comunicarse con otros pod que varía
+					  , para eso utilizamos un kubeproxy 
+					- Los pod tienen volumes pero no persisten
+					- Si tenemos un pod de mysql necesitamos un volume externo que sea del cluster
+					  para que todos los pods tengan acceso.
+			-Deployments
+				- Es un controlador de los pods que se basa en archivo yaml
+				- podemos configurar un estado deseado, memoria, cpu.
+				- Los deployment pueden ser eliminados , modificados, detenidos y reversados
+				- Podemos cambiar nro de pods o autoescalar sobre demanda
+				- revisar la salud (helt check)
+				
+			-Creando deploy de mysql (desde terminal de intelliJ como admin)
+				-minikube status
+				-minikube stop
+				-minikube start  (--driver=hyperv)
+				-kubectl help
+				-kubectl create -h  //ayuda de create
+				-kubectl create deployment mysql8 --image=mysql:8 --port=3306	//crear deploy de mysql
+				-kubectl get deployments  //o deploy como alias
+				-kubectl get pods    (esto marca error dado que no le dimos las var de ambiente)
+				-kubectl describe pods mysql8-5c8c4b6bd8-bkjdr    	//el hash es el nombre del pod dado por get pods
+				-kubectl logs mysql8-5c8c4b6bd8-bkjdr  				//revisar logs
+				-kubectl delete deployment mysql8		//eliminar despliegue
+				
+				-kubectl create deployment mysql8 --image=mysql:8 --port=3306 --dry-run=client  -o yaml > deployment-mysql.yaml 
+						//--dry-run=client indica que solo imprime el comando y no envía al cluster
+						//crea el archivo  deployment-mysql.yaml
+					
+				-kubectl expose deployment mysql8 --port=3306 --type=ClusterIP (para exponerlo internamente en cluster)
+				-kubectl get services	//ver el servicio recién expuesto
+				-kubectl get all
+				
+					
 		
 sección 16
  Kubernates (ConfigMap y Secret)
