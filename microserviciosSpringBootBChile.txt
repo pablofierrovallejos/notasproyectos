@@ -19,9 +19,56 @@
 	pirivate Environment env;
 	Integet puerto = Integer.parseInt(env.getProperty("nombredelproperty"));
 	
-	
+3.-	Eureka Server: registrando microservicios
+	>New Spring Sterter Project
+		-> add Spring Boot DevTools
+		-> add Eureka Server
+	> Add en application properties (Esto es para el servidor)
+		spring.application.name=servicio-eureka-server
+		server.port=8761
+		eureka.client.register-with-eureka=false
+		eureka.client.fetch-registry=false
+		
+	> Configurar el microservicio cliente
+		>Click derecho en proyecto->Spring->Add Starter->
+			>Agregar Cloud Discovery->Eureka Discovery
+	> cambiar el puerto fijo por puerto dinámico en properties a todos los micros clientes
+		server.port=${PORT:0}
+		eureka.instance.instance-id=${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+4.-Spring Cloud API Gateway (vs Zuul)
+	Configurando Spring Cloud Gateway
+	>New Spring starter project
+		> add Spring Boot DevTool
+		> add Eureka Discovery Client
+		> add Gateway
+
+6.- Spring Cloud Config Server
+	>Crear nuevo proyecto Spring starter Project
+		>Add DevTool
+		>Add Config Server
+	>Crear repo git
+		C:\Users\Gamer\Desktop\config>git config --global user.email "pablofierrovallejos@gmail.com"
+		C:\Users\Gamer\Desktop\config>git config --global user.name "pablofierrovallejos"
+		C:\Users\Gamer\Desktop\config>git init
+		echo server.port=8005 > servicio-items.properties
+	>Modificar starters a servicio items
+		>Add Config Client
+			
 9 Oauth2 y jwt
 Proveedor de Seguridad LDAP
+
+11 Configuracion Datasource Mysql en servicio productos
+	>Click derecho en proyecto->Spring->Add Starter->Add MySQL Driver
+	>Agregar lo siguiente a application.properties
+		  spring.datasource.url=jdbc:mysql://localhost:3306/db_springboot_cloud?serverTimezone=America/Santiago&allowPublicKeyRetrival=true&useSSL=false
+		  spring.datasource.username=root
+		  spring.datasource.password=sasa
+		  spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+		  spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+		  spring.jpa.hibernate.ddl-auto=create   //Es para desarrollo solamente dado que borra las tablas
+		  logging.level.org.hibernate.SQL=debug
+		  
 
 14 Despliegue
 	-docker --version  //Para conocer versión de docker instalada
@@ -59,3 +106,7 @@ Proveedor de Seguridad LDAP
 		- docker container --help  	//Para ver comandos de container
 	    - docker ps -a				//Para ver todos los contenedores no importa su estado
 		- docker start fe2c1aac5b4a //Para iniciar un contenedor de la lista anterior que esté detenido
+		
+
+Errores
+	 Public Key Retrieval is not allowed (ver url config mysql)
