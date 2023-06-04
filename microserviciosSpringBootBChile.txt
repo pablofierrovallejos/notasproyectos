@@ -9,6 +9,15 @@
 	-Configurar microservicio en resources/application.properties
 		spring.application.name=servicio-productos
 		server.port=8001
+		
+		# H2 Database
+		spring.h2.console.enabled=true					//Esto para entrar a la consola por web https://www.geeksforgeeks.org/spring-boot-h2-database/
+		spring.datasource.url=jdbc:h2:mem:dcbapp		//Esto se pone en consola web para conectar
+		spring.datasource.driverClassName=org.h2.Driver
+		spring.datasource.username=sa
+		spring.datasource.password=password
+		spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+		
 	-Creando el repositorio JPA para los productos
 		-Crear Interface ProductoDao.java -> en package productos.models.dao
 		-Crear clase IProductoService     -> en package productos.models.service
@@ -28,6 +37,8 @@
 		server.port=8761
 		eureka.client.register-with-eureka=false
 		eureka.client.fetch-registry=false
+		eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+		logging.level.org.hibernate.SQL=debug           //para mostrar las sentencias sql al ejecutar
 		
 	> Configurar el microservicio cliente
 		>Click derecho en proyecto->Spring->Add Starter->
@@ -35,6 +46,10 @@
 	> cambiar el puerto fijo por puerto dinámico en properties a todos los micros clientes
 		server.port=${PORT:0}
 		eureka.instance.instance-id=${spring.application.name}:${spring.application.instance_id:${random.value}}
+	> Crear las clases Usuarios y Roles
+
+
+
 
 4.-Spring Cloud API Gateway (vs Zuul)
 	Configurando Spring Cloud Gateway
@@ -54,10 +69,83 @@
 		echo server.port=8005 > servicio-items.properties
 	>Modificar starters a servicio items
 		>Add Config Client
+		
+		
 			
 9 Oauth2 y jwt
 Proveedor de Seguridad LDAP
-
+	*** sub capitulo 78 Intro a jwt
+	- Lo mas sencillo es trabajar con sesiones (para una app que tiene todo (no microservicios)
+	- Se usan token para integrar diferentes aplicaciones
+	- jwt tiene toda la info del usuario, (se puede decodificar y leer, no puede llevar contraseñas)
+	- Si no se establece tiempo de caducidad no se caduca nunca, lo común es que dure 2 o 3 semanas (1 hora esta ok)
+	- Es stateless
+	- Flujo
+		1.- Login (autenticación) , se envía usuario y pass al server
+		2.- Servidor valida usuario y genera el token jwt para enviar al cliente
+		3.- Cliente hace una petición de api con el token
+		4.- Servidor valida token y obtiene permisos del usuario para autorizar acceso al api
+	*** sub capitulo 79 algo mas de jwt
+		- revisar https://jwt.io/
+		- JWT se compone de 3 partes
+			1.- HEADER
+			2.- DATA  (codificada en base64)
+			3.- VERIFY SIGNATURE
+		- Desde la web se puede obtener el token desde F12->Application->Storage->LocalStorage
+		- separar un token
+			let token = eltoken
+			let payload = token,split(".")[1]
+			window.atob(payload)
+			JSON.parse(window.atob(payload))
+		- Para implementacion usamos de spring.io  -> Spring Security OAUTH
+	*** sub capitulo 80
+		Oauth se compone de 2 partes
+		- Servidor> de Autorizador (autentica al usuario y genera el jwt)
+		- Servidor> Resource Server(administra los permisos y accesos al recurso)
+		- Lo que se tiene que enviar al servidor de autorizacion
+			url: POST/auth/token
+				header
+					Authorization: Basic Base64(client_id:client_secret)
+					Content-Type:  application/x-www-form-urlencoded
+				body
+					grant_type = password
+					username= andres
+					password = 12345
+		  			
+		 - Lo que se tiene que enviar al servidor de recursos
+			url: GET /api/clientes
+			header: Authorization Bearer access_token  <-- el token obtenido del paso anterior
+			body: la data
+			
+	*** sub capituo 81
+		- creando microservicio usuarios
+			- 
+			
+			
+			ServDeAutoriz <------>Usuarios 
+			      A        /------A  
+			      |     /--
+				  V /---
+                 Zuul <--------------------> Servidor ---> git
+             Servidor de recursos		       Config		 
+					
+		- crear proyecto usuarios
+			- agregar dependencias
+				- Eureka Discovery Client
+				- Spring boot dev tools
+				- Sprig Web Starter
+				- Spring Data JPA
+				- H2 database
+		- agregar a application.properties
+			  spring.application.name=servicio-usuarios
+			  server.port=${PORT:0}
+			  eureka.instance.instance-id=${spring.application.name}:${spring.application.instance_id:${random.value}}
+		- crear package .usuarios.models.entity
+			- crear clase Usuario y Role
+		- Agregar dependencia Rest Repository para generar el controlador
+		
+		
+		
 11 Configuracion Datasource Mysql en servicio productos
 	>Click derecho en proyecto->Spring->Add Starter->Add MySQL Driver
 	>Agregar lo siguiente a application.properties
@@ -108,5 +196,22 @@ Proveedor de Seguridad LDAP
 		- docker start fe2c1aac5b4a //Para iniciar un contenedor de la lista anterior que esté detenido
 		
 
+
+
+Desplegar MicroServicio productos
+	1.- Crear archivo "Dockerfile" en raiz de nuestro proyecto (SE ELIMINA EL EXPOSE)
+			FROM openjdk:17
+			VOLUME /tmp
+			ADD ./target/springboot-servicio-productos-0.0.1-SNAPSHOT.jar servicio-productos.jar
+			ENTRYPOINT ["JAVA", "-jar", "servicio-productos.jar"]
+			
+	2.- Crear el jar: (Se deshabilita el test dado que no existe la red y no puede conectarse a mysql)
+		.\mvnw clean package -DskipTests
+			
+	3.- Construir la imagen
+		docker build -t servicio-productos:v1 . 
+	
+	4.-Levantar servicio
+		docker run -P --network springcloud servicio-productos:v1
 Errores
 	 Public Key Retrieval is not allowed (ver url config mysql)

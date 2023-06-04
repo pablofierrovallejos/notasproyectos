@@ -323,21 +323,13 @@ sección 16
   -eliminar una imagen
   -importar una imagen a partir de un archivo
      >docker load -i archivoimagen.tar
-	 
-Listar todos contenedores en todos sus estados
-> docker ps -a	 
 
-Elimina un contenedor cargado
-> docker rm idcontenedor
-  
-Eliminar una imagen
-> docker rmi idimagen
-
-Detener un contenedor
-> docker stop idcontenedor
-  
-Iniciar un contenedor
->docker run idimagen
+Comandos	 
+> docker ps -a	 			Listar todos contenedores en todos sus estados
+> docker rm idcontenedor	Elimina un contenedor cargado
+> docker rmi idimagen		Eliminar una imagen
+> docker stop idcontenedor	Detener un contenedor
+> docker run idimagen		Iniciar un contenedor
 
 >Ejecutar un bat al inicio de windows (tecla windows + R)
 en ejecutar escribir:

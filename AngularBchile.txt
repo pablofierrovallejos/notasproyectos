@@ -55,9 +55,19 @@ Decoradores
 Encadenamiento opcional
 
 4.- Intro a Angular
--Componentes
+	30-Componentes, se usa .ts, .html ,css
+	32 Framework , viene con todo lo necesario para trabajar
+	33 Nuestro primer proyecto en Angular
+		- ng version  			//validar angular
+		- ng new consultaPos  	//Para iniciar el proyecto
+		- ng serve				//es como un emulador para ir viendo como queda nuestro proyecto (levanta un web server) open your browser on http://localhost:4200/
+		
+		
+		
 -Servicios 
 -Directivas (de componentes, estructurales , de atributos)
 -Rutas
 -Módulos
    
+   
+27 Despliegue en producción
