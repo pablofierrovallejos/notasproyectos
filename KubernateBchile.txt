@@ -1,18 +1,98 @@
 1.-Kubernates  k8s  (traducción del grigo PILOTO)
-Para administrar contenedores
-1.-Service discovery
-2.-Rollouts and Rollbacks
-3.-Optimización de recursos en los nodos
-4.-Self-healing
-5.-Configuración de secretos
-6.-Escalamiento horizontal
+	Para administrar contenedores
+	1.-Service discovery
+	2.-Rollouts and Rollbacks
+	3.-Optimización de recursos en los nodos
+	4.-Self-healing
+	5.-Configuración de secretos
+	6.-Escalamiento horizontal
 
 2.-Arquitectura
-1.-Kubernetes Master (API)
-2.-Kubernetes node (kubelet-> servicio que corre en cada nodo)->docker se instala en cada nodo(runtime)
-                      Kubeproxy controla la red
+	1.-Kubernetes Master (API)
+	2.-Kubernetes node (kubelet-> servicio que corre en cada nodo)->docker se instala en cada nodo(runtime)
+						  Kubeproxy controla la red
 kubectl --> json
 kubeScheduler
 etcd -> base de datos llave valor
 
 3.-Instalación de Minikube (simulador cluster local)
+
+6.- Docker Introducción
+	- 44 Container: es una herramienta aislada con una porción de SO para ejecutar una aplicacion en nuestra maquina hot
+	- 45 Ventajas de contenedores: Diferentes ambientes de desarrollo y prod.(ejemplo asegura una version específica de java)
+	- 46 Arquitectura de contenedores:
+		- 1-Sistema operativo host
+		- 2-So del Contenedor(kernel)
+		- 3-Docker engine
+		- 4-containers
+	 -Imagenes vs contenedores
+		- Imagenes: es como un plano de una casa o plantilla o clase (contiene el código y libs encapsulados y ambiente)
+		- Contenedores: es una instancia que ejecuta la apilcación y el ambiente necesario.
+	-50 generar archivo jar para dockerizar
+		- Ir a la raíz del proyecto
+		- .\mvnw.cmd clen package		//limpiar proyecto y empaqueta (queda en carpeta target)
+		- java -version   				//validar que version de nuestro so sea el mismo del pom del proyecto
+		- java -jar ./target/miapp.jar	//para probar nuestra app
+		- Crear archivo Dockerfile en raíz de microservicio
+			FROM openjdk:17.0.2
+			WORKDIR /app
+			COPY ./target/msvc-usuarios-0.0.1-SNAPSHOT.jar .
+			EXPOSE 8001
+			ENTRYPOINT ["java","-jar", "msvc-usuarios-0.0.1-SNAPSHOT.jar"]
+		-Construir el contenedor
+			- docker build .
+			- docker images            							//para ver las imágenes
+			- docker run -p 8001:8001 eliddelcomandoanterior	//Para levantar contenedor (puertoExterno: puertoInterno
+			
+		-En caso de error de conexión de mysql modificar host localhost de mysql de application.properties por:
+			
+			- spring.datasource.url=jdbc:mysql://host.docker.internal:3306/msvc_usuarios?...
+			 
+			- .\mvnw clean package -DskipTests	//luego empaquetamos sin las pruebas dado que host es solo interno para contenedor
+			- docker images            							//para ver las imágenes
+			- docker run -p 8001:8001 eliddelcomandoanterior
+			
+			- docker ps						//para ver los contenedores
+			- docker stop iddelcontenedor	//para detener contenedor
+			
+
+8 Docker : comandos para manejar imagenes y contenedores	
+	- docker --help		//listar todos los comandos disponibles
+	- docker ps			//para ver contenedores con status up
+	- docker ps -a 		//ver todos los contenedores en todos los estados
+	- docker run idimagen					//levantar una nueva instancia 
+	- docker start -a idcontainer 			//para arrancar un contenedor (no una imagen) que está en estado exited (detenido) en modo atachado
+	- docker run -d -p 8001:8001 idcontenedor	//levantar un contenedor a partir de imagen con puerto externo:interno y detachado
+	- docker attach idcontenedor				//atacha la salida de un contenedor que está corriendo
+	- docker stop idcontenedor				//detener contenedor
+	- docker logs idcontenedor				//para ver el log que un contenedor detachado
+	- docker logs -f idcontenedor			//para atachar un contenedor
+	- docker rm idcontenedor				//elimina contenedor exited (puede ser una lista de contenedores separados por espacio)
+	- docker container prune				//elimina los contenedores en estado exited
+	- docker rmi idimagen					//elimina imagenes por id o una lista separada por espacio
+	- docker image prune					//es image sin s: elimina imagenes que no tenga contenedor (si contenedor esta exited tampoco lo elimina)
+	- docker image --help					//ayuda del comando image
+	
+11 Docker Compose
+
+
+16.- EKS Elastic Kubernates Service
+	ECS: Elastic Container Service
+	VPS: Virtual Private Service
+	EFS: Elastic File System
+	IAM: Identity Access Managment
+	VPC: Virtual Private Cloud
+	
+20 Kubernates: Security JWT con OAuth 2.1 (es un framework)
+	- Crear proyecto spring initializer
+		- group: org.pfierrospringcloud.msvc
+		- artifact: msvc-auth
+		- name: msvc-auth
+		- package name: org.pfierro.springcloud.msvc.msvc-auth
+	- Agregar dependencias Spring Web
+	- Agregar dependencias security
+	- Agregar dependencias Spring reactive web (similar a feing)
+	- application.properties
+			spring.application.name=msvc-auth
+			server.port=9000
+			

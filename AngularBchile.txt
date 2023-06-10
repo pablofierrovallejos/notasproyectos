@@ -58,12 +58,69 @@ Encadenamiento opcional
 	30-Componentes, se usa .ts, .html ,css
 	32 Framework , viene con todo lo necesario para trabajar
 	33 Nuestro primer proyecto en Angular
-		- ng version  			//validar angular
-		- ng new consultaPos  	//Para iniciar el proyecto
-		- ng serve				//es como un emulador para ir viendo como queda nuestro proyecto (levanta un web server) open your browser on http://localhost:4200/
+		- ng version  				//validar angular
+		- ng new consultaPos  		//Para iniciar el proyecto
+		- ng serve -o				// (modificar y poner -o en package.json) es como un emulador para ir viendo como queda nuestro proyecto (levanta un web server) open your browser on http://localhost:4200/
+		- npm start  inician nuevamente (se botè el servidor con control c)
+		
+	35 Explicaciòn de cada archivo
+		- src/main.ts    			//es el archivo principal que inicia la app
+		- src/app					//es la carpeta donde trabajaremos nuestra app
+		- src/app/app.components.ts //es donde se define el componente que usamos en index.html
+		
+	36 App Component
+		- Eliminar contenido de /src/app/app.component.html y poner <h1>Hola Mundo</h1>
 		
 		
+    DE YOUTUBE:  https://www.youtube.com/watch?v=mTTVJcr0D_I
+		- ng new consultaPos	//crea proyecto
+		- eliminar contenido de /src/app/app.component.html y dejar:
+			- <router-outlet></router-outlet>
+		- ng g c home			//crear componente home	
+		- eliminar /src/app/home/home.component.spec.ts	//elimina dado que no haremos test
+		- modificar /src/app/app-routing.module.ts
+			const routes: Routes = [
+				{ path: '', component: HomeComponent},  //aggregar esta línea
+			];
+		- modificar archivo /src/app/app.module.ts
+			- agregar import
+				import { HttpClientModule} from '@angular/common/http'
+			- importar el modulo Http
+				 imports: [
+					BrowserModule,
+					AppRoutingModule,
+					HttpClientModule    //Esta es la línea nueva
+				 ],
+			
+		- Creamos el servicio
+			- ng g s /service/api     //ng generate service
+		- Borrar /src/app/service/spi.service.spec.ts  //dado que no hacemos test
 		
+		- Modificar archivo /src/app/service/api.service.ts
+			import { Injectable } from '@angular/core';				//Agrega
+			import {HttpClient} from '@angular/common/http';		//Agrega
+			import {Observable} from 'rxjs';
+
+			@Injectable({
+			  providedIn: 'root'
+			})
+			export class ApiService {
+			  private urlApi = 'localhost:8090/api/productos/listar-productos';		//Agrega
+			  constructor(private http: HttpClient) { }								//Modifica
+
+			  public getData(): Observable<any>{									//Agrega
+				return this.attp.get<any>(this.urlApi);
+			  }
+			}
+
+		  -ERROR CORS ver este link:  https://medium.com/weekly-webtips/do-you-know-how-to-resolve-cors-issues-in-angular-9d818474825f
+			- agregar proxy
+			- arrancar con
+				ng serve
+				
+		  - Dokerizar: ver: https://amoelcodigo.com/docker-angular-app/
+		  
+			
 -Servicios 
 -Directivas (de componentes, estructurales , de atributos)
 -Rutas

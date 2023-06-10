@@ -183,7 +183,7 @@ Proveedor de Seguridad LDAP
 			VOLUME /tmp
 			EXPOSE 8888
 			ADD ./target/springboot-servicio-productos-0.0.1-SNAPSHOT.jar servicio-producto.jar
-			ENTRYPOINT ["JAVA", "-jar", "servicio-producto.jar"]
+			ENTRYPOINT ["java", "-jar", "servicio-producto.jar"]
 	-Ejecutamos el build y desplegamos:
 		- docker build -t servicio-producto:v1 .
 		- docker images							//Para ver que el contenedor se haya generado ok
@@ -203,7 +203,7 @@ Desplegar MicroServicio productos
 			FROM openjdk:17
 			VOLUME /tmp
 			ADD ./target/springboot-servicio-productos-0.0.1-SNAPSHOT.jar servicio-productos.jar
-			ENTRYPOINT ["JAVA", "-jar", "servicio-productos.jar"]
+			ENTRYPOINT ["java", "-jar", "servicio-productos.jar"]
 			
 	2.- Crear el jar: (Se deshabilita el test dado que no existe la red y no puede conectarse a mysql)
 		.\mvnw clean package -DskipTests
