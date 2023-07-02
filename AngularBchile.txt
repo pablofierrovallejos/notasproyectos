@@ -1,4 +1,4 @@
-1.-Introducción
+	1.-Introducción
 Instalaciones necesarias
 ->https://gist.github.com/Klerith/607dd6bb60b5a70bc5e4d9c81ef6501e
   a.-Google Chrome
@@ -128,3 +128,83 @@ Encadenamiento opcional
    
    
 27 Despliegue en producción
+
+
+
+Youtube graficos en angular  https://www.youtube.com/watch?v=IBj6oX1AMkU
+https://swimlane.gitbook.io/ngx-charts/examples/pie-charts/advanced-pie-chart
+1.-Instalar
+	npm install @swimlane/ngx-charts --save
+	
+2.- modificar app.modules.ts
+	Agregar linea NgxChartsModule en imports
+		  imports: [
+			NgxChartsModule
+		  ],
+		  
+3.- copiar el componente de graficos en home.component.html
+<ngx-charts-advanced-pie-chart
+  [view]="view"
+  [scheme]="colorScheme"
+  [results]="single"
+  [gradient]="gradient"
+  (select)="onSelect($event)"
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)"
+  >
+</ngx-charts-advanced-pie-chart>
+
+4.- copiar el siguiente código en app.component.ts
+export class AppComponent {
+  single: any[];
+  view: any[] = [700, 400];
+
+  // options
+  gradient: boolean = true;
+  showLegend: boolean = true;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
+  constructor() {
+    Object.assign(this, { single });
+  }
+
+  onSelect(data): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+}
+
+5.- dentro de carpeta app crear data.ts
+export var single = [
+  {
+    "name": "Germany",
+    "value": 8940000
+  },
+  {
+    "name": "USA",
+    "value": 5000000
+  },
+  {
+    "name": "France",
+    "value": 7200000
+  },
+    {
+    "name": "UK",
+    "value": 6200000
+  }
+];
+
+6.- Agregar siguiente lib a app.modules.ts
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

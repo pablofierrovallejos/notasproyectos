@@ -57,6 +57,8 @@ etcd -> base de datos llave valor
 			
 
 8 Docker : comandos para manejar imagenes y contenedores	
+	- docker build -t nombreaasignaraimagen:v1 .	//construir una imagen a partir de dockerfile -t para darle una etiqueta
+	- docker images									//listar las imagenes
 	- docker --help		//listar todos los comandos disponibles
 	- docker ps			//para ver contenedores con status up
 	- docker ps -a 		//ver todos los contenedores en todos los estados
@@ -72,12 +74,71 @@ etcd -> base de datos llave valor
 	- docker rmi idimagen					//elimina imagenes por id o una lista separada por espacio
 	- docker image prune					//es image sin s: elimina imagenes que no tenga contenedor (si contenedor esta exited tampoco lo elimina)
 	- docker image --help					//ayuda del comando image
+	- docker run -p 8001:8001 -d --rm idimagen							//--rm se elimina automático cuando se detenga
+	- docker run -p 8001:8001 -d --rm usuarios:v2  --name msvc-usuarios	//--name se le asigna un nombre de contenedor msvc-usuarios  (usuarios:v2 es el nombre y version de la imagen)
+	
+	- docker run -d --restart unless-stopped redis			//Example starts a Redis container and configures it to always restart unless it is explicitly stopped or Docker is restarted.
+	- docker update --restart unless-stopped redis			//This command changes the restart policy for an already running container named redis.
+	  
+	- docker run -d -p 8761:8761 --restart unless-stopped  msvc-eureka:v1
+	
+	- docker run -p 8001:8001 -d --rm -it idimagen /bin/sh				//ingresa a la consola en modo interactivo (necesita modificar ENTRYPOINT de archivo Dockerfile y reconstruir imagen)
+			- reemplazar en Dockerfile ENTRYPOINT por --> CMD ["java","-jar", "msvc-usuarios-0.0.1-SNAPSHOT.jar"]
+	- docker cp .\fileacopiar.java idcontenedor:/app/filedestino.java	//enviar un archivo al contenedor 
+	- docker cp idcontenedor:/app/fileasacar.java .\filedestino.javs	//saca un archivo del contenedor 
+	
+	- descargar logs del contenedor
+		- Modificar application.properties del micro
+			- logging.file.path=/app/logs	//agregar para que  micro cree los logs en esta carpete del contenedor
+		- Modificar Dokerfile
+			- WORKDIR /app
+			- RUN mkdir ./logs			//crear carpeta /logs dentro de /app
+		- sacar el log
+			- docker cp idcontenedor:/app/logs .\logs
+			
+	- docker image inspect idimagen				//inspeccionar una imagen
+	- docker container inspect idcontenedor 	//inspeccionar un contenedor
 	
 11 Docker Compose
 
-
+14.- Kubernetes (kubernetes.io) 
+	122.- Automatiza la implementación, escalado y administración de contenedores (soluciona problema de Docker compose que es solo para una máquina)
+	123.- Por que Kubernetes? por que es estándar y no se amarra a un proveedor como ECS que es solo de Amazon
+	124.- Arquitectura
+		UN pod contiene contenedores y los administra (generalmente tiene 1 contenedor)
+		
+	CLUSTER 1
+    ->Cloud Provider API	
+		*** Master-Node ***
+		-> ControlPlane (puede estar en varias máquinas)
+		-> Scheduler
+		-> Api Server (se comunica con los kubelet)
+		-> Base de datos Etcd
+		->Kube Controller Manager (asegura la cantidad de pods en las distintas máquinas)
+			 -Worker Node1---------------------
+				- Kubelet (Administra los pods)
+					-Pod1
+						-Container
+					-Pod2
+						-Container
+				- Kube-proxy (maneja el tráfico)
+			  -Worker Node2---------------------
+				- Kubelet (Administra los pods)
+					-Pod1
+						-Container
+					-Pod2
+						-Container
+				- Kube-proxy (maneja el tráfico)
+				
+	 125.- Herramientas a instalar para desarrollo (Contratar EKS Elastic Kubernate Service (no necesitamos instalar nada)
+			- Kubectl: envía las instrucciones al cluster
+				- ej para crear un deploy
+			- Minikube, es un cluster todo en uno (1 masternode y 1 worker node)
+			
+			
+			 
 16.- EKS Elastic Kubernates Service
-	ECS: Elastic Container Service
+	ECS: Elastic Container Service (desventaja: es solo para amazon)
 	VPS: Virtual Private Service
 	EFS: Elastic File System
 	IAM: Identity Access Managment

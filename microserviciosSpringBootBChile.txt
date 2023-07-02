@@ -215,3 +215,7 @@ Desplegar MicroServicio productos
 		docker run -P --network springcloud servicio-productos:v1
 Errores
 	 Public Key Retrieval is not allowed (ver url config mysql)
+	 
+	 
+	 
+	 "fechaventa": "2023-05-23T11:38:34.533+00:00",
