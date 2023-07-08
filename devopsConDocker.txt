@@ -1,0 +1,72 @@
+Instalar samba server (https://phoenixnap.com/kb/ubuntu-samba)
+	Puertos que usa:
+		139/tcp  open  netbios-ssn
+		445/tcp  open  microsoft-ds
+
+	sudo apt update
+	sudo apt install samba -y
+	whereis samba			//valida instalación
+	samba -V				//Para ver la version instalada
+	systemctl status smbd	//Para confirmar que samba está corriendo
+	
+	sudo mkdir -p /home/sharing		//Crear una ruta que se pueda mostrar
+	sudo vim /etc/samba/smb.conf	//Editar configuracion samba
+	
+enp5s0:
+	
+
+Instalar webmin  ---> (https://www.digitalocean.com/community/tutorials/how-to-install-webmin-on-ubuntu-20-04)
+		https://192.168.0.102:10000/init/reboot.cgi?confirm=Reboot%20System&xnavigation=1
+		(Para monitorear recursos cpu mem en pc)
+
+Sección 2 conceptualizacion Docker			
+	8.- Arquitectura interna de docker
+		- Docker engine
+		- Docker  cli
+		- Docker: buildx plugin
+		- Docker compose
+		- Docler container.io (almacenamiento imagenes y logs (proyecto aparte)
+		- Docker desktop
+	9 Instlación docker en linux: docs.docker.com/engine/install/ubuntu
+	- sudo apt-get update
+	-sudo docker -v
+	-sudo docker compose version
+	-sudo groupadd docker	//agrega grupo docker
+	-sudo usermod -aG docker $USER	//modifica user docker
+
+	Rotación de logs
+	- crear fichero daemon.json
+	- sudo nano /etc/docker/daemon.json //copiar contenido de la web
+	- docker ps -a	//ver todos los contenedores
+
+Sección 3 Primer acercamiento
+	- Aplicación de faturación
+		- docker images ls				//Para ver las imagenes
+		- docker images rm idimagen		//eliminar una imagen
+		- docker pull sotobotero/udemy-devops:0.0.1		//clonar una imagen de docker hub
+		- docker run -p 80:80 -p 8080:8080 --name billing sotobotero/udemy-devops:0.0.1
+		
+		- docker ps -a 					//Para ver contenedores
+		- docker logs idcontenedor		//Para ver el log del contenedor en caso de que tengamos un error
+		- dockert stop idcontenedor		//Detener contenedor
+		- docker start idcontenedor		//inicializar contenedor
+		- docker rm idcontenedor		//eliminar contenedor
+		
+	Comandos usados en la clase de docker compose
+		- docker-compose -f stackdb.yml pull		//Descargar las imagenes usndo docker-compose
+		- docker-compose -f stackdb.yml up -d		//Inicar los contenedores
+
+		http://localhost:9090/			Url de la inteface de adminer
+
+	Los comandos nuevos utilizados son para crear una imagen:
+		- docker build -t billingapp:prod --no-cache --build-arg JAR_FILE=target/*.jar .		//Costruir la imagen
+		- docker run -p 80:80 -p  8080:8080 --name billingapp billingapp:prod					//Levantar el contendor para probar
+
+		- docker tag billingapp:prod sotobotero/udemy-devops:0.0.2		//Darle un nuevo tag
+		- docker login (usas tu usario y contraseña)						//loguearse en el docker engine hacia docker hub
+		- docker push sotobotero/udemy-devops:0.0.2						//hacer un push de la imagen
+		
+	Instalar posgress (usar archivo ya creado)	
+		 --> stackdb.yml 	//archivo yml con datos de repos docker hub
+		- docker-compose -f stackdb.yml pull		//Para hacer pull de la base de datos y del admin de posgress
+		- docker image ls							//Revisar que se hayan descargado las imagenes										

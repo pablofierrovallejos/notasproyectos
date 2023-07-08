@@ -264,3 +264,19 @@ Para clonar un repositorio público.
       git config pull.ff only       #solo usar Fast Forward
 
      -git config --global pull.ff only  -->configutamos a FastForward
+	 
+Modificar comentario 
+- git commit -amend		//rectificar comentario del ultimo commit (no hacer después de push)
+- git reset soft HEAD^  //HEAD^ = ultimo comit antes del head  HEAD^2 HEAD^3 anterior, anterior
+- git reset --soft idcommit		//volver al commit indicado por idcommit (no hacer si se hizo push)
+- git reset --mixed idcommit	//reset al idcommit pero lo saca del stage
+- git reset --hard idcommit		//salta al idcommit y elimina lo posterior
+- git reflog					//para ver todos los hash aunque se haya hecho reset
+- git mv miarchivo.md salvarmundo.md	//cambiar el nombre de un archivo
+- git rm salvarmundo.md					//eliminar archivo
+- git rebase -i HEAD			//Para unificar commit, solo local, si ya hice push no se debe hacer sino genera conflictos (HEAD es la referencia del ultimo comiit, tambien se puede usar un idhash)
+
+corregir warning
+warning: LF will be replaced by CRLS in historua
+- git config core.autocrlf true	//Para que no muestre este warning
+
