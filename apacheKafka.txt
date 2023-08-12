@@ -1,0 +1,103 @@
+Seccion 1 Intro
+	Kafka es un sistema de mensajeria
+
+
+	Productor
+		v
+	  Kafka
+		v
+	Consumidor
+	  
+	 Productor: Se pueden depositar mensajes de cualquier formato de datos en forma de eventos
+
+	 Consumidor: También pueden ser cualquier sustem como base de datos o herramientas analíticas.
+
+	Escrito en Java y Scala, creado en Linkedin donado a Apache software Foundations
+	COmpite con Cloudera
+
+	Usado por linkedin, Uber, Netflix
+	
+	Contruir flujos de datos en tiempo real, procesamiento en stream, gestion de logs
+	sistemas de recomendación en tiempo real, recolección de datos en tiempo real.
+	
+
+Sección 2
+	- Modelo Editor-Subscriptor (bus de mensajería)
+		- Suscriptor incorpora un filtro para tomar eventos de interes (topics)
+		- Editor genera eventos
+		- Paradigma asincrono
+		- Suscriptor recibe evento, se le llama push
+		- Subscritpro pregunta por eventos pull
+		- Hibridos
+		
+	Brokers intemediarios
+		- Enrutan los mensajes
+		- Desacoplan las aplicaciones
+		- Organizan y comprueban los mensajes
+		- Almacenan los mensajes
+		
+Kafka
+	- Productores
+	- Broker
+	- Consumidores
+	
+Plataforma de sreaming
+- Kafka Streams 
+- Kafka Connect
+- Ksql
+- Scheme Registry 
+
+Topics:
+	- Categorias en donde se van a clasificar los mensajes almacenados, un topic es como
+	un flujo de datos, se puede crear todos los topics que necesitemos
+	- los mensajes son persistidos en disco
+	- pueden existir réplicas de las particiones
+	- tiempo de retencion de los mensajes en disco es configurable
+	- el rendimiento de kafka es constante
+		- no importa la cantidad ni tamaño de los datos persistidos
+		
+		
+Para identificar un mensaje necesitamos
+	- Nombre del topic
+	- Partición
+	- Offset
+		
+Apache Kafka usa Zookeper para almacenar metadatos en cluster de Kafka y detalles de los
+   consumidores. 
+   - Antes de instalar kafka se debe instalar un cluster de zookeper
+		
+		
+Comandos para Apache Kafka
+Ejecutar Zookeeper:
+	> ./bin/zookeeper-server-start.sh config/zookeeper.properties
+
+Ejecutar Broker de Kafka:
+	> ./bin/kafka-server-start.sh config/server.properties
+
+Crear un topic de Kafka con factor de replicación de 3 y dos particiones:
+	> /bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 2 --topic testtopic
+
+Visualizar detalles de un topic de Kafka:
+	> /bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic testtopic
+
+Listar los topics de Kafka:
+	> ./bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+Ejecutar consumidor de consola de Kafka sobre un topic:
+	> /bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic testtopic --group grupo1
+
+Ejecutar productor de consola de Kafka sobre un topic:
+	> ./bin/kafka-console-producer.sh --broker-list localhost:9092,localhost:9093,localhost:9094 --topic testtopic
+
+Describir los grupos de consumidores en Kafka:
+	> ./bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group grupo1 --describe
+
+Ejecutar Kafka Mirror Maker sobre un topic con la configuración del consumidor y productor:
+	> ./bin/kafka-mirror-maker.sh --consumer.config config/consumer.properties --producer.config config/producer.properties --whitelist testtopic
+
+
+
+
+		
+		
+	

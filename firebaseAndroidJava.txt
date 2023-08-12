@@ -1,0 +1,10 @@
+4 Cloud Mesaging
+	3 formas de enviar
+		1.- A un dispositivo específico por un tocken
+		2.- A un grupo de personas suscrito
+		3.- A todos los que utilizan la app
+	Máximo largo de mensaje es de 4kilobytes
+	
+
+Youtube
+https://rnfirebase.io/messaging/usage

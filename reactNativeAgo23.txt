@@ -1,0 +1,42 @@
+Para ejecutar emulador independiente
+> cd C:\Users\Gamer\AppData\Local\Android\Sdk\emulator>
+> emulator -avd Pixel_5_API_30 -netdelay none -netspeed full
+
+Para ver lista de emuladores
+> emulator -list-avds
+
+Para ver los dispositivos
+> adb devices
+
+Para instalar un apk
+> adb install miapk-apk
+
+
+Para instalar debugger
+yarn global add react-devtools
+
+npm install -g react-devtools  <-- mejor este
+
+> react-devtools
+
+
+Url debugger
+http://localhost:8081/debugger-ui/
+
+npx react-native init miproyecto
+npx react-native run-ios
+npx react-native run-android
+
+
+Si aparece el siguiente error en dev-tools:
+ 
+ 
+ Agregar a "devDependencies": {
+     "react-devtools": "~4.24.5",
+    "react-devtools-core": "~4.24.5"
+	
+  "resolutions": {
+    "react-native/react-devtools-core": "4.24.0"
+  }	
+  
+  Hacer yarn install y arrancar de nuevo

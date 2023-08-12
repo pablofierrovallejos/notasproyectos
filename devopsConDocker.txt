@@ -66,7 +66,73 @@ Sección 3 Primer acercamiento
 		- docker login (usas tu usario y contraseña)						//loguearse en el docker engine hacia docker hub
 		- docker push sotobotero/udemy-devops:0.0.2						//hacer un push de la imagen
 		
-	Instalar posgress (usar archivo ya creado)	
+	Instalar postgress (usar archivo ya creado)	
 		 --> stackdb.yml 	//archivo yml con datos de repos docker hub
 		- docker-compose -f stackdb.yml pull		//Para hacer pull de la base de datos y del admin de posgress
-		- docker image ls							//Revisar que se hayan descargado las imagenes										
+		- docker image ls							//Revisar que se hayan descargado las imagenes	
+
+
+	Docker compose, orquestar un servicio con 2 imagenes		
+	
+	
+Sección 6 Kubernetes	
+	
+		minikube dashboard		//Lanzar el dashboard de minikube
+		kubectl run kbillingapp --image=sotobotero/udemy-devops:0.0.1 --port=80 80	//crear un pod partiendo d euna imagne en dockerhub
+		kubectl get pods		//Listar todos los pod del namespace por defecto
+		kubectl describe pod kbillingapp	//Obtener detalles del Pod
+		kubectl expose pod kbillingapp --type=LoadBalancer --port 8080 --target-port=80  //Crear el servicio
+		minikube service kbillingapp		//Obtener la ipexterna del servicio en minikube
+		kubectl logs kbillingapp			//Obtener los logs de un servicio
+		kubectl delete service kbillingapp	//Eliminar un pod
+		kubectl delete service kbillingapp	//Eliminar un servicio
+		kubectl api-versions				//Consultar la version del apiserver
+		echo -n 'qwerty' | base64			//Codificar un parametro
+		minikube ip							//consultar la ip de minikube
+		echo  "cXdlcnR5" | base64 -d		//Descodificar un parametro
+
+		Comandos necesario para apuntar el docker engine local hacia el registro de minikube
+		minikube docker-env
+		eval $(minikube -p minikube docker-env)
+
+
+
+Kubernates
+	Sistema opensource para automatizar despliegue, escalado y administracion de aplicaciones
+	en contenedores. Tambien conocido como k8s
+
+	
+	Master Nodes  
+		Scheduler 			(controla el despliegue en un nodo disponible)
+		Controller Manager	(agentes que monitorean la infraestructura)
+		etcd				(base datos de cluster kubernates)
+		Api Server			(Interface con la que interactuamos con el cluster) ------------>kubectl
+	
+	Workers Nodes
+		Networking			(Expone a inernet o no, red virtual)
+		Kubelet				(Agente de monitorear que contenedores corran dentro de un pod)
+		Container			(Contenedor Docker o podman, microservicio, base datos, frontend)
+		SO					()
+		
+		
+Tipos de instalaciones o clusters
+	- On-Premise
+		Los que se encuentran en la propia empresa
+			- All in one
+			- Single Master and worker
+			- Single Master, Single etcd and Multiworker
+			- Multi Master, and multiworker
+			
+	- Gestionados
+		- Amazon
+		- Azure
+		- Google
+		- IBM
+		
+		
+	Pods: Unidad más pequeña que se puede desplegar y gestionar en kubernates. Es un grupo 
+			de uno o más contenedores que comparten almacenamiento y red
+	Deployments: 
+	Config Maps: Permite desacoplar la configuracion para hacer las imagenes mas portables, almacena
+				variables de entorno, argumentos para la linea de comandos, o configuracion de volumenes
+				que pueden consumir los pods.

@@ -208,3 +208,20 @@ export var single = [
 
 6.- Agregar siguiente lib a app.modules.ts
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+  public getEstadisticasVentasMes(sfecha): Observable<any>{
+    return this.http.get<SearchResults>(this.urlApiEstadVentasMes + sfecha);
+  }
+  
+    interface SearchResults {
+    day: number;
+    ventas: number;
+  }
+
+
+
+
+Angular toolbar
+https://material.angular.io/components/toolbar/overview
+
+ng add @angular/material
