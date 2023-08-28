@@ -48,7 +48,17 @@
 		eureka.instance.instance-id=${spring.application.name}:${spring.application.instance_id:${random.value}}
 	> Crear las clases Usuarios y Roles
 
+	> Compilar jar
+		- Ir a la raíz del proyecto
+		- .\mvnw.cmd clean package		//limpiar proyecto y empaqueta (queda en carpeta target)
+		- java -version   				//validar que version de nuestro so sea el mismo del pom del proyecto
+		- java -jar ./target/miapp.jar	//para probar nuestra app
+    > Construir imagen
+		docker build -t servicio-eureka-server:v1 .
+	>Ejecutar
+		docker run -d -p 8761:8761 --name servicio-eureka-server servicio-eureka-server:v1
 
+		>docker run -dit  -p 8761:8761 --name servicio-eureka-server servicio-eureka-server:v1 --network springcloud
 
 
 4.-Spring Cloud API Gateway (vs Zuul)
@@ -57,11 +67,21 @@
 		> add Spring Boot DevTool
 		> add Eureka Discovery Client
 		> add Gateway
+		
+		>Build
+			docker build -t servicio-gateway-server:v1 .
+		>Run
+			docker run -d -p 8090:8090 --name servicio-gateway-server servicio-gateway-server:v1
+			
+			docker run -dit  -p 8090:8090 --name servicio-gateway-server servicio-gateway-server:v1 --network springcloud
 
 6.- Spring Cloud Config Server
-	>Crear nuevo proyecto Spring starter Project
+	>Crear microservicio springboot-servicio-config-server
 		>Add DevTool
 		>Add Config Server
+		>probar con postman
+			> GET localhost:8888/servicio-items/default
+			
 	>Crear repo git
 		C:\Users\Gamer\Desktop\config>git config --global user.email "pablofierrovallejos@gmail.com"
 		C:\Users\Gamer\Desktop\config>git config --global user.name "pablofierrovallejos"
@@ -69,6 +89,9 @@
 		echo server.port=8005 > servicio-items.properties
 	>Modificar starters a servicio items
 		>Add Config Client
+		>Crear archivo bootstrap.properties en resources (archivo de arrangue)(boostrap manda, esto no se puede sobrescribir en application.properties)
+			spring.application.name= servicio-items
+			spring.cloud.config.uri=http://localhost:8888
 		
 		
 			
@@ -185,18 +208,24 @@ Proveedor de Seguridad LDAP
 			ADD ./target/springboot-servicio-productos-0.0.1-SNAPSHOT.jar servicio-producto.jar
 			ENTRYPOINT ["java", "-jar", "servicio-producto.jar"]
 	-Ejecutamos el build y desplegamos:
-		- docker build -t servicio-producto:v1 .
+		- docker build -t servicio-productos:v1 .
 		- docker images							//Para ver que el contenedor se haya generado ok
 		- docker network create springcloud 	//Para crear la red donde estará el contenedor
 		       - e17df80419484f9dc0d32b36c121c33bb6f86bb3cd40e03b030704c6ed3b4a9d
-		- docker run -p 8001:8001 --name servicio-producto --network springcloud servicio-producto:v1
+		- docker run -p 8001:8001 --name servicio-productos --network springcloud servicio-productos:v1
 		- docker container ls		//Para ver los contenedores
 		- docker container --help  	//Para ver comandos de container
 	    - docker ps -a				//Para ver todos los contenedores no importa su estado
 		- docker start fe2c1aac5b4a //Para iniciar un contenedor de la lista anterior que esté detenido
 		
 
-
+	-148 Descargando imagen Docker para MySQL y levantando la instancia
+		- vamos a https://hub.docker.com/_/mysql
+		  > docker pull mysql:8		//descargar imagen mysql
+		  > docker images			//para revisar si descargó imagen
+		  > docker run -p 3306:3306 --name microservicios-mysql8 --network springcloud -e MYSQL_ROOT_PASSWORD=sasa -e MYSQL_DATABASE=db_springboot_cloud -d mysql:8
+		  > docker logs -f microservicios-mysql8	//Para ver el log del micro
+		  > luego podemos conectar por workbench tal cual si fuese local (detener servicio mysql de windows previamente antes de iniciar contenedor )
 
 Desplegar MicroServicio productos
 	1.- Crear archivo "Dockerfile" en raiz de nuestro proyecto (SE ELIMINA EL EXPOSE)
@@ -219,3 +248,86 @@ Errores
 	 
 	 
 	 "fechaventa": "2023-05-23T11:38:34.533+00:00",
+	 
+	 C:\Users\juanm\Documents\workspace-spring-tool-suite-4-4.19.0.RELEASE
+	 
+	 
+	 C:\Users\juanm\Documents\workspace-spring-tool-suite-4-4.19.0.RELEASE
+	 
+	 
+Para ver redes	 
+>docker network ls	 
+
+
+Crear una red
+>docker network create lemoncode-network
+
+Crear contenedor dentro de una red específica
+>docker run -dit --name container-a --network lemoncode-network alpine ash
+
+Abrir un contenedor
+>docker attach container-b
+
+Ping de un contenedor a otro por su nomnre
+>ping -c 3 container-b
+
+
+Para conectar contenedor a otra red que no sea de ella
+>docker network connect lemoncode-network container-2
+
+152 
+162 Despliegue de contenedores con docker compose
+	Ventaja: para desplegar de forma más organizada con varios servicios
+	> docker ps -q			   	  	//Mostrar solo los id de contenedores que están corriendo
+	> docker stop $(docker ps -q) 	//Detener todos los contenedores
+	> docker rm $(docker ps -a)   	//eliminar todos los contenedores
+	> docker-compose --version		//Para ver la versión de docker compose
+	
+	
+    > docker-compose up				//ejecuta el archivo docker-compose.yml (posicionarse en la carpeta donde es´ta el archivo)
+	> docker-compose down			//Elimina contenedores y redes (según archivo docker-compose.yml)
+	> docker-compose up	-d 			//ejecutar detachado similar a docker run			
+	> docker-compose logs -f   		//para ver los logs en caso de que se ejecute detachado
+	
+	
+	
+	
+docker-compose.yml
+version: '3.7'
+services:
+  servicio-eureka-server:
+    image: servicio-eureka-server:v1
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - springcloud
+  servicio-gateway-server:
+    image: servicio-gateway-server:v1
+    ports:
+      - "8090:8090"
+    restart: always
+    networks:
+      - springcloud
+  microservicios-mysql8:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - springcloud
+    environment:
+      MYSQL_DATABASE: db_springboot_cloud
+      MYSQL_ROOT_PASSWORD: sasa
+  servicio-productos:
+    image: servicio-productos:v1
+    ports:
+      - "8001:8001"
+    restart: always
+    networks:
+      - springcloud
+    depends_on:
+      - servicio-eureka-server
+      - microservicios-mysql8
+networks:
+  springcloud:
