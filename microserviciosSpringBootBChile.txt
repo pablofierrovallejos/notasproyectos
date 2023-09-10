@@ -160,7 +160,7 @@ Proveedor de Seguridad LDAP
 
 14 Despliegue
 	-docker --version  //Para conocer versión de docker instalada
-	-C:\springcloud\workspace\springboot-servicio-productos   //IR a la ruta del proyecto
+	-C:\springcloud\workspace\springboot-servicio-productos   //Ir a la ruta del proyecto
 	
 	- .\mvnw clean package    //limpiar proyecto y generar jar   --> se genera el jar en carpeta target de nuestro proyecto
 	
@@ -188,16 +188,54 @@ Proveedor de Seguridad LDAP
 		- docker build -t servicio-producto:v1 .
 		- docker images							//Para ver que el contenedor se haya generado ok
 		- docker network create springcloud 	//Para crear la red donde estará el contenedor
-		       - e17df80419484f9dc0d32b36c121c33bb6f86bb3cd40e03b030704c6ed3b4a9d
+		       - 8ffd72b0743f4a11358e31ecdaee5fc08ffe018e0cf50e2536f82d4057ef7176
 		- docker run -p 8001:8001 --name servicio-producto --network springcloud servicio-producto:v1
 		- docker container ls		//Para ver los contenedores
 		- docker container --help  	//Para ver comandos de container
 	    - docker ps -a				//Para ver todos los contenedores no importa su estado
 		- docker start fe2c1aac5b4a //Para iniciar un contenedor de la lista anterior que esté detenido
 		
+		docker build -t servicio-eureka:v1 .
+		docker run -d -p 8761:8761 --name servicio-eureka --network springcloud servicio-eureka:v1 --net=bridge
+		
+		docker build -t servicio-apigateway:v1 .
+		docker run -p 8090:8090 --name servicio-apigateway --network springcloud servicio-apigateway:v1
+		
+	    docker build -t servicio-producto:v1 .
+		docker run -p 8001:8001 --name servicio-producto --network springcloud servicio-producto:v1 --net=bridge
+		
+		CONTAINER ID   IMAGE                    COMMAND                  CREATED             STATUS          PORTS                    NAMES
+754e11da0976   servicio-apigateway:v1   "java -jar servicio-…"   4 minutes ago       Up 2 minutes    0.0.0.0:8090->8090/tcp   servicio-apigateway
+ea9d1270c5b9   servicio-eureka:v1       "java -jar servicio-…"   6 minutes ago       Up 6 minutes    0.0.0.0:8761->8761/tcp   servicio-eureka
+7ffdaf852285   servicio-producto:v1     "java -jar servicio-…"   About an hour ago   Up 15 minutes   0.0.0.0:8001->8001/tcp   servicio-producto
 
 
-
+		  docker inspect 754e11da0976  
+		  "NetworkID": "8ffd72b0743f4a11358e31ecdaee5fc08ffe018e0cf50e2536f82d4057ef7176",
+                    "EndpointID": "c7ee5fb45920db1229035badac0a122a756fe850f941632761e30f304fba4b5f",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.4",
+					
+		  docker inspect ea9d1270c5b9  
+		   "NetworkID": "8ffd72b0743f4a11358e31ecdaee5fc08ffe018e0cf50e2536f82d4057ef7176",
+                    "EndpointID": "67e13a149ceef08add105a0ca05b21abae72a7d749b2c56bb0364c51d9f50d91",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.3",
+					
+		  docker inspect 7ffdaf852285  
+		   "NetworkID": "8ffd72b0743f4a11358e31ecdaee5fc08ffe018e0cf50e2536f82d4057ef7176",
+                    "EndpointID": "0d82c6669721f4480b77e0b02cff34117787f3fbe2d310d64034f5444c1f144e",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.2",
+					
+		
+	  Para entrar a terminal de un contenedor
+	docker exec -it 754e11da0976 bash
+	
+	Para ver los contenedores de la red
+	> docker network inspect bridge
+	
+	
 Desplegar MicroServicio productos
 	1.- Crear archivo "Dockerfile" en raiz de nuestro proyecto (SE ELIMINA EL EXPOSE)
 			FROM openjdk:17
@@ -219,3 +257,5 @@ Errores
 	 
 	 
 	 "fechaventa": "2023-05-23T11:38:34.533+00:00",
+	 
+
