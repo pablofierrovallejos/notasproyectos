@@ -24,6 +24,8 @@ services:
     environment:
       MYSQL_DATABASE: db_springboot_cloud
       MYSQL_ROOT_PASSWORD: sasa
+    volumes:
+      - mysqldata:/var/lib/mysql
   servicio-productos:
     image: servicio-productos:v1
     ports:
@@ -36,3 +38,5 @@ services:
       - microservicios-mysql8
 networks:
   springcloud:
+volumes:
+  mysqldata:

@@ -227,6 +227,12 @@ Proveedor de Seguridad LDAP
 		  > docker logs -f microservicios-mysql8	//Para ver el log del micro
 		  > luego podemos conectar por workbench tal cual si fuese local (detener servicio mysql de windows previamente antes de iniciar contenedor )
 
+		  > Para crear volumrn
+		    > docker create -v /var/lib/mysql --name mysqldata mysql/mysql-server:latest
+			> docker create -v /var/lib/mysql --name mysqldata mysql:8		//mysql:8 = el nombre de la imagen
+		  > Para arrancar un contenedor con volumen
+			> docker run -p 3306:3306 --name microservicios-mysql8 --network springcloud -e MYSQL_ROOT_PASSWORD=sasa -e MYSQL_DATABASE=db_springboot_cloud  --volumes-from mysqldata -d mysql:8
+
 Desplegar MicroServicio productos
 	1.- Crear archivo "Dockerfile" en raiz de nuestro proyecto (SE ELIMINA EL EXPOSE)
 			FROM openjdk:17
@@ -286,7 +292,7 @@ Para conectar contenedor a otra red que no sea de ella
 	
     > docker-compose up				//ejecuta el archivo docker-compose.yml (posicionarse en la carpeta donde es´ta el archivo)
 	> docker-compose down			//Elimina contenedores y redes (según archivo docker-compose.yml)
-	> docker-compose up	-d 			//ejecutar detachado similar a docker run			
+	> docker-compose up -d 			//ejecutar detachado similar a docker run			
 	> docker-compose logs -f   		//para ver los logs en caso de que se ejecute detachado
 	
 	
@@ -319,6 +325,8 @@ services:
     environment:
       MYSQL_DATABASE: db_springboot_cloud
       MYSQL_ROOT_PASSWORD: sasa
+	volumes:
+	  - mysqldata:/var/lib/mysql
   servicio-productos:
     image: servicio-productos:v1
     ports:
@@ -331,3 +339,45 @@ services:
       - microservicios-mysql8
 networks:
   springcloud:
+volumes:
+	mysqldata
+
+
+
+
+Volumenes
+	docker volume create mivolumen
+	docker volume ls
+	docker volume inspect mivolumen
+	
+Ruta windows donde se alojan los archivos de volumenes
+	\\wsl.localhost\docker-desktop-data\data\docker\volumes
+	
+Ruta windows 10 donde se alojan archivos data en mysql normal
+	C:\ProgramData\MySQL\MySQL Server 8.0\Data
+	
+Hacer dump de estructura de tablas mysql 
+C:\Program Files\MySQL\MySQL Server 8.0\bin>
+	> mysqldump -u root -p db_springboot_cloud > sakila_20200424.sql
+
+Hacer dump de procedimientos almacenados
+	> mysqldump --routines --no-create-info --no-data --no-create-db --skip-opt -u root -p db_springboot_cloud > outputfile.sql
+	
+Restaurar la base de datos
+	mysql> drop database sakila;
+	mysql> create database sakila;
+	mysql -u root -p db_springboot_cloud < sakila_20200424.sql
+	mysql -u root -p db_springboot_cloud < outputfile.sql
+	
+	
+
+	
+docker pull 96552333aa/servicio-productos:v1
+
+Para hacer push
+	> docker login --username=pablofierrovallejos@gmail.com					//login
+	> docker tag servicio-productos:v1 96552333aa/servicio-productos:v1		//docker tag image_name YOUR_DOCKERHUB_NAME/image_name
+	> docker push 96552333aa/servicio-productos:v1
+	
+	> docker tag servicio-gateway-server:v1 96552333aa/servicio-gateway-server:v1
+	> docker push 96552333aa/servicio-gateway-server:v1
