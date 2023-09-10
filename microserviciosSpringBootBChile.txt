@@ -421,3 +421,15 @@ Para hacer push
 	
 	> docker tag servicio-gateway-server:v1 96552333aa/servicio-gateway-server:v1
 	> docker push 96552333aa/servicio-gateway-server:v1
+	
+	> docker tag servicio-eureka-server:v1 96552333aa/servicio-eureka-server:v1
+	> docker push 96552333aa/servicio-eureka-server:v1
+	
+	> docker tag mysql:8 96552333aa/mysql:8
+	> docker push 96552333aa/mysql:8
+	
+Para hacer pull
+	> docker pull 96552333aa/servicio-productos:v1
+	> docker pull 96552333aa/servicio-gateway-server:v1
+	> docker pull 96552333aa/servicio-eureka-server:v1
+	> docker pull 96552333aa/mysql:8
