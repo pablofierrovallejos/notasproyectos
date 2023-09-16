@@ -15,7 +15,7 @@ services:
     networks:
       - springcloud
   microservicios-mysql8:
-    image: 96552333aa/mysqlmod
+    image: mysql:5.7.43
     ports:
       - "3306:3306"
     restart: always
