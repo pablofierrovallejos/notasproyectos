@@ -36,16 +36,6 @@ services:
     depends_on:
       - servicio-eureka-server
       - microservicios-mysql8
-  servicio-ng-front-vtas:
-    image: servicio-ng-front-vtas:v1
-    ports:
-      - "8080:80"
-    restart: always
-    networks:
-      - springcloud
-    depends_on:
-      - microservicios-mysql8      
-      
 networks:
   springcloud:
 volumes:

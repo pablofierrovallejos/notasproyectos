@@ -54,7 +54,8 @@
 		- java -version   				//validar que version de nuestro so sea el mismo del pom del proyecto
 		- java -jar ./target/miapp.jar	//para probar nuestra app
     > Construir imagen
-		docker build -t servicio-eureka-server:v1 .
+		
+		
 	>Ejecutar
 		docker run -d -p 8761:8761 --name servicio-eureka-server servicio-eureka-server:v1
 
@@ -443,3 +444,27 @@ INSTRUCTIVO INSTALACION MICROS
 6.- Probar con postman
 		GET localhost:8090/api/productos/listar-ventas
 	
+	
+
+
+Generar servicio Angular
+docker build -t servicio-ng-front-vtas:v1 .
+
+
+ng serve	//Ejecutar angular
+
+ng serve --port 4201	//ejecutar angular en un puerto determinado
+
+ng build				//Para generar el build a distribuit (crea la carpeta dist/miapp)
+
+
+docker run -d -p 8080:80 servicio-ng-front-vtas:v1
+
+//Para obtener la version de linux (micro nginx)
+cat /etc/os-release
+
+curl --location 'http://localhost:8090/api/productos/listar-ventas'
+
+curl --location 'http://172.24.0.3:8090/api/productos/listar-ventas'
+
+curl --location 'http://docker-compose-servicio-gateway-server-1:8090/api/productos/listar-ventas'
