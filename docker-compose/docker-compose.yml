@@ -37,9 +37,9 @@ services:
       - servicio-eureka-server
       - microservicios-mysql8
   servicio-ng-front-vtas:
-    image: 96552333aa/servicio-ng-front-vtas:v1
+    image: servicio-ng-front-vtas:v1
     ports:
-      - "8080:80"
+      - "4200:80"
     restart: always
     networks:
       - springcloud

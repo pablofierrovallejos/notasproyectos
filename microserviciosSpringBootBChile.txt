@@ -388,6 +388,12 @@ Para hacer push
 	> docker tag mysql:8 96552333aa/mysql:8
 	> docker push 96552333aa/mysql:8
 	
+    > docker tag 5f405963d9e0 96552333aa/servicio-ng-front-vtas:v1
+	> docker push 96552333aa/servicio-ng-front-vtas:v1
+	> docker build -t servicio-ng-front-vtas:v1 .
+	> ng build
+	> docker-compose up -d
+	
 Hacer pull
 	> docker pull 96552333aa/servicio-productos:v1
 	> docker pull 96552333aa/servicio-gateway-server:v1
@@ -468,3 +474,39 @@ curl --location 'http://localhost:8090/api/productos/listar-ventas'
 curl --location 'http://172.24.0.3:8090/api/productos/listar-ventas'
 
 curl --location 'http://docker-compose-servicio-gateway-server-1:8090/api/productos/listar-ventas'
+
+# ----------------------------
+# build from source
+# ----------------------------
+FROM node:18 AS build
+
+WORKDIR /app
+
+COPY package*.json .
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+# ----------------------------
+# run with nginx
+# ----------------------------
+FROM nginx
+
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
+RUN ls -ltra /usr/share/nginx/html
+RUN pwd
+COPY --from=build dist/consulta-post /usr/share/nginx/html
+
+EXPOSE 80
+
+
+Para validar archivo config de nginx  /etc/nginx/nginx.conf
+> nginx -t
+
+Para instalar CORS en angular
+>  npm -i cors --save
+
+Instalar plugin CORS chrome
+https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=es
