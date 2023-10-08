@@ -1,0 +1,14 @@
+Comandos adb
+
+>adb devices
+
+>adb install mi.apk
+
+Para obtener config de logs (saber donde esta log HCI)
+>adb shell cat /etc/bluetooth/bt_stack.conf
+
+Sacar un archivo o carpeta del dispositivo
+>adb pull /data/log/bt/
+
+Activar logs manualmente
+>adb shell settings put secure bluetooth_hci_log 1
