@@ -136,3 +136,60 @@ Tipos de instalaciones o clusters
 	Config Maps: Permite desacoplar la configuracion para hacer las imagenes mas portables, almacena
 				variables de entorno, argumentos para la linea de comandos, o configuracion de volumenes
 				que pueden consumir los pods.
+				
+Sección 9
+	70.-
+	CI/CD Cuntinuos Intrgration/Continuos Delivery
+	CI: Jenkins detecta cambios en github y hace: compilacion y ejecución de pruebas, se envía reporte a 
+	    develops (slack), luego se decide enviar el merge.
+	CD: Extiende a CI agregando funcionalidades de despliegue en entornos de prueba y producción.
+	
+	71: Instalar Jenkins (usua ubuntu)
+		Dockerfile:
+
+			FROM jenkins/jenkins
+			USER root
+			#Define variables
+			ENV MAVEN_VERSION 3.9.0
+
+			#Update Base OS and install additional tools
+			RUN apt-get update && apt-get install -y wget
+			RUN  wget --no-verbose https://downloads.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz -P /tmp/
+			RUN tar xzf /tmp/apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt/ 
+			RUN ln -s  /opt/apache-maven-$MAVEN_VERSION /opt/maven 
+			RUN ln -s /opt/maven/bin/mvn /usr/local/bin 
+			RUN rm /tmp/apache-maven-$MAVEN_VERSION-bin.tar.gz 
+
+			#Set up permissions
+			RUN chown jenkins:jenkins /opt/maven;
+			ENV MAVEN_HOME=/opt/mvn
+			USER jenkins
+
+		Compilar: > docker build -t jenkins-cicd --no-cache .                               //crea imagen nombre jenkins-cicd  //no considera cache
+		Ejecutar: > docker run -p 8080:8080 -p 50000:50000 --name jenkins jenkins-cicd      //nombre contenedor: jenkins, nombre imagen jenkins-cicd
+		Abrir explorador  localhost:8080
+		Obter el user > docker logs jenkins
+						buscar el hash y pegar en login
+		Instalar plugin sugeridos
+		Crear usuario admin/admin
+		
+	72: Pipeline --> Trigger-> Stage 1 --> Agent --> Job --> Step --> Script --> Delivery
+							   Stage 2                            --> Task 
+	    Ejemplo diseño pipeline:
+				jenkins -> Pull git -> builf-> Install
+	73 Configurar GitHub
+		1.- Crear nuevo repositorio miuser/devops_udemy
+				- seguir las instrucciones que nos da github repo HTTPS 
+				- Generar token para configurar en git
+				  - Vamos a perfil->settings -> developers settings -> personal access tokens ->generate new token -> note: jenkins -> expire-> never
+				            -> select scope-> marcar Todo y generar token
+							-> Guardar en un lugar seguro: 
+				- > git push -u origin master
+					 ingresar user:
+					 ingresar pass: (pegar token)
+	74 Crear pipeline	
+		1.- Create a Job-> Free style project-> source code managment -> git ->
+	    2.- Build trigger-> Build steps-> add build step -> invoke top-level maven target
+		               +  clean install
+	75 Ejecutar y debuguear pipeline 
+			
