@@ -22,6 +22,7 @@ services:
     networks:
       - springcloud
     environment:
+      TZ: America/Santiago
       MYSQL_DATABASE: db_springboot_cloud
       MYSQL_ROOT_PASSWORD: sasa
     volumes:
@@ -30,6 +31,16 @@ services:
     image: 96552333aa/servicio-productos:v1
     ports:
       - "8001:8001"
+    restart: always
+    networks:
+      - springcloud
+    depends_on:
+      - servicio-eureka-server
+      - microservicios-mysql8
+  ms-concentrador-energia:
+    image: 96552333aa/ms-concentrador-energia:v1
+    ports:
+      - "8002:8002"
     restart: always
     networks:
       - springcloud
