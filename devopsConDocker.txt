@@ -25,7 +25,7 @@ Sección 2 conceptualizacion Docker
 		- Docker  cli
 		- Docker: buildx plugin
 		- Docker compose
-		- Docler container.io (almacenamiento imagenes y logs (proyecto aparte)
+		- Docker container.io (almacenamiento imagenes y logs (proyecto aparte)
 		- Docker desktop
 	9 Instlación docker en linux: docs.docker.com/engine/install/ubuntu
 	- sudo apt-get update
@@ -75,8 +75,47 @@ Sección 3 Primer acercamiento
 	Docker compose, orquestar un servicio con 2 imagenes		
 	
 	
-Sección 6 Kubernetes	
-	
+Sección 6 Kubernetes: Plataforma de orquestación de contenedores
+		Docker compose: solo para prueba de concepto y pequeña empresa
+		Docker swarm: para cluster, un poco mas avanzada que compose
+		Docker Kubernete: más compleja.Aporta valor en temas de escalabilidad (creado por google)
+			Escalabilidad: adaptarse al crecimiento, para 100 usuarios se requiere 2 core de cpu y 4 gigas ram según pruebas de carga y stress.
+							Al incluir nuevas funcionalidades se requiere más recursos.
+							Como escalamos?1.- Vertical: cuando se tiene solo 1 nodo y se aumenta ram o cpu.
+										   2.- Horizontal: Incluir más nodos o servidores de hardware (Mismo cluster: grupo)
+			Monitoriza una aplicación: autosanado.
+			Arquitectura interna de Kubernates
+				Master nodes
+					SysAdmin
+					kubectl
+					api server
+					etcd (base de datos del nodo) (se accede por api server mediante kubectl)
+					scheduler
+					Control Manager (se encarga de gestionar la caída de un contenedor)
+				Worker Nodes, 1 a n
+					Networking
+					kubelet (agente que monitorea los pods)
+					Contauner Runtume (Docker)
+					So Linux
+		Cluster onpremise: lo montamonos nosotros 
+							-All in one (todo dentro de una mismo nodo) Minikube
+							-Single master adn multiworker
+							-Single master single etcd and multiworkker
+							-MultiMaster and Multiworker.
+				Objetos:
+					Pods: unidad mas pequeña que se puede desplegar
+					Deplyments: Describe el estado deseado de una implementacion
+					Services: definicion de como exponer una aplicacion que se ejecuta en un conjunto de pods como un servicio de red
+					ConfigMap: Permite desacoplar la configuracion para hacer las imagenes mas portables, almacenar variables de entorno, argumentos para linea de comando o configuracion de volumenes
+					Labels: Pares de clave valor enviroment:qa para organizar seleccionar consultar y monitorear objetos de forma mas eficiente
+					Selectores:: Mecanismo para hacer consultas a las etiquetas. kubectl get pods -l 'enviroment in (production), tier in (frontend)'
+					
+		Cluster Gestionad: AKS azure kubernates service, EKS Amazon Elastic Kubernates Service,  GKE google kubernates Engine, IBM Cloud.
+	    
+		Instalacion de minikube: https://k8s-docs.netlify.app/en/docs/tasks/tools/install-minikube/
+		
+			
+	     
 		minikube dashboard		//Lanzar el dashboard de minikube
 		kubectl run kbillingapp --image=sotobotero/udemy-devops:0.0.1 --port=80 80	//crear un pod partiendo d euna imagne en dockerhub
 		kubectl get pods		//Listar todos los pod del namespace por defecto
