@@ -17,7 +17,10 @@
 		spring.datasource.username=sa
 		spring.datasource.password=password
 		spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-		
+	- Crear package
+		- com.nombre.springboot.productos.models.entity
+			- crear clase Entity 
+			
 	-Creando el repositorio JPA para los productos
 		-Crear Interface ProductoDao.java -> en package productos.models.dao
 		-Crear clase IProductoService     -> en package productos.models.service

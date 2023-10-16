@@ -18,3 +18,16 @@ Estaba revisando los ingredientes de un helado de agua trendy
 7.-Sucralosa
 8.-Acesulfamo Potasico
 9.-Colorantes artificiales
+
+
+Tener en cuenta estas indicaciones.
+Capacidad del estanque para paletera P-1 es aprox.30 litros (18 litros de propilenglicol + 12 litros de agua).
+
+  30 litros --> 100%
+  18 litros --> xglicol --->60% glicol
+  12 litros --> xagua   --->40% agua
+  
+  
+Saludos,
+
+--
