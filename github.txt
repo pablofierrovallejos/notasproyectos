@@ -74,7 +74,8 @@ pass     : 96552333Aa
    Identity added: /c/Users/Gamer/.ssh/id_rsa (Gamer@DESKTOP-MAIN1)
 
   > cat id_rsa.pub | pbcopy      //Copiar la key pública en portapapeles
-   
+   cat ~/.ssh/id_rsa  | pbcopy 
+
 --Agregar clave pública en bitbucket
   Desde Personal Settings en web bitbucket click en ssh key, copiar y pegar contenido de id_rsa.pub    
   
