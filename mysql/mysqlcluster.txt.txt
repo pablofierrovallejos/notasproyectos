@@ -180,6 +180,7 @@ SOLUCION
 
 	FLUSH PRIVILEGES;
 
+	> ./mysql -u pablo -p
 
 
 ------------------------------
