@@ -116,23 +116,7 @@ Sección 6 Kubernetes: Plataforma de orquestación de contenedores
 		
 			
 	     
-		minikube dashboard		//Lanzar el dashboard de minikube
-		kubectl run kbillingapp --image=sotobotero/udemy-devops:0.0.1 --port=80 80	//crear un pod partiendo d euna imagne en dockerhub
-		kubectl get pods		//Listar todos los pod del namespace por defecto
-		kubectl describe pod kbillingapp	//Obtener detalles del Pod
-		kubectl expose pod kbillingapp --type=LoadBalancer --port 8080 --target-port=80  //Crear el servicio
-		minikube service kbillingapp		//Obtener la ipexterna del servicio en minikube
-		kubectl logs kbillingapp			//Obtener los logs de un servicio
-		kubectl delete service kbillingapp	//Eliminar un pod
-		kubectl delete service kbillingapp	//Eliminar un servicio
-		kubectl api-versions				//Consultar la version del apiserver
-		echo -n 'qwerty' | base64			//Codificar un parametro
-		minikube ip							//consultar la ip de minikube
-		echo  "cXdlcnR5" | base64 -d		//Descodificar un parametro
-
-		Comandos necesario para apuntar el docker engine local hacia el registro de minikube
-		minikube docker-env
-		eval $(minikube -p minikube docker-env)
+		
 
 
 
@@ -176,6 +160,66 @@ Tipos de instalaciones o clusters
 				variables de entorno, argumentos para la linea de comandos, o configuracion de volumenes
 				que pueden consumir los pods.
 				
+
+
+	Sección 51 Instalación de kubectl
+		https://minikube.sigs.k8s.io/docs/start
+		https://k8s-docs.netlify.app/en/docs/tasks/tools/install-minikube/
+	1.- Comprobar virtualizacion (no debe arrojar un resultado vacío)
+		> grep -E --color 'vmx|svm' /proc/cpuinfo
+
+	2.- Instalar kubectl
+			> sudo snap install kubectl --classic
+			> kubectl version
+	3.- Instalar minikube	
+			> curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+			> sudo install minikube-linux-amd64 /usr/local/bin/minikube
+	4.- Start cluster
+			> minikube start
+	5.- Interact with minikube
+			> kubectl get po -A
+	6.- Abrir dashboard de Kubernetes
+			> minikube dashboard
+
+
+
+		> minikube dashboard					//Lanzar el dashboard de minikube
+
+
+		Manage your cluster
+		
+		> minikube pause		//P ause Kubernetes without impacting deployed applications:
+		> minikube unpause		// Unpause a paused instance:	
+		> minikube stop			// Halt the cluster:
+		> minikube config set memory 9001	// Change the default memory limit (requires a restart):
+		> minikube addons list		// Browse the catalog of easily installed Kubernetes services:
+		> minikube start -p aged --kubernetes-version=v1.16.1	//Create a second cluster running an older Kubernetes release:
+		> minikube delete --all		// Delete all of the minikube clusters:
+		> minikube status
+
+
+		> kubectl run kbillingapp --image=sotobotero/udemy-devops:0.0.1 --port=80 80	//crear un pod partiendo d euna imagne en dockerhub
+		> kubectl get pods						//Listar todos los pod del namespace por defecto
+		> kubectl describe pod kbillingapp		//Obtener detalles del Pod
+		> kubectl expose pod kbillingapp --type=LoadBalancer --port 8080 --target-port=80  //Crear el servicio
+		> minikube service kbillingapp			//Obtener la ipexterna del servicio en minikube
+		> kubectl logs kbillingapp				//Obtener los logs de un servicio
+		> kubectl delete service kbillingapp	//Eliminar un pod
+		> kubectl delete service kbillingapp	//Eliminar un servicio
+		> kubectl api-versions					//Consultar la version del apiserver
+		> echo -n 'qwerty' | base64				//Codificar un parametro
+		> minikube ip							//consultar la ip de minikube
+		> echo  "cXdlcnR5" | base64 -d			//Descodificar un parametro
+
+		Comandos necesario para apuntar el docker engine local hacia el registro de minikube
+		> minikube docker-env
+		eval $(minikube -p minikube docker-env)  
+
+		Ejercicio levantar un pod desde una imagen
+		> kubectl run kbillingapp --image=sotobotero/udemy-devops:0.0.1 --port=80 80
+		> kubectl get pods
+		> 
+
 Sección 9
 	70.-
 	CI/CD Cuntinuos Intrgration/Continuos Delivery
@@ -232,3 +276,8 @@ Sección 9
 		               +  clean install
 	75 Ejecutar y debuguear pipeline 
 			
+
+
+
+Sección 11
+	Monitoreo con Prometeus

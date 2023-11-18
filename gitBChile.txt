@@ -17,8 +17,8 @@ Sitio oficial git
 Comandos
 >git --version  (-- palabra completa - abreviaciones)
 >git help
->git config -global user.name "Pablo Fierro"
->git config -global user.email "pablofierrovallejos@hotmail.com"
+>git config --global user.name "Pablo Fierro"
+>git config --global user.email "pablofierrovallejos@hotmail.com"
 >git config --global -e   ->listar variables seteadas
 
 >git init                       -> Inicializa el repositorio
@@ -37,3 +37,17 @@ Ejecutar: git config core.autocrlf true
 >git branch          -> Para saber en que rama estamos
 >git branch -m master main  -> Cambia nombre de rama de master a main	(local)
 >git config --global init.defaultBranch main   ->Cambia nombre de rama principal de forma global				
+
+Para agregar la clave ahora por rsa en ubuntu
+
+> ssh-keygen -t rsa -b 4096 -C "pablofierrovallejos@hotmail.com"
+> pbcopy < ~/.ssh/id_rsa.pub
+> Go to github.com → Settings → SSH and GPG keys → New SSH Key. Paste they key and save it
+> git remote set-url origin git@github.com:pablofierrovallejos/notasproyectos.git
+> git push
+
+Para instalar pbccopy en ubuntu:
+> sudo apt-get install xclip -y
+> nano ~/.bashrc
+    alias pbcopy='xclip -selection clipboard'
+    alias pbpaste='xclip -selection clipboard -o'
