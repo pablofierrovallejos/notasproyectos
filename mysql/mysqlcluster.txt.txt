@@ -1,0 +1,201 @@
+Cluster MySQl (4 nodos)  https://www.youtube.com/watch?v=IaBNDtvAdjI
+	1.- 1 Nodo de administración
+	2.- 2 Nodoa de grupo donde se almacenan los datos
+	3.- 1 Nodo SQL donde se ejecuta el servidor para realizar las consultas
+	
+Ventajas: Alta disponibilidad si se cae un nodos
+
+##########################################
+1.- INSTALACION PARA EL NODEMANAGER
+##########################################
+1.- Instalar libaio1 en los 4 nodos	
+	> sudo apt install libaio1
+	
+2.- Instalar paquete mysql Cluster en los 4 nodos
+    > wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.5/mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64.tar.gz
+	> tar -xvf mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64.tar.gz
+
+3.- Copiar 
+	> cd mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64/
+	> sudo cp bin/ndb_mgm* /usr/local/bin
+	> chmod +x ndb_mgm*
+	
+4.- Crear config del cluster
+	> sudo mkdir /var/lib/mysql-cluster
+	> cd /var/lib/mysql-cluster
+	> sudo nano /var/lib/mysql-cluster/config.ini
+		# file "config.ini" - 2 data nodes and 2 SQL nodes
+		# This file is placed in the startup directory of ndb_mgmd (the
+		# management server)
+		# The first MySQL Server can be started from any host. The second
+		# can be started only on the host mysqld_5.mysql.com
+
+		[ndbd default]
+		NoOfReplicas= 2
+		DataMemory=80M
+		IndexMemory=18M
+		ServerPort=2202
+
+
+		[ndb_mgmd]
+		NodeId=1
+		Hostname=192.168.2.43   		#Ip nodo de administracion
+		DataDir= /var/lib/mysql-cluster	#Directorio de los datafiles
+
+		[ndbd]
+		HostName=192.168.2.44			#Ip del nodo NDBSQL1
+		NodeId=2						#ID del nodo Alta
+		DataDir=/usr/local/mysql/data	#Directorio para los archivos de datos
+
+		[ndbd]
+		HostName=192.168.2.45			#Ip del nodo NDBSQL2
+		NodeId=3						#ID del nodo Alta
+		DataDir=/usr/local/mysql/data	#Directorio para los archivos de datos
+
+
+		[mysqld]
+		HostName=192.168.0.24			#IP del nodo SQL (Motor)
+		igdir=/var/lib/mysql	
+
+sudo mkdir /var/lib/mysql
+
+5.-  Levantar el servicio manager
+	> sudo ndb_mgmd -f /var/lib/mysql-cluster/config.ini --configdir=/var/lib/mysql
+	> sudo ndb_mgmd --skip-config-cache -f /var/lib/mysql-cluster/config.ini            <-- Este me funcion omitiendo el cache
+	
+ERROR
+ubuntu@ubuntu2004:/usr/local/bin$ sudo ndb_mgmd -f /var/lib/mysql-cluster/config.ini --configdir=/var/lib/mysql
+ndb_mgmd: error while loading shared libraries: libncurses.so.5: cannot open shared object file: No such file or directory
+
+SOLUCION
+
+> sudo apt-get install libncurses5
+
+6.- Probar el nodemanager en local
+	> ndb_mgm -e show
+	
+		[ndb_mgmd(MGM)]	1 node(s)
+		id=1	@192.168.2.43  (mysql-5.7.20 ndb-7.5.8)
+
+
+##########################################
+2.- INSTALACION PARA LOS NODOS DATA
+##########################################
+1.- Instalar libaio1 en los 4 nodos	
+	> sudo apt install libaio1
+	
+2.- Instalar paquete mysql Cluster en los 4 nodos
+    > wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.5/mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64.tar.gz
+	> tar -xvf mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64.tar.gz
+
+3.- Copiar 
+	> cd mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64/
+	> sudo cp bin/ndbd /usr/local/bin/ndbd
+	> sudo cp bin/ndbmtd /usr/local/bin/ndbmtd
+	> cd /usr/local/bin
+	> sudo chmod +x ndb*
+	
+4.- Crear config del nodo
+	> sudo nano /etc/my.cnf
+		[mysqld]
+		#Opciones para el servicio mysqld_5
+		ndbcluster #Ejecutar el motor de almacenamiento
+		
+		[mysql_cluster]
+		#Options for NDB Cluster processes:
+		ndb-connectstring=192.168.2.43	# Nodo de administración
+		
+5.-  Levantar el servicio nodo
+	> sudo mkdir /usr/local/mysql
+	> sudo mkdir /usr/local/mysql/data
+	> sudo ndbd
+
+
+##########################################
+2.- INSTALACION PARA EL NODO MOTOR MYSQL
+##########################################
+1.- Instalar libaio1 en los 4 nodos	
+	> sudo apt install libaio1
+
+2.- Instalar paquete mysql Cluster en los 4 nodos
+    > wget https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.5/mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64.tar.gz
+	> tar -xvf mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64.tar.gz
+
+3.- Agregar mysql como grupo
+	> sudo groupadd mysql
+	> sudo useradd -g mysql -s /bin/false mysql
+	
+4.- COpiamos el ejecutable al bin
+    > cd mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64/
+	> cd ..
+	> sudo mv mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64 /usr/local/
+	> sudo ln -s /usr/local/mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64  /usr/local/mysql     //Crea link simbólico
+	> cd /usr/local/mysql/bin
+	> ./mysqld --initialize
+         [Note] A temporary password is generated for root@localhost: WZ#ljE(BN9t:
+	> /usr/local/mysql/bin> cd ..
+    > /usr/local/mysql> sudo chown -R root .
+	> /usr/local/mysql> sudo chown -R mysql data
+	> /usr/local/mysql> sudo chown -R mysql .
+	> /usr/local/mysql> sudo cp support-files/mysql.server /etc/init.d/
+	> /usr/local/mysql> sudo chmod +x /etc/init.d/mysql.server 
+	> /usr/local/mysql> sudo nano /etc/my.cnf
+		[mysqld]
+		#Opciones para el servicio mysqld_5
+		ndbcluster #Ejecutar el motor de almacenamiento
+		
+		[mysql_cluster]
+		#Options for NDB Cluster processes:
+		ndb-connectstring=192.168.2.43	# Nodo de administración
+	> sudo systemctl enable mysql.server
+	> sudo service mysql.server start
+	> /usr/local/mysql > bin/mysql_secure_installation 
+	> pongo pass root: 96552333Aa
+	> Press y|Y for Yes, any other key for No: Y
+	> Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 0
+	> Remove anonymous users? (Press y|Y for Yes, any other key for No) : Y
+
+
+5.- Ingresar a mysql
+	> sudo systemctl list-unit-files --type service --all			//Para ver estado de servicios (no sirve en este caso)
+	> /usr/local/mysql/bin> ./mysql -u root -p   <-- para ejecutar hay que ir al  /usr/local/mysql
+	
+	Para iniciar el servicio sirve  
+		>sudo service mysql start
+		
+	Para ver el estado del servicio
+		>sudo service --status-all | grep mysql					//Para ver estado servicio (ok)
+	
+	> luego ir a la maquina de node manager y ejecutar 
+		> ndb_mgm -e show
+	
+	> crear usuario para acceso remoto
+	create user 'pablo'@'localhost' IDENTIFIED BY '96552333Aa$';
+
+	GRANT ALL PRIVILEGES ON *.* TO 'pablo'@'localhost' WITH GRANT OPTION;
+
+	CREATE USER 'pablo'@'%' IDENTIFIED BY '96552333Aa$';
+
+	GRANT ALL PRIVILEGES ON *.* TO 'pablo'@'%' WITH GRANT OPTION;
+
+	FLUSH PRIVILEGES;
+
+
+
+------------------------------
+COmandos
+netstat -t  //Para ver los puertos abiertos en local
+
+sudo systemctl list-unit-files --type service --all	//Para ver los servicios
+
+
+sudo systemctl disable mysql.service				//Detener servicio mysql
+sudo systemctl enable mysql.service					//Iniciar servicio mysql				
+
+Replica Master Slave
+
+Replica Bidireccional
+
+mysql.server.service                       generated       -            
+
+mysql.service 
