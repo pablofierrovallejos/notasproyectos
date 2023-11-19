@@ -170,7 +170,25 @@ Proveedor de Seguridad LDAP
 		- crear package .usuarios.models.entity
 			- crear clase Usuario y Role
 		- Agregar dependencia Rest Repository para generar el controlador
+	88.-Creando lib commons usuarios	
+		name: springboot-servicios-usuarios-commons	
+		group:com.formacionbdi.springboot.app.usuarios.commons
+		artifact: springboot-servicio-usuarios-commons
+		add: spring data jpa	
+		quitar pluggin maven de pom.xml
+		quitar el metodo main de la clase principal y su import
+		Agregar a clase principal:
+			@SpringBoorApplication
+			@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
+		Crear package:
+			com.formacionbdi.springboot.app.usuarios.commons.models.entity
+		Copiar las clases entity del micro usuarios y pegar en el actual micro con package entity	
+			Role.java
+			Usuario.java
+		Construir jar:
+			m
 		
+	
 		
 		
 11 Configuracion Datasource Mysql en servicio productos
@@ -362,10 +380,10 @@ Ruta windows 10 donde se alojan archivos data en mysql normal
 	
 Hacer dump de estructura de tablas mysql 
 C:\Program Files\MySQL\MySQL Server 8.0\bin>
-	> mysqldump -u root -p db_springboot_cloud > sakila_20200424.sql
+	> mysqldump -u root -p db_springboot_cloud > sakila_20200424b.sql
 
 Hacer dump de procedimientos almacenados
-	> mysqldump --routines --no-create-info --no-data --no-create-db --skip-opt -u root -p db_springboot_cloud > outputfile.sql
+	> mysqldump --routines --no-create-info --no-data --no-create-db --skip-opt -u root -p db_springboot_cloud > outputfileb.sql
 	
 Restaurar la base de datos
 	mysql> drop database sakila;
@@ -414,8 +432,9 @@ Crear una imagen a partir de un contenedor
 	
 		> docker tag mysqlmod 96552333aa/mysqlmod
 		> docker push 96552333aa/mysqlmod
-		
-		
+
+
+	
 		
 INSTRUCTIVO INSTALACION MICROS
 1.- Hacer pull de los micros
@@ -513,3 +532,28 @@ Para instalar CORS en angular
 
 Instalar plugin CORS chrome
 https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=es
+
+
+
+
+Para recompilar micro ms-concetrador-energia
+	> cd C:\Users\hp\Documents\workspace-spring-tool-suite-4-4.20.0.RELEASE\ms-concentrador-energia   
+	> mvnw.cmd clean package
+	> docker build -t ms-concentrador-energia:v1 .
+	> docker tag ms-concentrador-energia:v1 96552333aa/ms-concentrador-energia:v1
+	> docker push 96552333aa/ms-concentrador-energia:v1
+	
+Para recompilar micro front-vtas
+	> ng build				//Para generar el build a distribuit (crea la carpeta dist/miapp)
+	> docker build -t servicio-ng-front-vtas:v1 .
+    > docker tag servicio-ng-front-vtas:v1 96552333aa/servicio-ng-front-vtas:v1
+	> docker push 96552333aa/servicio-ng-front-vtas:v1
+
+Para recompilar micro 96552333aa/servicio-productos
+	> cd C:\Users\hp\Documents\workspace-spring-tool-suite-4-4.20.0.RELEASE\springboot-servicio-productos>  
+	> mvnw.cmd clean package
+	> docker build -t servicio-productos:v1 .
+	> docker tag servicio-productos:v1 96552333aa/servicio-productos:v1
+	> docker push 96552333aa/servicio-productos:v1
+	
+6e4496f6
