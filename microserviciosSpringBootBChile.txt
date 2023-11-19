@@ -145,7 +145,7 @@ Proveedor de Seguridad LDAP
 			body: la data
 			
 	*** sub capituo 81
-		- creando microservicio usuarios
+		- creando microservicio usuarios (crea, actualiza y elimina usuario, no genera el token)
 			- 
 			
 			
@@ -156,7 +156,7 @@ Proveedor de Seguridad LDAP
                  Zuul <--------------------> Servidor ---> git
              Servidor de recursos		       Config		 
 					
-		- crear proyecto usuarios
+		- crear proyecto usuarios: pakage: com.formacionbdi.sprigboot.app.usuarios
 			- agregar dependencias
 				- Eureka Discovery Client
 				- Spring boot dev tools
@@ -164,10 +164,25 @@ Proveedor de Seguridad LDAP
 				- Spring Data JPA
 				- H2 database
 		- agregar a application.properties
-			  spring.application.name=servicio-usuarios
-			  server.port=${PORT:0}
-			  eureka.instance.instance-id=${spring.application.name}:${spring.application.instance_id:${random.value}}
-		- crear package .usuarios.models.entity
+				spring.application.name=servicio-usuarios
+				server.port=${PORT:0}
+				eureka.instance.instance-id=${spring.application.name}:${spring.application.instance_id:${random.value}}
+				eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+		- crear tablas
+				- usuarios
+					- id: bigint(20)
+					- enabled: bit(1)
+					- password: varchar(60)
+					- username: varchar(30)
+				- usuarios-roles
+					- usuario_id: bigint(20)
+					- role_id: bigint(20)
+					
+				- roles
+					- id: bigint(20)
+					- nombre: varchar(255)
+				
+		- crear package com.formacionbdi.springboot.app.usuarios.models.entity
 			- crear clase Usuario y Role
 		- Agregar dependencia Rest Repository para generar el controlador
 		
