@@ -1,0 +1,80 @@
+user: system
+pass: sasa
+
+Se crea base con "Database Configuration Assistant" viene con la base de datos Xe.
+Segunda base datos creadas
+SIS: XE2
+base datos name: oracle_cloud
+pass: 96552333Aa
+
+Ubicación del log de DBCA:
+C:\app\hp\product\21c\cfgtoollogs\dbca\XE2\trace.log_2023-11-03_01-03-50PM
+
+
+
+
+
+PROCESO DE CREACION DE ESQUEMA o USUARIO EN ORACLE
+https://stackoverflow.com/questions/18403125/how-to-create-a-new-schema-new-user-in-oracle-database-11g
+
+
+SQL> select Username from dba_users;
+
+SQL> create user cloud identified by "password";
+
+ERROR: SQL Error [1935] [42000]: ORA-01935: falta el nombre de usuario o de rol
+SOL:  alter session set "_ORACLE_SCRIPT"=true;
+
+SQL> select username from dba_users;
+
+SQL> grant create session to cloud;
+
+SQL> create TABLESPACE cloud_tablespace datafile 'cloud_tabspace.dbf' size 10m autoextend on next 10m maxsize unlimited;
+
+SQL> create temporary tablespace cloud_tablespace_temp tempfile 'cloud_tabspace_temp.dbf' size 10m autoextend on next 10m maxsize unlimited;
+
+SQL> drop user cloud;
+
+SQL> create user cloud identified by password default tablespace cloud_tablespace temporary tablespace cloud_tablespace_temp;
+
+SQL> grant create session to cloud;
+
+SQL> grant create table to cloud;
+
+SQL> grant unlimited tablespace to cloud;
+	
+
+select username from dba_users;
+
+select tablespace_name from dba_tablespaces;
+
+select * from session_privs;
+
+
+  
+CREATE TABLE "medicionenergia" 
+(
+  "idregistro" NUMBER NOT NULL ENABLE,
+  "idmuestra" NUMBER,
+  "nombrenodo" varchar2(10 BYTE),
+  "uptime" varchar2(10 BYTE),
+  "volts" varchar2(6 BYTE),
+  "current" varchar2(6 BYTE),
+  "power" varchar2(10 BYTE),
+  "energy" varchar2(10 BYTE),
+  "fechameas" TIMESTAMP,
+ CONSTRAINT "idregistro" PRIMARY KEY ("idregistro")
+);
+
+INSERT INTO "medicionenergia" VALUES (1,NULL,'Meas2','06:07:04','230.9','0.3','37.0','7428974.0','2023-10-09 19:40:31')
+SQL Error [1843] [22008]: ORA-01843: mes no válido
+
+
+Para modificar el formato de fecha, (solo sesion actual)
+
+select * from nls_session_parameters WHERE PARAMETER = 'NLS_DATE_FORMAT';		//Para actualizar campo DATE
+select * from nls_session_parameters WHERE PARAMETER = 'NLS_TIMESTAMP_FORMAT';	//Para actualizar campo TIMESTAMP
+
+alter session set nls_date_format ='YYYY-MM-DD'									//Para actualizar campo DATE
+alter session set nls_timestamp_format ='YYYY-MM-DD HH.MI.SSXFF AM'				//Para actualizar campo TIMESTAMP
+alter session set nls_timestamp_format ='YYYY-MM-DD HH24:MI:SS'                 // ESTE FUNCION CON 24 horas

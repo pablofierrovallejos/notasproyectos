@@ -1,0 +1,49 @@
+1.- lsb_release -a      //Para averiguar la versión de ubuntu
+
+
+2.- Cambiar a ipfija
+    1.- Obtener el nombre de la interface con ifconfig
+    2.- Modificar archivo de config red ubicado en:
+        /etc/netplan/01-network-manager-all.yaml
+
+        Poner tal cual según el nombre de interface que tenemos:
+        # Let NetworkManager manage all devices on this system
+        network:
+        version: 2
+        renderer: NetworkManager
+        ethernets:
+            enp5s0:                         <--- Este es el nombre de nuestra tarjeta de red
+            dhcp4: no
+            addresses: [192.168.0.110/24]
+            gateway4: 192.168.0.1
+            nameservers:
+                addresses: [8.8.8.8,8.8.4.4]
+
+    3.- Aplicar con:
+        sudo netplan apply
+
+3.- Habilitar ssh (no viene con ubuntu desktop)
+    $ sudo apt update
+    $ sudo apt install openssh-server
+    $ sudo systemctl status ssh         // comprobar el estado del servicio SSH:
+    $ sudo ufw allow 22/tcp             // Para permitir el puerto 22 en el cortafuego UFW:
+    $ ssh pablo@192.168.0.100           // Para conectarse (debe existir el usuario en linux)
+
+    $ sudo ufw deny 22/tcp              // para denegar por cortafuego
+    $ sudo systemctl stop –now ssh      // para detener el servicio
+    $ sudo systemctl disable –now ssh   // para deshabilitar ssh
+
+
+4.- Instalar docker desktop 
+    (error al descargar el dev)
+    The following packages have unmet dependencies:
+    docker-desktop : Depends: docker-ce-cli but it is not installable
+    E: Unable to correct problems, you have held broken packages.
+
+    sol: https://stackoverflow.com/questions/72299444/docker-desktop-doesnt-install-saying-docker-ce-cli-not-installable/73455413#73455413
+    
+    $ sudo apt install -y ca-certificates curl gnupg lsb-release
+    $ sudo mkdir -p /etc/apt/keyrings
+    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    $ sudo apt update -y
