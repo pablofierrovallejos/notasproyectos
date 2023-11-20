@@ -228,7 +228,7 @@ Sección 9
 	CD: Extiende a CI agregando funcionalidades de despliegue en entornos de prueba y producción.
 	
 	71: Instalar Jenkins (usua ubuntu)
-		Dockerfile:
+		Dockerfile: (File name: DockerfileJenkins)
 
 			FROM jenkins/jenkins
 			USER root
@@ -248,11 +248,11 @@ Sección 9
 			ENV MAVEN_HOME=/opt/mvn
 			USER jenkins
 
-		Compilar: > docker build -t jenkins-cicd --no-cache .                               //crea imagen nombre jenkins-cicd  //no considera cache
+		Compilar: > docker build -t jenkins-cicd -f DockerfileJenkins --no-cache .                               //crea imagen nombre jenkins-cicd  //no considera cache // -t: tag
 		Ejecutar: > docker run -p 8080:8080 -p 50000:50000 --name jenkins jenkins-cicd      //nombre contenedor: jenkins, nombre imagen jenkins-cicd
 		Abrir explorador  localhost:8080
-		Obter el user > docker logs jenkins
-						buscar el hash y pegar en login
+		Obtener el user > docker logs jenkins
+					    	buscar el hash y pegar en login
 		Instalar plugin sugeridos
 		Crear usuario admin/admin
 		
@@ -276,8 +276,33 @@ Sección 9
 		               +  clean install
 	75 Ejecutar y debuguear pipeline 
 			
+Sección 10 Sonarqube
+	> docker pull sonarqube
+	> docker run -d --name sonarqube -p 9000:9000 -p 9002:9002 sonarqube  token : e36d2c4f07e2448988b41043f4ff90ce
 
-
-
+	> docker network create jenkins_sonarqube
+	> docker network ls
+	> docker network connect jenkins_sonarqube sonarqube
+	> docker network connect jenkins_sonarqube jenkins
+	
+	
+	localhost:9000 admin/admin  para sonarqube  -> pass nuevo 96552333Aa
+		>Administracion>seguridad>Token>generar token
+	
+	
+	localhost:8080  ir a jenkins
+		> Administrar> plugin > sonarqube scaner
+		> Administrar> configuracion del sistema> sonarqube server> enable injection of sonarqube
+			> name: poner nombre
+			> urL: http://sonarqube:9000
+			> add token sonar (si no funciona ir a la siguiente linea)
+				> ir a credential -> dominio jenkins > add credentials > Kind : secret text
+			>	Administrar> global tool configurations> sonarQube Scanner
+					>poner un name
+					> check instalar automaticamente
+					> version sonarqube scanner 4.6.0
+					> apply and save
+	
+	
 Sección 11
 	Monitoreo con Prometeus
