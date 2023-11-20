@@ -1,0 +1,113 @@
+Curso udemy SQL Oracle
+
+1.- INTRODUCCION
+	Data Manipulation Language (DML)
+	SELECT
+	INSERT
+	UPDATE
+	DELETE
+	MERGE
+
+	Data Definition Language (DDL)
+	CREATE
+	ALTER
+	DROP
+	RENAME
+	TRUNCATE
+	COMMENT
+
+	Data control Language (DCL)
+	GRANT
+	REVOKE
+
+	Transaction Control
+	COMMIT
+	ROLLBACK
+	SAVEPOINT
+
+	- Usuario HR para practica ya instalado.(Human Resource)
+
+2.- Live SQL Oracle:
+	https://livesql.oracle.com/
+	Esquema: es la base de datos del usuario y todos los objetos que le pertenecen al usuario.
+	-> select * from HR.EMPLOYEES
+	
+	Por que se presentan varias versiones para instalar en el curso?
+		because you could face issues with 12c enterprise edition with windows
+		but 18c express edition and 11g  express edition will work 100%
+		
+	Descargar 12c
+	
+3.- CONECTANDO A LA BASE DE DATOS (se usa root una vez solo para crear el primer usuario)
+	ejecutar> SQL Plus 
+	 super user: sys as sysdba
+		pass:    el que instalamos
+		
+	> show con_name
+	
+	> c:\app\user\product\12.2.0\dbhome_!\network\admin\tnsnames.ora  <- archivo de config de la base de datos
+	   ORCL: nombre de la conexion (Contenedor de la base de datos)
+	> Abrir SQL Developer
+		  User: sys as sysdba
+	      Connection type: TNS
+		  Network Alias: ORCL
+	>Si no recuerda el pass sys: https://community.oracle.com/thread/899559 
+	> Desbloqueo de usuario HR:
+	     orcl: el contenedor general  (se conecta con sysdba)
+		   orclpdb: el contenedor de base de prueba
+		    
+		> select name, con_id from v$pdbs   //para ver el diccionario info de la base de datos
+		
+	    > alter session set container=orclpdb  //Cambia el contenedor de la base de datos
+		> show con_name
+		> alter PLUGGABLE DATABASE open
+		> select * from all_users; 
+		> alter USER hr identified by hr account unlock;
+		> pegar la conexion del pdf en el tns para hr
+		> 
+	> Crear un usuario
+	  ORA-01033
+	  ORA-65054
+		sol:
+			1- login as SYS as SYSdba
+			2- make sure that you are in the root  CDB$ROOT
+				you can know that by : show con_name
+			3- do this
+				alter system disable restricted session;
+			4- then do this
+				alter pluggable database all open;
+
+4 y 5 ver .sql
+	Para conectar con sql plus con hr:
+		user: hr/hr@orclpdb
+		
+	 Formato fecha default
+	 SELECT * FROM employees WHERE HIRE_DATE > '17-OCT-23'
+	 select * from EMPLOYEES WHERE FIRST_NAME LIKE '_d%';  nombres que en su segunda letra tenga una 'd'
+	 select * from EMPLOYEES WHERE FIRST_NAME LIKE '__d%';  nombres que en su tercera letra tenga una 'd'
+	 select * from EMPLOYEES WHERE FIRST_NAME LIKE 'd_%';  incorrecto, revisar, no es lo mismo
+	 select * from EMPLOYEES WHERE FIRST_NAME LIKE 'SA/_%';  Todos los nombres que tengan un guion bajo en tercer caracter
+	 
+	 select * from EMPLOYEES where COMISSIONS_PCT is null;  //=null es incorrecto es is null;
+	 
+	 Not equal
+	   <> o !=  es lo mismo
+	   
+	 SELECT * FROM EMPLOYEES 
+		WHERE (job_id = 'SA_REP' OR jb_id= 'AD_PRES')
+		AND SALARY > 1500;
+	 
+	 SELECT * FROM EMPLOYEES WHERE job_id = 'SA_REP' ORDER BY COL1 ASC , COL2 DESC;		
+	 SELECT COL1, COL2  FROM EMPLOYEES WHERE job_id = 'SA_REP' ORDER BY 1, 2 ; ordenar por nro de columna
+	 
+	 SELECT * FROM EMPLOYEES WHERE job_id = 'SA_REP' ORDER BY COL1 FETCH FIRST 10 ROWS ONLY
+	 SELECT * FROM EMPLOYEES WHERE job_id = 'SA_REP' ORDER BY COL1 FETCH FIRST 50 PERCENT ROWS ONLY
+	 
+	 SELECT * FROM EMPLOYEES WHERE job_id = 'SA_REP' ORDER BY COL1  OFFSET 5  FETCH NEXT 5 ROWS ONLY //salta los primeros 5 registros y trae los siguientes 5
+	 
+	 TIES??
+	 
+Para que oracle pida una variable por ventana emergente
+	 SELECT * FROM EMPLOYEES WHERE job_id = &JOB_ENTRADA
+	 SELECT * FROM EMPLOYEES WHERE job_id = '&JOB_ENTRADA' //es lo mismo
+	 
