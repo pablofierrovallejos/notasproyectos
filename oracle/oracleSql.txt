@@ -111,3 +111,66 @@ Para que oracle pida una variable por ventana emergente
 	 SELECT * FROM EMPLOYEES WHERE job_id = &JOB_ENTRADA
 	 SELECT * FROM EMPLOYEES WHERE job_id = '&JOB_ENTRADA' //es lo mismo
 	 
+--Para scripts:
+ DEFINE EMPLOYEE_NUM = 200;   
+ select * from employees where EMPLOYEE_ID = &EMPLOYEE_NUM 
+ UNDEFINE EMPLOYEE_NUM;	-- para eliminar la variable
+ 
+ --ventanas emergentes
+ ACCEPT DEPT_ID PROMPT 'please enter dept id'                --genera una ventana emergente con mensaje personalizado    
+ SELECT * FROM EMPLOYEES WHERE DEPARTMENT_ID = &DEPT_ID;
+ UNDEFINE DEPT_ID;
+ 
+ -- doble ampersand
+ select * from DEPARTMENTS where DEPARTMENT_ID=&&p  -- aparece solo una vez ventana emergente y memoriza hasta que termina la sesion
+ 
+ -- VERIFICACION
+ SET VERIFY ON   -- hace que en el output muestre la query antes de reemplazar la variable y luego muestra la query con el valore reemplazado
+ SELECT * FROM EMPLOYEES WHERE DEPARTMENT_ID = &DEPT_ID;  
+ 
+ -- NO VERIFICACION
+ SET DEFINE OFF;       -- esto hace que no salte el prompt y queda como una cadena a buscar &DEPT_ID (Sirve para data migration)
+ SELECT * FROM EMPLOYEES WHERE DEPARTMENT_ID = '&DEPT_ID';  
+ 
+ SECCION 7
+ -- funciones de caracteres 
+		UPPER, 
+		LOWER  
+		INITCAP (Upper solo a la primira letra de la cadena)
+ -- manipulacion de caracteres
+		LENGTH(var)              --retorna el largo de la cadena
+		CONCAT(var1,var2)
+		SUBSTRING(FIRSTNANE,1,3) -- inicia en caracter 1 con largo de 3 caracteres
+		SUBSTRING(FIRSTNANE,2)   -- hasta el final de la cadena
+		SUBSTRING(FIRSTNANE,-3)  -- si es negativo corta la cadena contando desde el final
+ -- INSTR
+	Retorna la posición numerica de una cadena
+	SELECT INSTR(FIRST_NAME,'e')  -- retorna la posición de la primera 'e' o subcadena
+	SELECT INSTR(FIRST_NAME,'e', 2)  -- retorna la posición de la segunda 'e'
+ -- LPAD
+	LPAD(10,'#') -- rellena la salida con un largo de 10 y con signo # como relleno a la derecha
+	RPAD(10,'#')
+	REPLACE(FIRS_NAME,'a','*') -- reemplaza todos los caracteres a por un asterisco
+
+ -- SELECT * FROM DUAL -- taba publica para mostrar datos
+ -- LEADING, TRAILING, BOTH ?
+ -- ROUND(10.5)  -- retorna 11
+    ROUND(10.49, 1) -- solo toma el primer decimal y redondea, retorna 10.5
+    TRUNC(10.65)    -- elimina los decimales
+	TRUNC(10.65, 1) -- elimina el ultimo decimal
+	MOD(10,5) =  0  -- retorna el modulo de la división.
+    
+ -- DATE FUNCTIONS defaul es DD-MON-RR 
+   WHERE hire_date <  '1-FEB-23'
+   -- date + number  -- suma días a la fecha
+      date - number
+   -- SELECT SYSDATE FROM DUAL -- SYSDATE es una funcion que retorna la fecha del servidor de base de datos
+   -- MONTHS_BETWEEN(SYSDATE, HIREDATE) -- retorna los meses transcurridos entre las variables date   
+   -- ADD_MONTHS(hiredate, 4)           -- suma 4 meses
+   -- NEXT_DAY(SYSDATE,2)   -- 1 es domingo, 2 es lunes, retorna fecha del proximo lunes
+   -- LAST_DAY(SYSDATE)     -- retorna la fecha del último día de la semana actual
+   
+   -- ROUND(SYSDATE, 'MONTH') --result 1-AUG-03  (asume sysdate = 25-JUL-03)
+   
+ -- Funciones anidadas
+     func1(func2(func3()))
