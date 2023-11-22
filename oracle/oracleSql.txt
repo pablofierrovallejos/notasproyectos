@@ -174,3 +174,72 @@ Para que oracle pida una variable por ventana emergente
    
  -- Funciones anidadas
      func1(func2(func3()))
+
+ --conversion de datos
+      TO_CHAT(date,'format_model')
+	  
+	  ELEMENTOS DEL FORMAT MODEL
+	  YYYY	Full year en numero
+	  YEAR	Year deletreado en ingles
+	  MM	2 digitos para el mes
+	  MONTH Full name para el meses
+	  MON	Tres caracteres para el meses
+	  DY	Tres caracteres para el día
+	  DAY	Full name del día
+	  DD	Numérico
+	  
+	  CONVERSION DE FECHAS a char
+	 -- SELECT TO_CHAR(SYSDATE,'dd-mm-yyyy hh:mi:ss AM') FROM DUAL;--AM AND PM are the same
+	 -- SELECT TO_CHAR(SYSDATE,'dd-mm-yyyy hh24:mi:ss PM') FROM DUAL;
+	 -- TO_CHAR(HIRE_DATE, 'fmDD Month YYYY')   --fm elimina espacios y 0 innecesarios
+	 -- SELECT TO_CHAR(SYSDATE,'FMDDsp "OF" MONTH YYYY') FROM DUAL;  --sp spell el día (deletrea)
+	 --	SELECT * FROM EMPLOYEES WHERE TO_CHAR(HIRE_DATE,'yyyy')='2003';  --list all the employees who employeed in 2003
+	 
+	 CONVERSION DE NUMEROS a char
+	 TO_CHAR(number[,format_model])
+	 9	Representa nun numero
+	 0	Fuerza a cero lo que se va a mostrar (es lo mismo que usar el 9)
+	 $  Pone un signo de dolar
+	 L  usa el sibno de currency local
+	 .  print un punto decimal
+	 ,  print separador de miles
+	 SELECT TO_CHAR(1598,'9,999') FROM DUAL;  -- formatea a caracteres y con una coma como separador de miles
+	 SELECT TO_CHAR(1598,'9G999') FROM DUAL;  -- es lo mismo que lo anterior
+	 SELECT TO_CHAR(1598.87,'9999.99') FROM DUAL; -- para los decimales
+	 SELECT TO_CHAR(1598.87,'$9G999D99') FROM DUAL; --miles y decimales y el signo peso
+	 SELECT TO_CHAR(1598.87,'9999.9') FROM DUAL; -- hace un redondeo al ultimo decimal
+	 SELECT TO_CHAR(1598,'99') FROM DUAL  -- esto produce un error por que falta  2 99
+	 SELECT TO_CHAR(1598,'00000') FROM DUAL; -- esto agregaría un cero adelante
+	 ---THE BEST
+     SELECT TO_CHAR(1598,'999,999,999') FROM DUAL; -- arroja 1,598
+	 SELECT LENGTH('-7') FROM DUAL;  -- retorna 2
+	 
+	 CONVERSION A NUMERO
+	SELECT TO_NUMBER('1,000','9,999') FROM DUAL;
+	SELECT TO_NUMBER('$1,000','$9,999') FROM DUAL;
+	SELECT TO_NUMBER('88') FROM DUAL;
+	SELECT TO_NUMBER('1,980','9G999') FROM DUAL;
+
+
+	--4 using to_date
+	SELECT TO_DATE('10-11-2015','dd-mm-yyyy') FROM DUAL;
+	SELECT TO_DATE('10.11.2015','dd.mm.yyyy') FROM DUAL;
+	SELECT TO_DATE('10.november.2015','dd.month.yyyy') FROM DUAL;
+
+
+	SELECT * FROM EMPLOYEES WHERE HIRE_DATE> TO_DATE('10-11-2003','dd-mm-yyyy');
+	SELECT * FROM EMPLOYEES WHERE HIRE_DATE> TO_DATE('10-11-     2003','dd-mm-yyyy'); --oracle remove spaces 
+	SELECT * FROM EMPLOYEES WHERE HIRE_DATE> TO_DATE('10-11- 2003','fxdd-mm- yyyy'); --when you put fx then exact should be mach
+
+	--RR AND YY
+	--rr fomrat
+	--in general if the value between  50-99 THIS return a 19xx year
+	-- A value between 0-49 will return a 20xx year 
+	SELECT TO_DATE('1-1-85','DD-MM-RR')  from dual;
+	SELECT TO_CHAR( TO_DATE('1-1-85','DD-MM-RR'),'YYYY')  from dual;
+	SELECT TO_DATE('1-1-85','DD-MM-YY')  from dual;
+	SELECT TO_CHAR(TO_DATE('1-1-85','DD-MM-YY'),'YYYY')  from dual;
+
+    Funciones generales
+	NVL  -- si el valor es nulo define un valor
+	
