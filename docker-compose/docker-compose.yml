@@ -28,7 +28,7 @@ services:
     volumes:
       - mysqldata:/var/lib/mysql
   servicio-productos:
-    image: 96552333aa/servicio-productos:v1
+    image: 96552333aa/servicio-productos:v2
     ports:
       - "8001:8001"
     restart: always

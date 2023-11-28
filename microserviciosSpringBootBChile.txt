@@ -567,8 +567,11 @@ Para recompilar micro front-vtas
 Para recompilar micro 96552333aa/servicio-productos
 	> cd C:\Users\hp\Documents\workspace-spring-tool-suite-4-4.20.0.RELEASE\springboot-servicio-productos>  
 	> mvnw.cmd clean package
-	> docker build -t servicio-productos:v1 .
-	> docker tag servicio-productos:v1 96552333aa/servicio-productos:v1
-	> docker push 96552333aa/servicio-productos:v1
+	> docker build -t servicio-productos:v2 .
+	> docker tag servicio-productos:v2 96552333aa/servicio-productos:v2
+	> docker push 96552333aa/servicio-productos:v2
 	
 6e4496f6
+
+para descargar una tabla en excel en angular
+https://medium.com/@patade888/exporting-data-to-excel-in-angular-8-5a7cf5d0d25d
