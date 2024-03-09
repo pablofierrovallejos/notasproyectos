@@ -575,3 +575,50 @@ Para recompilar micro 96552333aa/servicio-productos
 
 para descargar una tabla en excel en angular
 https://medium.com/@patade888/exporting-data-to-excel-in-angular-8-5a7cf5d0d25d
+
+
+--------------------------------------
+> Configurar git
+git push -u origin main
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+Please make sure you have the correct access rights
+and the repository exists.
+
+Desde powershell
+> Get-Service ssh-agent
+And then check the output of status is not running.
+
+	Status   Name               DisplayName
+	------   ----               -----------
+	Stopped  ssh-agent          OpenSSH Authentication Agent
+
+	Luego verifique que el servicio haya sido deshabilitado ejecutando
+
+> Get-Service ssh-agent | Select StartType
+StartType
+---------
+Disabled
+
+> Ir a Servicios de windows y buscar -> OpenSSH Authentication Agent e iniciar
+
+  TESTEAR Con
+> ssh -T pablofierrovallejos@github.com
+> git remote -v
+
+  Si no hay key abrir git bash
+>  ssh-keygen -t ed25519 -C pablofierrovallejos@github.com
+  Queda guardado en: c:/Users/hp/.ssh/id_ed25519
+  
+ Luego agregar la key al agente ssh
+> ssh-add c:/Users/hp/.ssh/id_ed25519
+Could not open a connection to your authentication agent.
+  si da error anterior ejecutar (luego repetir el add) :
+  > ssh-agent bash
+  > ssh-add
+  
+Copiar el key a github
+> clip < c:/Users/hp/.ssh/id_ed25519.pub
+
+Desde perfil de github->Setting-> ssh key -> new ssh key  
+  -> pegar del portapapeles

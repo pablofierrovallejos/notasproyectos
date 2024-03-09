@@ -225,3 +225,8 @@ Angular toolbar
 https://material.angular.io/components/toolbar/overview
 
 ng add @angular/material
+
+
+Para generar componentes
+> ng g c components/clientes --skip-tests    //g: generate  c:  components
+> ng g c components/productos --skip-tests 
