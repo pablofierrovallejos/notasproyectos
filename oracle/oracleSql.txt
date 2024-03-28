@@ -242,4 +242,121 @@ Para que oracle pida una variable por ventana emergente
 
     Funciones generales
 	NVL  -- si el valor es nulo define un valor
+	SELECT EMPLOYEE_ID, FIRST_NAME, COMMISSION_PCT, nvl(COMMISSION_PCT,0) FROM EMPLOYEES; -- ambos parametros del nvl deben ser del mismo tipo
+	SELECT EMPLOYEE_ID, FIRST_NAME, job_id, NVL(job_id,'No JOB Yet') FROM EMPLOYEES
+	SELECT EMPLOYEE_ID, FIRST_NAME, hire_date, NVL(hire_date,'1-jan-03') FROM EMPLOYEES;
+	SELECT EMPLOYEE_ID, FIRST_NAME, COMMISSION_PCT, NVL(to_char(COMMISSION_PCT),'no comm') FROM EMPLOYEES;
+
+	NVL2 (puede usar numeros y caracteres a diferencia de nvl)
+	--2 using nvl2 function
+	--if exp1 is not null, then it return exp2
+	--if exp1 is  null, then it return exp3
+	SELECT EMPLOYEE_ID, FIRST_NAME, COMMISSION_PCT, NVL2(COMMISSION_PCT,COMMISSION_PCT,0) FROM EMPLOYEES;
 	
+	NULLIF
+	--3 using nullif
+	--if exp1=exp2 then it return null, else it return exp1
+	SELECT FIRST_NAME, LENGTH(FIRST_NAME), LAST_NAME, LENGTH(LAST_NAME), nullif(LENGTH(FIRST_NAME), LENGTH(LAST_NAME) ) results FROM EMPLOYEES;
+
+	COALESCE
+	--4 coalesce function
+	--it return the first non-null value
+	SELECT EMPLOYEE_ID,FIRST_NAME, COMMISSION_PCT, MANAGER_ID, SALARY, COALESCE(COMMISSION_PCT,MANAGER_ID,SALARY), nvl(  nvl(COMMISSION_PCT,MANAGER_ID), SALARY ) --nested nvl equal to COALESCE FROM EMPLOYEES;
+	
+	--5 case statment
+	SELECT first_name, job_id, salary,
+		   CASE job_id WHEN 'IT_PROG'  THEN  1.10*salary
+					   WHEN 'ST_CLERK' THEN  1.15*salary
+					   WHEN 'SA_REP'   THEN  1.20*salary
+		   ELSE      SALARY 
+		   END     "REVISED_SALARY"
+	FROM   EMPLOYEES;
+	
+	--También se puede usar como sigue  (mas claro pero repetitivo), puede usar distintas columnas
+	--you can make the condition after when 
+	SELECT FIRST_NAME, JOB_ID, SALARY,
+		   CASE  WHEN JOB_ID='IT_PROG'  THEN  1.10*SALARY
+				 WHEN JOB_ID='ST_CLERK' THEN  1.15*SALARY
+				 WHEN job_id='SA_REP'   THEN  1.20*salary
+		   ELSE      SALARY              <-- opcional
+		   END     "REVISED_SALARY"
+	FROM   EMPLOYEES;
+	
+	DECODE (es lo mismo que el case pero abreviado)
+	SELECT last_name, job_id, salary,
+       DECODE(job_id, 'IT_PROG',  1.10*salary,
+                      'ST_CLERK', 1.15*salary,
+                      'SA_REP',   1.20*salary,
+              salary)  <-- default si no cumple ninguna
+       REVISED_SALARY
+	FROM   EMPLOYEES;
+	
+SECCION 9 FUNCIONES GROUP (TODAS EStas funciones ignoran los valores nulos, considerar para calculos erroneos)
+	-AVG
+	-COUNT
+	-MAX
+	-MIN
+	-SUM
+	-LISTAGG
+	-STDDEV
+	-VARIANCE
+	
+  
+   SELECT COUNT(*) FROM EMPLOYEES;  --count(*) return number of rows in a table including duplicate rows and include null values
+   SELECT COUNT(DEPARTMENT_ID) FROM EMPLOYEES; --null not counted
+   SELECT COUNT(nvl(COMMISSION_PCT,0)) FROM EMPLOYEES; --you can hendle null values using nvl function
+   
+   -- Lo siguiente devuelve una sola cadena separada por comas con los nombres ordeado ascendente
+   SELECT LISTAGG(FIRST_NAME, ', ')
+         WITHIN GROUP (ORDER BY  FIRST_NAME) "Emp_list" 
+  FROM EMPLOYEES
+  WHERE department_id = 30;
+  
+  SELECT DEPARTMENT_ID,job_id, SUM(SALARY)
+	FROM  EMPLOYEES
+	GROUP BY DEPARTMENT_ID,JOB_ID  -- all columns in the select should appear in group by
+	order by 1, 2 ; 
+	
+	--you can not make group by using alias 
+	SELECT DEPARTMENT_ID d , SUM(SALARY)
+	FROM  EMPLOYEES
+	GROUP BY D;
+
+	--but you can make order using alias 
+	SELECT DEPARTMENT_ID d , SUM(SALARY)
+	FROM  EMPLOYEES
+	GROUP BY DEPARTMENT_ID
+	order by d;
+
+	 --very important note, you can not use where to restrict groups
+	SELECT DEPARTMENT_ID, SUM(SALARY)
+	FROM  EMPLOYEES
+	where SUM(SALARY)>156400 -- this not coorect , you should use having
+	GROUP BY DEPARTMENT_ID  
+	order by DEPARTMENT_ID ;
+
+	--so use having 
+	SELECT DEPARTMENT_ID, SUM(SALARY)
+	FROM  EMPLOYEES
+	GROUP BY DEPARTMENT_ID  
+	having SUM(SALARY)>150000
+	order by DEPARTMENT_ID ;
+
+	--it could be using having before group by, but not recomnded
+
+	SELECT DEPARTMENT_ID, SUM(SALARY)
+	FROM  EMPLOYEES
+	HAVING SUM(SALARY)>150000
+	GROUP BY DEPARTMENT_ID  
+	order by DEPARTMENT_ID ;
+
+SECCION 10 (2 tipos de Join, uno del oracle 8i muy antiguo, nuevo inicia el año 1999)
+	- inner join es el mas simple y es igual a usar = (o natural join)
+	- old: outer join (cuando la primera tabla tiene un null en la FK)
+	--outer join, case1
+		SELECT  EMPLOYEES.EMPLOYEE_ID , DEPARTMENTS.DEPARTMENT_NAME
+		FROM EMPLOYEES, DEPARTMENTS
+		WHERE EMPLOYEES.DEPARTMENT_ID=DEPARTMENTS.DEPARTMENT_ID(+)  -- al lado de tabla que no hace la relacion (EMPLOYEES es la tabla principal)
+		ORDER BY EMPLOYEE_ID;
+	--Selft Join (select con misma tabla 2 veces)
+	--1999 nuevo Cross Join
