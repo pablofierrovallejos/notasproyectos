@@ -360,3 +360,54 @@ SECCION 10 (2 tipos de Join, uno del oracle 8i muy antiguo, nuevo inicia el año
 		ORDER BY EMPLOYEE_ID;
 	--Selft Join (select con misma tabla 2 veces)
 	--1999 nuevo Cross Join
+	
+	
+Seccion 12 DML
+  SELECT COL1, COL2
+  UNION   //Elimina los duplicados UNION ALL no elimina duplicados
+  SELECT COL1, COL2
+  ORDER BY COL1//solo se puede usar columnas de la primera query
+  
+  SELECT 1
+  INTERSECT   //Muestra los datos en comun
+  SELECT 2
+  
+  SELECT 1
+  MINUS   //Muestra los datos de la tabla 1 que no están en tabla 2
+  SELECT 2
+  
+SECCION 13 Managin Tables using DML
+	INSERT INTO table [col1, coln] VALUES(value []);
+	commit;
+
+	DESC DEPARTMENTS //Para ver detalle de una tabla
+	
+	INSERT INTO MIFECHA (SYSDATE)
+	INSERT INTO MIFECHA  (to_date('20-07-2015','dd-mm-yyy')
+	
+	CREATE TABLE XX
+		(EMPNO NUMBER,
+		FNAME,
+		
+	UPDATE table SET col= value [, col2=value2] [WHERE condition]
+	commit;
+	
+	CREATE TABLE COPY_EMP AS SELECT *FROM EMPLOYEES;  //Para copiar una tabla
+	
+	DELETE FROM table WHERE condition (se puede usar in (valo1, valor2...)
+	rollback; //para volver atrás el cambio  si es que no hice commit
+	
+	TRUNCATE TABLE mitabla; //no tiene rollback, no dispara trigger dado que es un DDL
+	
+	 
+	COMMIT;   hace data permanente
+	SAVEPOINT name   //marca un punto 
+	ROLLBACK
+	ROLLBACK TO SAVEPOINY name
+	
+	Si se hace un create table no se puede hacer rollback de updates anteriores dado que se hace un autocommit al ejecutar un DDL
+	
+	!!!
+	 Se hace un Lock a los registros que seestán modificando, se liberan luego de que se hace un commit;
+	 
+	 
