@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: servicio-eureka-server
+  name: servicio-eureka-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: servicio-eureka-server
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/springcloud: "true"
+        io.kompose.service: servicio-eureka-server
+    spec:
+      containers:
+      - image: 96552333aa/servicio-eureka-server:v1
+        imagePullPolicy: ""
+        name: servicio-eureka-server
+        ports:
+        - containerPort: 8761
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

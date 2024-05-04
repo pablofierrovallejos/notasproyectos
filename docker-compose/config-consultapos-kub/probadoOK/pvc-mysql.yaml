@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    pv.kubernetes.io/bind-completed: "yes"
+    pv.kubernetes.io/bound-by-controller: "yes"
+  creationTimestamp: "2024-04-19T12:35:46Z"
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    io.kompose.service: mysqldata
+  name: pvc-mysql
+  namespace: ventas2
+  resourceVersion: "4761163"
+  uid: 1f9bd671-1c54-4c16-a5e5-9c6f2997e5e5
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+  volumeMode: Filesystem
+  volumeName: pv-mysql
+status:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 1Gi
+  phase: Bound

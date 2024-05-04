@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: "2024-04-20T01:47:44Z"
+  labels:
+    io.kompose.service: servicio-productos
+  name: servicio-productos
+  namespace: ventas2
+  resourceVersion: "5009110"
+  uid: c076e3d3-8873-4b1a-8981-8748286c6970
+spec:
+  clusterIP: 10.97.114.71
+  clusterIPs:
+  - 10.97.114.71
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: "8090"
+    nodePort: 30600
+    port: 8090
+    protocol: TCP
+    targetPort: 8001
+  selector:
+    io.kompose.service: servicio-productos
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

@@ -1,0 +1,17 @@
+1.- Configuración consulta pos en kubernetes
+
+pablo@pablo:~$ k get all
+NAME                                          READY   STATUS    RESTARTS       AGE
+pod/microservicios-mysql8-769f56f98c-dbrs7    1/1     Running   6 (176m ago)   14d
+pod/servicio-ng-front-vtas-58b4468cf9-wcf7j   1/1     Running   6 (176m ago)   14d
+pod/servicio-productos-6bcddb7667-blpv8       1/1     Running   6 (176m ago)   14d
+
+NAME                             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/microservicios-mysql8    NodePort   10.110.223.82   <none>        3306:30500/TCP   14d
+service/servicio-ng-front-vtas   NodePort   10.100.85.181   <none>        80:30100/TCP     14d
+service/servicio-productos       NodePort   10.97.114.71    <none>        8090:30600/TCP   14d
+
+NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/microservicios-mysql8    1/1     1            1           15d
+deployment.apps/servicio-ng-front-vtas   1/1     1            1           14d
+deployment.apps/servicio-productos       1/1     1            1           14d

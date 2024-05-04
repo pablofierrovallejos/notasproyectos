@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    config.linkerd.io/opaque-ports: "3306"
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: "2024-04-20T00:11:55Z"
+  labels:
+    io.kompose.service: microservicios-mysql8
+  name: microservicios-mysql8
+  namespace: ventas2
+  resourceVersion: "4832991"
+  uid: f0fb5de4-3456-4066-b104-2c4c30319771
+spec:
+  clusterIP: 10.110.223.82
+  clusterIPs:
+  - 10.110.223.82
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: "3306"
+    nodePort: 30500
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    io.kompose.service: microservicios-mysql8
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

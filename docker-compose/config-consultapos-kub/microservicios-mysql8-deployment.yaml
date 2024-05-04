@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: microservicios-mysql8
+  name: microservicios-mysql8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: microservicios-mysql8
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/springcloud: "true"
+        io.kompose.service: microservicios-mysql8
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: db_springboot_cloud
+        - name: MYSQL_ROOT_PASSWORD
+          value: sasa
+        - name: TZ
+          value: America/Santiago
+        image: mysql:5.7.43
+        imagePullPolicy: ""
+        name: microservicios-mysql8
+        ports:
+        - containerPort: 3306
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysqldata
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: mysqldata
+        persistentVolumeClaim:
+          claimName: pvc-mysql
+status: {}
