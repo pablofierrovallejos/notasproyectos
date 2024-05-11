@@ -15,3 +15,15 @@ NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/microservicios-mysql8    1/1     1            1           15d
 deployment.apps/servicio-ng-front-vtas   1/1     1            1           14d
 deployment.apps/servicio-productos       1/1     1            1           14d
+
+
+2.- Replica de base de datos
+
+
+Instalar mysql en ubuntu
+
+sudo apt-get install mysql-server
+systemctl status mysql
+sudo mysql
+	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+	ALTER USER 'root'@'localhost' IDENTIFIED BY 'sasa';

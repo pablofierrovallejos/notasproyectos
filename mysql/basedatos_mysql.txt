@@ -1,1 +1,18 @@
 Replicación Master Slave
+https://www.linuxtrainingacademy.com/mysql-master-slave-replication-ubuntu-linux/
+
+Notas:
+	1.- En slave se genera error por UUID repetido
+		se elimina: /var/lib/mysql/auto.cnf  
+		se reinicia servicio-> sudo service mysql restar   //para que regenere el UUID por otro distinto
+		
+	2.- Se genera el siguiente error en log:
+		Error 002061 - Authentication plugin 'caching_sha2_password' reported error: Authentication requires secure connection
+		Sol:
+		> mysql -u root -p sasa
+		> CHANGE MASTER TO GET_MASTER_PUBLIC_KEY=1;
+		
+	3.- Queda inhabilitado mysqlworkbench por lo anterior pero replica ok
+	
+		
+		
