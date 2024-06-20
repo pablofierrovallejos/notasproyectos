@@ -1,0 +1,10 @@
+Parametros eje x motor de paso guia lineal aliexpress 18 may 2024
+Stepps per: 1000
+vel mm per min: 400
+accel: 12
+step pulse: 0
+dir pulse: 0
+
+Fórmula para hacer un cono de helado
+https://www.dim.uchile.cl/~simetria/matematico/nodo312.html
+https://www.geogebra.org/m/YpSQSgMT

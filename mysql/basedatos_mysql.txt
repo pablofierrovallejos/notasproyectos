@@ -15,4 +15,4 @@ Notas:
 	3.- Queda inhabilitado mysqlworkbench por lo anterior pero replica ok
 	
 		
-		
+		https://www.npmjs.com/package/apiconnect

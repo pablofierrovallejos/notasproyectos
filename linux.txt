@@ -1,3 +1,15 @@
+1 instalar kubernetes
+	Master
+	> wget https://cm.lf.training/LFD259/LFD259_V2024-02-22_SOLUTIONS.tar.xz --user=LFtraining --password=Penguin2014
+	> bash k8scp.sh | tee $HOME/cp.out
+
+	Worker
+	> bash k8sWorker.sh | tee worker.out
+	> kubeadm join 192.168.0.107:6443 --token 2virfm.rczgnfq6q3z44r4x --discovery-token-ca-cert-hash sha256:fccd0990c4bf7374989c23a503f15a62ebcbcc1af2e817dc1227de4e70cf22b4 
+
+2.- Cambiar nombre de hostname
+	> sudo hostnamectl set-hostname worker1
+	
 1.- lsb_release -a      //Para averiguar la versión de ubuntu
 
 
@@ -7,17 +19,18 @@
         /etc/netplan/01-network-manager-all.yaml
 
         Poner tal cual según el nombre de interface que tenemos:
-        # Let NetworkManager manage all devices on this system
-        network:
-        version: 2
-        renderer: NetworkManager
-        ethernets:
-            enp5s0:                         <--- Este es el nombre de nuestra tarjeta de red
-            dhcp4: no
-            addresses: [192.168.0.110/24]
-            gateway4: 192.168.0.1
-            nameservers:
-                addresses: [8.8.8.8,8.8.4.4]
+# Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    enp0s3:
+        dhcp4: no
+        addresses: [192.168.0.107/24]
+        gateway4: 192.168.0.1
+        nameservers:
+           addresses: [8.8.8.8,8.8.4.4]
+
 
     3.- Aplicar con:
         sudo netplan apply
@@ -47,3 +60,26 @@
     $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     $ sudo apt update -y
+	
+	
+	5.- Averiguar versión de linux
+		> cat /etc/os-release
+		> lsb_release -d
+		
+	
+	6.-Conectar ssh a cloud google
+	> ssh cp@34.176.235.140
+	cp@34.176.235.140: Permission denied (publickey).
+	
+	  -1 Generar your key
+	  > ssh-keygen
+		Your identification has been saved in C:\Users\Gamer/.ssh/id_rsa.
+		Your public key has been saved in C:\Users\Gamer/.ssh/id_rsa.pub.
+		The key fingerprint is:
+		SHA256:Rb1D7G5NHP2ATskb/QtDVhX+KnNClcfUpYiieMpIA2I gamer@DESKTOP-MAIN1
+		
+	  >	ssh -vvv -i .ssh/id_rsa cp@34.176.235.140
+	  
+	 
+Instalar qemu
+> sudo apt install qemu-system-x86
