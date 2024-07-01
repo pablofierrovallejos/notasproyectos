@@ -19,6 +19,7 @@
         /etc/netplan/01-network-manager-all.yaml
 
         Poner tal cual según el nombre de interface que tenemos:
+		
 # Let NetworkManager manage all devices on this system
 network:
   version: 2
@@ -83,3 +84,69 @@ network:
 	 
 Instalar qemu
 > sudo apt install qemu-system-x86
+
+------------------------------------------
+Para instalar haproxy
+https://howtoforge.es/como-instalar-y-configurar-haproxy-en-ubuntu-22-04/
+
+frontend apache_front
+        # Frontend listen port - 80
+        bind *:80
+        # Set the default backend
+        default_backend    apache_backend_servers
+        # Enable send X-Forwarded-For header
+        option             forwardfor
+  
+# Define backend
+backend apache_backend_servers                                                                                                                     
+        # Use roundrobin to balance traffic
+        balance            roundrobin
+        # Define the backend servers
+        server             backend01 172.16.0.200:80 check
+        server             backend02 172.16.0.201:80 check
+		
+		
+		
+#Actualizar la ip del masternode (no funcionó)
+> kubeadm config images pull
+[config/images] Pulled registry.k8s.io/kube-apiserver:v1.29.6
+[config/images] Pulled registry.k8s.io/kube-controller-manager:v1.29.6
+[config/images] Pulled registry.k8s.io/kube-scheduler:v1.29.6
+[config/images] Pulled registry.k8s.io/kube-proxy:v1.29.6
+[config/images] Pulled registry.k8s.io/coredns/coredns:v1.11.1
+[config/images] Pulled registry.k8s.io/pause:3.9
+[config/images] Pulled registry.k8s.io/etcd:3.5.10-0
+
+Desinstalar kubernetes
+https://www.baeldung.com/ops/kubernetes-uninstall
+> sudo kubeadm reset
+
+------------------------------------------
+Instalar Keepalived en raspberry
+https://raspberry-hosting.com/en/faq/where-can-i-find-actual-haproxy-and-keepalived-deb-packages-raspberry-pi-and-how-i-install-high
+
+
+
+
+
+Configuracion HA
+
+Raspberry 1 keepalived
+ip: 		http://192.168.2.57
+virtual ip: http://192.168.2.2/   <--- POR aca acceder con explorador
+HAPROXY (balanceo):
+	to 	-> 192.168.2.222
+		-> 192.168.2.223
+
+Raspberry 2 keepalived
+ip: 		http://192.168.2.57
+virtual ip: http://192.168.2.2/
+HAPROXY (balanceo):
+	to 	-> 192.168.2.222
+		-> 192.168.2.223
+		
+        
+Configuracion haproxy activo pasivo
+https://www.haproxy.com/blog/emulating-activepassing-application-clustering-with-haproxy
+		
+		

@@ -230,3 +230,13 @@ ng add @angular/material
 Para generar componentes
 > ng g c components/clientes --skip-tests    //g: generate  c:  components
 > ng g c components/productos --skip-tests 
+
+
+Para crear el loader:
+- https://danielk.tech/home/angular-how-to-add-a-loading-spinner
+ng generate service loader
+ng generate component spinner
+ng generate interceptor loading
+
+Para instalar excel
+> npm install xlsx
