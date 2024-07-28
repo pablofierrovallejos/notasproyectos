@@ -560,9 +560,9 @@ Para recompilar micro ms-concetrador-energia
 	
 Para recompilar micro front-vtas
 	> ng build				//Para generar el build a distribuit (crea la carpeta dist/miapp)
-	> docker build -t servicio-ng-front-vtas:v1 .
-    > docker tag servicio-ng-front-vtas:v1 96552333aa/servicio-ng-front-vtas:v1
-	> docker push 96552333aa/servicio-ng-front-vtas:v1
+	> docker build -t servicio-ng-front-vtas:v2 .
+    > docker tag servicio-ng-front-vtas:v2 96552333aa/servicio-ng-front-vtas:v2
+	> docker push 96552333aa/servicio-ng-front-vtas:v2
 
 Para recompilar micro 96552333aa/servicio-productos
 	> cd C:\Users\hp\Documents\workspace-spring-tool-suite-4-4.20.0.RELEASE\springboot-servicio-productos>  
