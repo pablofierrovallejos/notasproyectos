@@ -491,7 +491,7 @@ INSTRUCTIVO INSTALACION MICROS
 
 
 Generar servicio Angular
-docker build -t servicio-ng-front-vtas:v1 .
+docker build -t servicio-ng-front-vtas:v2 .
 
 
 ng serve	//Ejecutar angular
@@ -560,16 +560,17 @@ Para recompilar micro ms-concetrador-energia
 	
 Para recompilar micro front-vtas
 	> ng build				//Para generar el build a distribuit (crea la carpeta dist/miapp)
-	> docker build -t servicio-ng-front-vtas:v1 .
-    > docker tag servicio-ng-front-vtas:v1 96552333aa/servicio-ng-front-vtas:v1
-	> docker push 96552333aa/servicio-ng-front-vtas:v1
+	> docker build -t servicio-ng-front-vtas:v2 .
+    > docker tag servicio-ng-front-vtas:v2 96552333aa/servicio-ng-front-vtas:v2
+	> docker push 96552333aa/servicio-ng-front-vtas:v2
 
 Para recompilar micro 96552333aa/servicio-productos
 	> cd C:\Users\hp\Documents\workspace-spring-tool-suite-4-4.20.0.RELEASE\springboot-servicio-productos>  
 	> mvnw.cmd clean package
-	> docker build -t servicio-productos:v2 .
-	> docker tag servicio-productos:v2 96552333aa/servicio-productos:v2
-	> docker push 96552333aa/servicio-productos:v2
+	> mvnw.cmd clean package -Dmaven.test.skip=true 
+	> docker build -t servicio-productos:v3 .
+	> docker tag servicio-productos:v3 96552333aa/servicio-productos:v3
+	> docker push 96552333aa/servicio-productos:v3
 	
 6e4496f6
 
