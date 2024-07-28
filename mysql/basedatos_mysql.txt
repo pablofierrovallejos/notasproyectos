@@ -17,3 +17,181 @@ Notas:
 		
 		https://www.npmjs.com/package/apiconnect
 		
+<<<<<<< HEAD
+=======
+		
+Instalar Mysql en linux
+> sudo apt-get update
+> sudo apt-get install mysql-server mysql-client -y
+> sudo mysql_secure_installation		//Para asegurar el servidor y eliminar cuentas anonimas
+
+sudo apt install -f mysql-client=5.7.30-1ubuntu18.04
+sudo apt install -f mysql-community-server=5.7.30-1ubuntu18.04
+sudo apt install -f mysql-server=5.7.30-1ubuntu18.04
+
+--------------------------------------------------------------------------------------------------------
+INSTALACION OFICIAL
+Master1: 192.168.2.150
+Master2: 192.168.2.151
+
+https://dev.mysql.com/doc/refman/8.4/en/linux-installation-apt-repo.html
+Descargar repo
+> https://dev.mysql.com/downloads/repo/apt/
+> sudo dpkg -i mysql-apt-config_0.8.32-1_all.deb
+> sudo apt-get install mysql-server
+> systemctl status mysql
+> systemctl restart mysql
+
+Para loguearse
+>sudo mysql -u root -p	//tiene que ser con sudo sino no permite
+
+> Para habilitar ip remota agregar linea
+> /etc/mysql/mysql.conf.d/mysqld.cnf
+  "bind-address    = 0.0.0.0" 
+  
+Para crear el usuario con acceso remoto
+> CREATE USER 'consultapos'@'192.168.2.4' IDENTIFIED BY 'sasa';  // se agrega la ip desde donde se conecta
+> GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'consultapos'@'192.168.2.4' WITH GRANT OPTION;
+> FLUSH PRIVILEGES; //Para guardar los cambios
+> sudo ufw allow 3306
+
+
+MASTER - Master
+Config Master 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+> /etc/mysql/mysql.conf.d/mysqld.cnf
+
+server-id = 1            
+log_bin = /var/log/mysql/mysql-bin.log
+log_bin_index = /var/log/mysql/mysql-bin.log.index
+expire_logs_days = 10                  <-- esta la tuve que sacar sino no parte
+max_binlog_size = 100M
+binlog_do_db = consultapos-db
+
+> Crear usuario replicador
+GRANT REPLICATION SLAVE ON *.* TO 'repl_user'@'192.168.2.151' IDENTIFIED BY 'sasa';  //la ip es la del master2 (no me funciona, uso las 3 que siguen)
+
+
+CREATE USER 'repl_user'@'192.168.2.151' IDENTIFIED BY 'sasa';
+GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'repl_user'@'192.168.2.151' WITH GRANT OPTION;
+GRANT REPLICATION SLAVE ON *.* TO 'repl_user'@'192.168.2.151';
+
+
+select user, host from mysql.user;
+drop user repl_user@192.168.2.4;
+
+
+Config Master 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+> /etc/mysql/mysql.conf.d/mysqld.cnf
+
+server-id = 2
+log_bin = /var/log/mysql/mysql-bin.log
+max_binlog_size = 100M
+binlog_do_db = test1
+
+>sudo systemctl restart mysql.service
+
+
+CREATE USER 'repl_user'@'192.168.2.150' IDENTIFIED BY 'sasa';
+GRANT CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, SELECT, REFERENCES, RELOAD on *.* TO 'repl_user'@'192.168.2.150' WITH GRANT OPTION;
+GRANT REPLICATION SLAVE ON *.* TO 'repl_user'@'192.168.2.150';
+
+SHOW MASTER STATUS;
+
+
+Iniciar replicación en master2
+STOP SLAVE;
+CHANGE MASTER TO master_host='192.168.2.150', master_port=3306, master_user='repl_user', master_password='sasa', master_log_file='mysql-bin.000001', master_log_pos=1565;
+START SLAVE;
+
+Iniciar replicación en Master1
+mysql> STOP SLAVE;
+mysql> CHANGE MASTER TO master_host='192.168.2.151', master_port=3306, master_user='repl_user', master_password='sasa', master_log_file='mysql-bin.000001', master_log_pos=1565;
+mysql> START SLAVE;
+
+
+Master1
+pablo@pablo-VirtualBox:/etc/mysql/mysql.conf.d$ mysql --version
+mysql  Ver 8.4.1 for Linux on x86_64 (MySQL Community Server - GPL)
+
+
+Master2
+pablo@pablo-VirtualBox:/etc/mysql/mysql.conf.d$ mysql --version
+mysql  Ver 8.0.37-0ubuntu0.24.04.1 for Linux on x86_64 ((Ubuntu))
+
+
+Authentication plugin 'caching_sha2_password' reported error: Authentication requires secure connection. Error_code: MY-002061
+
+CHANGE MASTER TO GET_MASTER_PUBLIC_KEY=1;
+
+Worker 1 failed executing transaction 'ANONYMOUS' at source log mysql-bin.000001
+
+
+2024-07-16T05:31:24.982256Z 24 [ERROR] [MY-010584] [Repl] Replica SQL for channel '': 
+Worker 1 failed executing transaction 'ANONYMOUS' at source log mysql-bin.000001, end_log_pos 487; 
+Error 'Operation CREATE USER failed for 'repl_user'@'192.168.2.150'' on query. Default database: ''. 
+Query: 'CREATE USER 'repl_user'@'192.168.2.150' IDENTIFIED WITH 'caching_sha2_password' AS '$A$005$Hyfk8/mV!\"j+aSVQUq7JsPnEqTA/svIk.NjqwVfRPElUABsjbAjpg3CR3'', 
+Error_code: MY-001396
+
+2024-07-16T05:35:27.555721Z 28 [ERROR] [MY-010584] [Repl] Replica I/O for channel '': 
+Error connecting to source 'repl_user@192.168.2.151:3306'. This was attempt 1/86400, with a delay of 60 seconds between attempts. 
+Message: Host '192.168.2.150' is not allowed to connect to this MySQL server, Error_code: MY-001130
+
+STOP SLAVE;
+RESET SLAVE;
+START SLAVE;
+
+
+show replica status;
+
+
+Hay que hacer esto varias veces: (Va saltando los errores)
+SET GLOBAL sql_replica_skip_counter = 1;
+START REPLICA;
+
+
+Para resincronizar
+mysql> SET @@GLOBAL.read_only = ON;
+mysql> START REPLICA;
+mysql> SET @@GLOBAL.read_only = OFF;
+
+
+
+ Error connecting to source 'repl@192.168.2.143:3306'. 
+ This was attempt 11/86400, with a delay of 60 seconds between attempts. Message: 
+ Authentication plugin 'caching_sha2_password' reported error: Authentication requires secure connection. Error_code: MY-002061
+
+Sol en Slave aplicar:
+		> STOP SLAVE;
+		> mysql -u root -p sasa;
+		> CHANGE MASTER TO GET_MASTER_PUBLIC_KEY=1;
+		> START SLAVE;
+		
+Para conocer el estado del slave
+> mysql> SHOW SLAVE STATUS \G
+		
+		
+		
+		
+--INSTALAR MYSQL 5.7
+
+sudo su  
+cd /usr/local  
+wget https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.30-linux-glibc2.12-x86_64.tar.gz
+shell> groupadd mysql  
+shell> useradd -r -g mysql -s /bin/false mysql
+shell> cd /usr/local
+shell> tar zxvf /path/to/mysql-5.7.30-linux-glibc2.12-x86_64.tar.gz
+shell> ln -s full-path-to-mysql-VERSION-OS mysql
+shell> cd mysql
+shell> mkdir mysql-files
+shell> chown mysql:mysql mysql-files
+shell> chmod 750 mysql-files
+shell> bin/mysqld --initialize --user=mysql
+shell> bin/mysql_ssl_rsa_setup
+shell> bin/mysqld_safe --user=mysql &
+# Next command is optional
+shell> cp support-files/mysql.server /etc/init.d/mysql.server
+
+
+AL FINAL INSTALË MARIA DB con WebAdmin
+>>>>>>> 11969f3c47337086f01d742ea12c6dc8237e245f
