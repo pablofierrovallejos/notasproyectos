@@ -24,44 +24,46 @@ Ventajas: Alta disponibilidad si se cae un nodos
 	> sudo mkdir /var/lib/mysql-cluster
 	> cd /var/lib/mysql-cluster
 	> sudo nano /var/lib/mysql-cluster/config.ini
-		# file "config.ini" - 2 data nodes and 2 SQL nodes
-		# This file is placed in the startup directory of ndb_mgmd (the
-		# management server)
-		# The first MySQL Server can be started from any host. The second
-		# can be started only on the host mysqld_5.mysql.com
+# file "config.ini" - 2 data nodes and 2 SQL nodes
+# This file is placed in the startup directory of ndb_mgmd (the
+# management server)
+# The first MySQL Server can be started from any host. The second
+# can be started only on the host mysqld_5.mysql.com
 
-		[ndbd default]
-		NoOfReplicas= 2
-		DataMemory=80M
-		IndexMemory=18M
-		ServerPort=2202
-
-
-		[ndb_mgmd]
-		NodeId=1
-		Hostname=192.168.2.43   		#Ip nodo de administracion
-		DataDir= /var/lib/mysql-cluster	#Directorio de los datafiles
-
-		[ndbd]
-		HostName=192.168.2.44			#Ip del nodo NDBSQL1
-		NodeId=2						#ID del nodo Alta
-		DataDir=/usr/local/mysql/data	#Directorio para los archivos de datos
-
-		[ndbd]
-		HostName=192.168.2.45			#Ip del nodo NDBSQL2
-		NodeId=3						#ID del nodo Alta
-		DataDir=/usr/local/mysql/data	#Directorio para los archivos de datos
+[ndbd default]
+NoOfReplicas= 2
+DataMemory=80M
+IndexMemory=18M
+ServerPort=2202
 
 
-		[mysqld]
-		HostName=192.168.0.24			#IP del nodo SQL (Motor)
-		igdir=/var/lib/mysql	
+[ndb_mgmd]
+NodeId=1
+Hostname=192.168.2.43   		#Ip nodo de administracion
+DataDir= /var/lib/mysql-cluster	#Directorio de los datafiles
+
+[ndbd]
+HostName=192.168.2.44			#Ip del nodo NDBSQL1
+NodeId=2						#ID del nodo Alta
+DataDir=/usr/local/mysql/data	#Directorio para los archivos de datos
+
+[ndbd]
+HostName=192.168.2.45			#Ip del nodo NDBSQL2
+NodeId=3						#ID del nodo Alta
+DataDir=/usr/local/mysql/data	#Directorio para los archivos de datos
+
+
+[mysqld]
+HostName=192.168.0.24			#IP del nodo SQL (Motor)
+#igdir=/var/lib/mysql	
 
 sudo mkdir /var/lib/mysql
 
 5.-  Levantar el servicio manager
 	> sudo ndb_mgmd -f /var/lib/mysql-cluster/config.ini --configdir=/var/lib/mysql
 	> sudo ndb_mgmd --skip-config-cache -f /var/lib/mysql-cluster/config.ini            <-- Este me funcion omitiendo el cache
+	
+	sudo ndb_mgmd --skip-config-cache -f /var/lib/mysql-cluster/config.ini  --reload
 	
 ERROR
 ubuntu@ubuntu2004:/usr/local/bin$ sudo ndb_mgmd -f /var/lib/mysql-cluster/config.ini --configdir=/var/lib/mysql
@@ -132,7 +134,7 @@ SOLUCION
 	> sudo ln -s /usr/local/mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64  /usr/local/mysql     //Crea link simbólico
 	> cd /usr/local/mysql/bin
 	> ./mysqld --initialize
-         [Note] A temporary password is generated for root@localhost: WZ#ljE(BN9t:
+         [Note] A temporary password is generated for root@localhost: )6U?yrupf_J.
 	> /usr/local/mysql/bin> cd ..
     > /usr/local/mysql> sudo chown -R root .
 	> /usr/local/mysql> sudo chown -R mysql data
@@ -150,7 +152,7 @@ SOLUCION
 	> sudo systemctl enable mysql.server
 	> sudo service mysql.server start
 	> /usr/local/mysql > bin/mysql_secure_installation 
-	> pongo pass root: 96552333Aa
+	> pongo pass root: 96552333Aa     (usar primero el pass temporal)
 	> Press y|Y for Yes, any other key for No: Y
 	> Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 0
 	> Remove anonymous users? (Press y|Y for Yes, any other key for No) : Y
@@ -181,10 +183,61 @@ SOLUCION
 	FLUSH PRIVILEGES;
 
 	> ./mysql -u pablo -p
+	
+	
+	OJO la base de datos se debe crear del terminal en el motor, sino no queda como remota y se crea la base en el mismo motor
+	create databas test1
+	create database db_springboot_cloud;
+	create table tabla1 (campo1 varchar(50), campo2 varchar(50)) engine=ndbcluster;
 
+	ERROR 1114 (HY000) at line 172: The table 'imagenclientes' is full
+	
+	Para saber  data disponible en nodemanager:
+	ndb_mgm -e "ALL REPORT MEMORYUSAGE"
+	
+	https://dev.mysql.com/doc/refman/8.4/en/mysql-cluster-install-configuration.html
+	
+	Para ver detalle de tablas
+	show table status from db_springboot_cloud;
+	
+	
+	
+	
+
+> Para ver el tamaño de las bases de datos	
+SELECT table_schema "DB Name", 
+Round(Sum(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
+FROM   information_schema.tables 
+GROUP  BY table_schema
+ORDER BY `DB Size in MB` DESC;
+
+SELECT * FROM ndbinfo.memoryusage;
+//Se soluciona cambiando la config en el nodo manager (luego reiniciar todos los nodos) 
+> sudo nano /var/lib/mysql-cluster/config.ini
+[ndbd default]
+NoOfReplicas= 2
+DataMemory=2048  <--- esto
+IndexMemory=256M <-- y esto
+ServerPort=2202
+
+
+ERROR 1205 (HY000) at line 694: Lock wait timeout exceeded; try restarting transaction
+> solucionado con:
+
+ERROR 1297 (HY000) at line 841: Got temporary error 410 'REDO log files overloaded (decrease TimeBetweenLocalCheckpoints or increase NoOfFragmentLogFiles)' from NDBCLUSTER
+
+
+
+----
+reiniciar cluster
+1.- NodeManaget
+		sudo ndb_mgmd --skip-config-cache -f /var/lib/mysql-cluster/config.ini  --reload
+2.- Nodo DATA
+		sudo ndbd
+3.- Nodo Motor
 
 ------------------------------
-COmandos
+Comandos
 netstat -t  //Para ver los puertos abiertos en local
 
 sudo systemctl list-unit-files --type service --all	//Para ver los servicios
