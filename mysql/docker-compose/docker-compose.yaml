@@ -1,0 +1,39 @@
+version: '3.5'
+services:
+  ms-mysql5-master:
+    image: mysql:5.7
+    container_name: db-container
+    volumes:
+      #Script que carga los esquemsa al iniciar
+      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/1.sql"    
+      #Script que carga los permisos en master para el esclavo
+      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/2.sql"
+      #Script para config global del master
+      - "./scripts/my.cnf:/etc/mysql/my.cnf"  
+      #Hay que agregar archivo logs sino no parte dado que en my la declaré
+      #- "./scripts/error.log:/var/log/mysql/error.log"                 #Salen miles de archivos sin permiso asi que 
+      #- "./scripts/log/error.log:/var/log/mysql/error.log"             #se carga my.cnf  de /var/log a /var/lib para que tenga acceso    
+      #- "./scripts/log/mysql-bin.index:/var/log/mysql/mysql-bin.index" # y el archivo my.cnf se debe setear como solo lectura en windows
+      #- "./scripts/log/mysql-bin.rec:/var/log/mysql/mysql-bin.~rec~"
+      - mysqldata:/var/lib/mysql 
+    command: 
+      - /bin/bash
+      - -c
+      - "mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci && chmod 4444 /etc/mysql/my.cnf && chown -R mysql:mysql /var/log/mysql"
+    environment:
+      TZ: America/Santiago
+      MYSQL_DATABASE: db_springboot_cloud
+      MYSQL_ROOT_PASSWORD: sasa
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=sasa --execute \"SHOW DATABASES;\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
+    networks:
+      - springcloud
+networks:
+  springcloud:
+volumes:
+  mysqldata:
