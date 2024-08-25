@@ -1,0 +1,37 @@
+Pära listar dispositivos bluetooth raspberry
+
+>bluetoothctl
+>>devices
+>>scan on
+
+Para verificar servicio corriendo
+> systemctl status bluetooth
+
+Para escanear
+https://forums.raspberrypi.com/viewtopic.php?t=214373
+
+
+hcitool scan
+
+ sudo hcitool lescan
+ 
+ pi@raspberrypi:~ $ sudo hcitool lescan
+LE Scan ...
+38:68:A4:15:86:29 (unknown)
+38:68:A4:15:86:29 [TV] sapin tv
+6E:93:5C:F1:EB:41 (unknown)
+66:EF:0F:06:EE:D6 (unknown)
+50:8A:06:15:05:12 (unknown)
+66:EF:0F:06:EE:D6 (unknown)
+50:8A:06:15:05:12 TY
+00:40:4B:F0:FC:EF (unknown)
+5E:AC:45:A9:4A:59 (unknown)
+CF:4D:F7:14:86:3C (unknown)
+
+ 
+ https://www.instructables.com/Control-Bluetooth-LE-Devices-From-A-Raspberry-Pi/
+ 
+ Codigo fuente py
+ 
+ https://people.csail.mit.edu/albert/bluez-intro/x232.html#rfcomm-client.py
+ 

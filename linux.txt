@@ -227,3 +227,24 @@ kubectl -n default create rolebinding allowsecretmanipulation --clusterrole=secr
 
 Switch namespace only using the kubectl commands::
 kubectl config set-context --current --namespace=<namespace>
+
+---------
+AGREGAR un banner al inicio del ssh
+1.- Crear archivo con banner
+	> figlet banner > mi_mensaje.txt
+2.- Setear el banner en ssh
+	> sudo nano /etc/ssh/sshd_config
+	- Editar line > Banner /etc/ssh/mi_mensaje.txt
+3.- Reiniciar servicio ssh	
+> sudo systemctl reload ssh.service
+
+---------------------------
+Para abrir un puerto reverso desde Laja y luego conectar de talcahuano
+Ej: 
+	ssh -N -f -R 22023:localhost:22 talcahuano.ddns.net
+
+En origen
+	ssh -p 22023 root@localhost
+	
+	ssh -p 22024 pi@localhost
+netstat -natup
