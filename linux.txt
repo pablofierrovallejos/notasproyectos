@@ -126,9 +126,6 @@ Instalar Keepalived en raspberry
 https://raspberry-hosting.com/en/faq/where-can-i-find-actual-haproxy-and-keepalived-deb-packages-raspberry-pi-and-how-i-install-high
 
 
-
-
-
 Configuracion HA
 
 Raspberry 1 keepalived
@@ -227,3 +224,50 @@ kubectl -n default create rolebinding allowsecretmanipulation --clusterrole=secr
 
 Switch namespace only using the kubectl commands::
 kubectl config set-context --current --namespace=<namespace>
+
+----------------------
+Instalar webmin
+
+curl -fsSL https://download.webmin.com/jcameron-key.asc | sudo gpg --dearmor -o /usr/share/keyrings/webmin.gpg
+
+---------------------
+-- Instalar NFS
+https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04-es
+
+En el servidor
+>sudo apt update
+>sudo apt install nfs-kernel-server
+>sudo mkdir /var/nfs/general -p
+>ls -la /var/nfs/general
+	drwxr-xr-x 2 root root 4096 May 14 18:36 .
+>sudo chown nobody:nogroup /var/nfs/general
+>sudo nano /etc/exports
+	/var/nfs/general    client_ip(rw,sync,no_subtree_check)	//client_ip = Poner la ip del servidor
+>sudo systemctl restart nfs-kernel-server
+>sudo ufw status
+>sudo ufw allow from client_ip to any port nfs
+>sudo ufw status
+	
+	
+En el cliente
+>sudo apt update
+>sudo apt install nfs-common
+>sudo mkdir -p /nfs/general
+>sudo mount host_ip:/var/nfs/general /nfs/general
+
+>df -h
+>sudo touch /nfs/general/general.test
+>ls -l /nfs/general/general.test
+
+-------------------------
+Crear una particion
+https://www.transip.eu/knowledgebase/139-create-new-partition-ubuntudebiangentoo-linux/
+https://openwebinars.net/blog/9-comandos-basicos-fdisk-para-gestionar-el-disco-duro/
+https://pucomi.blogspot.com/2015/08/ubuntu-montar-disco-desde-la-terminal.html
+
+>su -i
+>lsblk					//para ver los devices
+>fdisk -l				//para ver detalle de los devices y particiones
+>fdisk /dev/sdb			//para entrar al menu del disco y crear particion
+>mkfs.ext4 /dev/sdb1	//Formatear la partición
+sudo mount /dev/sdb1 /media/Data	//Montar la partición en folder /media/Data
