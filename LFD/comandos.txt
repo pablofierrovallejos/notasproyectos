@@ -1,0 +1,100 @@
+Super comandos antes de iniciar
+
+Setear alias  
+  alias k='kubectl'
+  alias kn='kubectl config set-context --current --namespace'
+  
+Export
+  export do="--dry-run=client -o yaml"	 #k create deply nginx --image=nginx $do 
+  export now="--force --grace-period 0"  #k delete pod x $now
+  export test = "kubectl run tmp --rm -i --image=nginx -- curl "
+
+kubectl config view 
+
+---------------------------------------  
+ReadinessProbe
+
+ReadinessProbe:
+	httpGet:
+		path: /api/ready
+		port: 8080
+
+ReadinessProbe:
+	tcpSocket:
+		port: 3306
+		
+ReadinessProbe:
+	exec:
+		command:
+			- cat
+			- /app/is_re
+---------------------------------------
+CONFIGMAP
+
+	env:
+    - name: SPECIAL_LEVEL_KEY
+      valueFrom:
+        configMapKeyRef:
+          name: special-config
+          key: special.how
+			  
+
+	containers:
+    - name: test-container
+      image: registry.k8s.io/busybox
+      envFrom:
+      - configMapRef:
+          name: special-config
+		  
+
+	volumes:
+    - name: config-volume
+      configMap:
+        name: special-config
+		
+---------------------------------------		
+Create the /root/Dockerfile :
+	FROM bash
+	CMD ["ping", "killercoda.com"]	
+	
+		
+Habilitar metricas
+git clone https://github.com/kubernetes-incubator/metrics-serve
+		  git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
+	k create -f deploy/1.8+/
+	> kubectl top node
+	> kubectl top pod
+	
+---------------------------------------
+https://jira.linuxfoundation.org/plugins/servlet/desk/user/requests?status=open&reporter=me
+
+Convert image to oci
+docker save -o output-file.tar image-name:tag
+
+https://docs.docker.com/build/exporters/
+	docker buildx build --tag <registry>/<image> --output type=oci .
+	docker buildx build --tag <registry>/<image> --output type=tar  . > miimagen.tar
+	
+	ERROR: OCI exporter feature is currently not supported for docker drive
+
+sudo docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host
+sudo docker buildx inspect --bootstrap
+sudo docker buildx use $SOME_BUILD_NAME
+sudo docker buildx build -o type=oci,dest=/tmp/test-oci.tar -f /path/to/Dockerfile .
+
+ docker buildx create --driver=docker-container --name=multi --use
+ 
+ 
+ -----------------------------------------------
+ sudo docker inspect 150edeb70438					//Para ver detalle de una imagen (arquitectura y otros)
+ 
+ docker import /path/to/exampleimage.tgz   			//Para importar una imagen
+ 
+ sudo docker save -o /tmp/misuper.tar repo/latest	//Para guardar una imagen
+ 
+ docker export --help.
+ sudo docker export -o mifile.tar 71f1d1ee8e33  //para exportar un contenedor
+ 
+ OCI (Open Container Initiative)
+ https://docs.docker.com/docker-hub/oci-artifacts/
+ 
