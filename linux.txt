@@ -291,3 +291,25 @@ En origen
 	
 	ssh -p 22024 pi@localhost
 netstat -natup
+
+
+ wget https://cm.lf.training/LFD259/LFD259_V2024-02-22_SOLUTIONS.tar.xz --user=LFtraining --password=Penguin2014
+ 
+ 
+ 
+ --- desplegar ventas
+ >create namespace ventas
+ >kubectl create -f 0-roles.yaml
+ >kubectl create -f 1-servicio-productos-deploy.yaml
+ >kubectl create -f 2-servicio-productos-serv.yaml
+ >kubectl create -f 3-servicio-ng-front-vtas-deply.yaml
+ >kubectl create -f 4-servicio-ng-front-vtas-serv.yaml
+ >kubectl create -f 5-configmaps.yaml
+ 
+ 
+ io.fabric8.kubernetes.client.KubernetesClientException: Failure executing: GET at: https://10.96.0.1/api/v1/namespaces/ventas/configmaps. Message: 
+ Forbidden!Configured service account doesn't have access. Service account may have been revoked. 
+ configmaps is forbidden: User "system:serviceaccount:ventas:default" cannot list resource "configmaps" 
+ in API group "" in the namespace "ventas".
+ 
+ 
