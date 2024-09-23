@@ -195,3 +195,20 @@ shell> cp support-files/mysql.server /etc/init.d/mysql.server
 
 AL FINAL INSTALË MARIA DB con WebAdmin
 >>>>>>> 11969f3c47337086f01d742ea12c6dc8237e245f
+https://docs.vultr.com/how-to-install-mariadb-on-ubuntu-24-04
+
+
+4
+sudo mariadb -u root -p
+
+mysql -u root -p{Provide your root password here}
+USE mysql;
+ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password;
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('Provide your root password here');
+FLUSH PRIVILEGES;
+exit;
+
+Agregar skip al archivo:/etc/mysql/mariadb.conf.d$ sudo nano 50-server.cnf
+bind-address            = 127.0.0.1
+skip-bind-address  <-- agregar esto
+y reiniciar

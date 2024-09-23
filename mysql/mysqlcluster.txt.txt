@@ -255,6 +255,9 @@ Para habilitar acceso root remoto
 > ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123';
 > update user set host="%" where user="root";
 
+Para mariadb
+ RENAME USER "root"@"localhost" TO "root"@"%"
+ 
 
 ----
 reiniciar cluster
@@ -263,4 +266,5 @@ reiniciar cluster
 2.- Nodo DATA
 		sudo ndbd
 3.- Nodo Motor
+
 
