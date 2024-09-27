@@ -134,7 +134,7 @@ SOLUCION
 	> sudo ln -s /usr/local/mysql-cluster-gpl-7.5.8-linux-glibc2.12-x86_64  /usr/local/mysql     //Crea link simbólico
 	> cd /usr/local/mysql/bin
 	> ./mysqld --initialize
-         [Note] A temporary password is generated for root@localhost: )6U?yrupf_J.
+         [Note] A temporary password is generated for root@localhost: )6U?yrupf_J.  root@localhost: DhRJ&M#0<kK9
 	> /usr/local/mysql/bin> cd ..
     > /usr/local/mysql> sudo chown -R root .
 	> /usr/local/mysql> sudo chown -R mysql data
@@ -228,13 +228,6 @@ ERROR 1297 (HY000) at line 841: Got temporary error 410 'REDO log files overload
 
 
 
-----
-reiniciar cluster
-1.- NodeManaget
-		sudo ndb_mgmd --skip-config-cache -f /var/lib/mysql-cluster/config.ini  --reload
-2.- Nodo DATA
-		sudo ndbd
-3.- Nodo Motor
 
 ------------------------------
 Comandos
@@ -261,3 +254,17 @@ Para habilitar acceso root remoto
 > select user,host from user;
 > ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123';
 > update user set host="%" where user="root";
+
+Para mariadb
+ RENAME USER "root"@"localhost" TO "root"@"%"
+ 
+
+----
+reiniciar cluster
+1.- NodeManager
+		sudo ndb_mgmd --skip-config-cache -f /var/lib/mysql-cluster/config.ini  --reload
+2.- Nodo DATA
+		sudo ndbd
+3.- Nodo Motor
+
+

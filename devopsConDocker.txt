@@ -306,3 +306,46 @@ Sección 10 Sonarqube
 	
 Sección 11
 	Monitoreo con Prometeus
+	
+	
+##########################
+INSTALAR JENKINS en ubuntu (sin docker)
+https://www.rosehosting.com/blog/how-to-install-jenkins-on-ubuntu-24-04/
+
+
+>sudo apt update -y && sudo apt upgrade -y
+>sudo apt install openjdk-21-jdk -y
+>sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+>echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+>sudo apt update -y
+>sudo apt install jenkins -y
+>sudo systemctl start jenkins && sudo systemctl enable jenkins
+>sudo systemctl status jenkins
+>sudo apt install apache2 -y
+>sudo systemctl enable apache2 && sudo systemctl start apache2
+>sudo systemctl status apache2
+>sudo touch /etc/apache2/sites-available/jenkins.conf
+<VirtualHost *:80>
+  ProxyPass         /  http://localhost:8080/
+  ProxyPassReverse  /  http://localhost:8080/
+  ProxyRequests     Off
+  <Proxy http://localhost:8080/*> 	
+    Order deny,allow
+    Allow from all
+  </Proxy>
+</VirtualHost>
+
+>sudo a2ensite jenkins
+>sudo a2enmod headers
+>sudo a2enmod rewrite
+>sudo a2enmod proxy
+>sudo a2enmod proxy_http
+>sudo systemctl restart apache2
+>cat /var/lib/jenkins/secrets/initialAdminPassword
+root@host:~# cat /var/lib/jenkins/secrets/initialAdminPassword
+24598462a23846c58060fd15ceeb6abe
+
+
+
+
+	
