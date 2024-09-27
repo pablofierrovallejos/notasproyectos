@@ -179,33 +179,7 @@ http://192.168.2.2/haproxy_stats
 https://www.youtube.com/watch?v=JTMJx9XmTLQ
 
 
-CONFIGMAP
-
-	env:
-    - name: SPECIAL_LEVEL_KEY
-      valueFrom:
-        configMapKeyRef:
-          name: special-config
-          key: special.how
-			  
-
-	containers:
-    - name: test-container
-      image: registry.k8s.io/busybox
-      envFrom:
-      - configMapRef:
-          name: special-config
-		  
-
-	volumes:
-    - name: config-volume
-      configMap:
-        name: special-config
-		
-		
-Create the /root/Dockerfile :
-	FROM bash
-	CMD ["ping", "killercoda.com"]		
+	
 	
 Variable de entorno en angular para micro
 https://ychetankumarsarma.medium.com/how-to-manage-angular-application-configurations-for-different-environments-with-docker-and-8ff8c55a1c7d

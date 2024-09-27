@@ -35,3 +35,104 @@ CF:4D:F7:14:86:3C (unknown)
  
  https://people.csail.mit.edu/albert/bluez-intro/x232.html#rfcomm-client.py
  
+ 
+Listar los puertos de un dispisitivo
+ 
+https://stackoverflow.com/questions/7485750/sending-messages-or-datas-with-bluetooth-via-python
+ 
+ pi@raspberrypi:~ $ python3
+Python 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> service = find_service(address='38:68:A4:15:86:29')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'find_service' is not defined
+>>> from bluetooth import *
+>>> service = find_service(address='38:68:A4:15:86:29')
+>>> from pprint import pprint
+>>> pprint(service)
+[{'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': None,
+  'port': 31,
+  'profiles': [],
+  'protocol': 'L2CAP',
+  'provider': None,
+  'service-classes': ['1801'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': None,
+  'port': 31,
+  'profiles': [],
+  'protocol': 'L2CAP',
+  'provider': None,
+  'service-classes': ['1800'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': 'Samsung Smart TV Audio',
+  'port': 23,
+  'profiles': [('110E', 261)],
+  'protocol': 'L2CAP',
+  'provider': '00001',
+  'service-classes': ['110C'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': 'Advanced Audio',
+  'port': 25,
+  'profiles': [('110D', 258)],
+  'protocol': 'L2CAP',
+  'provider': None,
+  'service-classes': ['110A'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': 'Samsung Smart TV Audio',
+  'port': 23,
+  'profiles': [('110E', 261)],
+  'protocol': 'L2CAP',
+  'provider': '00001',
+  'service-classes': ['110E', '110F'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': ':1.438',
+  'port': 2,
+  'profiles': [],
+  'protocol': 'RFCOMM',
+  'provider': None,
+  'service-classes': ['00001101-0000-1000-8000-00805F9B3411'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': ':1.490',
+  'port': 3,
+  'profiles': [],
+  'protocol': 'RFCOMM',
+  'provider': None,
+  'service-classes': ['E23B00BC-217C-453B-9C08-FC44577136FE'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': ':1.247',
+  'port': 4,
+  'profiles': [],
+  'protocol': 'RFCOMM',
+  'provider': None,
+  'service-classes': ['00001101-0000-1000-8000-00805F9B3412'],
+  'service-id': None},
+ {'description': None,
+  'host': '38:68:A4:15:86:29',
+  'name': None,
+  'port': 31,
+  'profiles': [],
+  'protocol': 'L2CAP',
+  'provider': None,
+  'service-classes': ['16E80EF7-69EB-87A9-634F-84C729D5E3AD'],
+  'service-id': None}]
+>>>
+
+
+https://hackaday.com/2021/03/23/a-crash-course-on-sniffing-bluetooth-low-energy/
