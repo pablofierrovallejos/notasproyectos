@@ -30,29 +30,51 @@ ReadinessProbe:
 			- /app/is_re
 ---------------------------------------
 CONFIGMAP
-
-	env:
+    env:
     - name: SPECIAL_LEVEL_KEY
       valueFrom:
         configMapKeyRef:
           name: special-config
           key: special.how
 			  
-
-	containers:
+    containers:
     - name: test-container
       image: registry.k8s.io/busybox
       envFrom:
       - configMapRef:
           name: special-config
 		  
-
-	volumes:
+    volumes:
     - name: config-volume
       configMap:
         name: special-config
 		
----------------------------------------		
+---------------------------------------
+SECRETS
+
+  containers:
+  - name: envars-test-container
+    image: nginx
+    env:
+    - name: BACKEND_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: backend-user
+          key: backend-username
+
+
+  containers:
+  - name: envars-test-container
+    image: nginx
+    envFrom:
+    - secretRef:
+        name: test-secret
+
+
+
+
+----------------------------------------
+
 Create the /root/Dockerfile :
 	FROM bash
 	CMD ["ping", "killercoda.com"]	
