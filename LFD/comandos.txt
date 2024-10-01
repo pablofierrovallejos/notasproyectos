@@ -109,6 +109,8 @@ roleRef:
 
 
 
+kubectl create token dashboard-sa
+
 ----------------------------------------
 
 Create the /root/Dockerfile :
