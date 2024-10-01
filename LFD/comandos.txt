@@ -37,7 +37,8 @@ for i in {1..20}; do
    echo ""
 done
    
-
+./crash-app.sh
+kubectl exec --namespace=kube-public curl -- wget -qO- http://webapp-service.default.svc.cluster.local:8080/crash
 
 ---------------------------------------
 CONFIGMAP
