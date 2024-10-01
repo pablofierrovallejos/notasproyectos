@@ -138,11 +138,11 @@ Create the /root/Dockerfile :
 	
 		
 Habilitar metricas
-git clone https://github.com/kubernetes-incubator/metrics-serve
-		  git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
-	k create -f deploy/1.8+/
-	> kubectl top node
-	> kubectl top pod
+git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
+
+> k create -f .
+> kubectl top node
+> kubectl top pod
 	
 ---------------------------------------
 https://jira.linuxfoundation.org/plugins/servlet/desk/user/requests?status=open&reporter=me
