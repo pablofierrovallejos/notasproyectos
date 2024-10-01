@@ -111,6 +111,13 @@ roleRef:
 
 kubectl create token dashboard-sa
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  serviceAccountName: build-robot
+
 ----------------------------------------
 
 Create the /root/Dockerfile :
