@@ -11,6 +11,8 @@ Export
 
 kubectl config view 
 
+----
+- --runtime-config=miapi/v1
 ---------------------------------------  
 ReadinessProbe
 
