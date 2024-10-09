@@ -44,12 +44,15 @@ kubectl exec --namespace=kube-public curl -- wget -qO- http://webapp-service.def
 
 ---------------------------------------
 CONFIGMAP
-    env:
-    - name: SPECIAL_LEVEL_KEY
-      valueFrom:
-        configMapKeyRef:
-          name: special-config
-          key: special.how
+    containers:
+    - name: test-container
+      image: registry.k8s.io/busybox
+      env:
+      - name: SPECIAL_LEVEL_KEY
+        valueFrom:
+          configMapKeyRef:
+            name: special-config
+            key: special.how
 			  
     containers:
     - name: test-container
@@ -57,7 +60,8 @@ CONFIGMAP
       envFrom:
       - configMapRef:
           name: special-config
-		  
+
+
     volumes:
     - name: config-volume
       configMap:
