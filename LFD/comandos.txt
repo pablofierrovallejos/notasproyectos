@@ -17,19 +17,19 @@ kubectl config view
 ReadinessProbe
 
 ReadinessProbe:
-	httpGet:
-		path: /api/ready
-		port: 8080
+  httpGet:
+    path: /api/ready
+    port: 8080
 
 ReadinessProbe:
-	tcpSocket:
-		port: 3306
+  tcpSocket:
+    port: 3306
 		
 ReadinessProbe:
-	exec:
-		command:
-			- cat
-			- /app/is_re
+  exec:
+    command:
+    - cat
+    - /app/is_re
 
 ---------------------------------------
 ./curl-test.sh
