@@ -215,3 +215,7 @@ Get the PushGateway URL by running these commands in the same shell:
 
 For more information on running Prometheus, visit:
 https://prometheus.io/
+
+
+---- Install ISTIO con istioctl
+https://www.youtube.com/watch?v=nRxWnBE0wzE
