@@ -385,3 +385,17 @@ https://www.reddit.com/r/linux4noobs/comments/15nsckk/command_zip2john_not_found
 >sudo make -sj2 
 >sudo mv JohnTheRipper /usr/local
 >sudo ln -s /usr/local/JohnTheRipper/run/zip2john /usr/local/bin/zip2john
+
+
+--------------------
+Encontrar el pass con hashcat modo diccionario
+
+ejemplos de hash a obtener la clave:
+MD5 hash -> 42f749ade7f9e195bf475f37a44cafcb > md5.txt
+SHA1 hash -> b2e98ad6f6eb8508dd6a14cfa704bad7f05f6fb1 > sha1.txt
+
+Para el md5
+>hashcat -m 0 -a 0 md5.txt rockyou.txt	    //el -m 0 indica md5
+
+Para el sha1
+>hashcat -m 100 -a 0 sha1.txt rockyou.txt   //El -m 100 indica sha1
