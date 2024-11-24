@@ -408,4 +408,12 @@ Ataque de máscara (-a 3)
 Link con listado de tipos de hashes
 https://hashcat.net/wiki/doku.php?id=example_hashes
 
+Comando para fuerza bruta a partir de hash <-----
+> hashcat -m 17225 hashes.txt -a 3 ?d?d?d?d?d?d?d?d
+Tiempo estimado 11 días
 
+
+-----
+Para ver el estado de la tarjeta gráfica nvidia 
+>nvidia-smi
+-----
