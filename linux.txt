@@ -389,8 +389,9 @@ https://www.reddit.com/r/linux4noobs/comments/15nsckk/command_zip2john_not_found
 
 --------------------
 Encontrar el pass con hashcat modo diccionario
+    https://www.freecodecamp.org/news/hacking-with-hashcat-a-practical-guide/
 
-ejemplos de hash a obtener la clave:
+Ejemplos de hash a obtener la clave:
 MD5 hash -> 42f749ade7f9e195bf475f37a44cafcb > md5.txt
 SHA1 hash -> b2e98ad6f6eb8508dd6a14cfa704bad7f05f6fb1 > sha1.txt
 
@@ -399,3 +400,8 @@ Para el md5
 
 Para el sha1
 >hashcat -m 100 -a 0 sha1.txt rockyou.txt   //El -m 100 indica sha1
+
+Ataque de diccionario (-a 0)
+Ataque combinador (-a 1)
+Ataque de máscara (-a 3)
+
