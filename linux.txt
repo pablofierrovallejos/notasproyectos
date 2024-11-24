@@ -416,4 +416,9 @@ Tiempo estimado 11 días
 -----
 Para ver el estado de la tarjeta gráfica nvidia 
 >nvidia-smi
+
+Esta es como un top
+>nvitop
+Se instala con:
+>sudo apt install nvitop
 -----
