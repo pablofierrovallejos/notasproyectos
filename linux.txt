@@ -375,3 +375,13 @@ Desactivar swapp
 sudo sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
 
 ---------------------------------------------------
+Para instalar zip2john (obitiene el hash de un archivo zip)
+https://www.reddit.com/r/linux4noobs/comments/15nsckk/command_zip2john_not_found_help/
+
+>git clone "https://github.com/magnumripper/JohnTheRipper.git" 
+>cd JohnTheRipper/src 
+>./configure 
+>sudo make -s clean  
+>sudo make -sj2 
+>sudo mv JohnTheRipper /usr/local
+>sudo ln -s /usr/local/JohnTheRipper/run/zip2john /usr/local/bin/zip2john
