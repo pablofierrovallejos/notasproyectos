@@ -405,3 +405,7 @@ Ataque de diccionario (-a 0)
 Ataque combinador (-a 1)
 Ataque de máscara (-a 3)
 
+Link con listado de tipos de hashes
+https://hashcat.net/wiki/doku.php?id=example_hashes
+
+
