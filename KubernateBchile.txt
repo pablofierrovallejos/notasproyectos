@@ -226,3 +226,6 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.24/samp
 
 
 -------
+Ejecutar una prueba de cuda con docker
+
+docker run --rm --runtime=nvidia --gpus all --env PATH="${PATH}:/var/lib/snapd/hostfs/usr/bin" ubuntu nvidia-smi
