@@ -1,0 +1,4 @@
+
+
+Instalar acceso de jenkins en cluster kubernetes
+> kubectl create -f jenkins-account.yaml

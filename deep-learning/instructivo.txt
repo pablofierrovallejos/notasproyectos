@@ -1,0 +1,35 @@
+Para trabajar con IA
+
+---OFFLINE
+Descaregar Anaconda
+https://www.anaconda.com/
+-1 crear  nuevo environment
+-2 abrir terminal con boton izquierdo mouse en pley del nuevo environment
+-3 instalar tensorflow con :
+	pip install	tensorflow
+-4 ir a home y ejecutar: launch jupyter
+
+esc + a agrega celda arriba
+esc	+ b agrega celda abajo
+esc + j se mueve a la celda de abajo
+esc + k se mueve a la celda de arriba
+esc  shift + j seleccionar celdas hacia abajo
+esc  shift + k seleccionar celdas hacia arriba
+esc dd  elimina seleccionadas
+esc shift + enter  ejecuta la celda seleccionada
+
+--ONLINE
+https://colab.research.google.com/
+
+
+Comando powersahell para ver la tarjeta de video:
+  > nvidia-smi
+  
+  Precaución: TensorFlow 2.10 fue la última versión de TensorFlow compatible con GPU en Windows 
+  nativo. A partir de TensorFlow 2.11, deberá instalar TensorFlow en WSL2 o instalar tensorflow-cpu 
+  y, opcionalmente, probar el plugin TensorFlow-DirectML.
+  
+  > pip install tensorflow==2.1.0
+  
+  Primero se debe bajar la version de python con:
+  > conda install python=3.6

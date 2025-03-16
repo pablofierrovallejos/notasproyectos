@@ -1,0 +1,53 @@
+# This is a sample Python script.
+import cv2
+from matplotlib import pyplot as plt
+
+import numpy as np
+import imutils
+#import easyocr as eocr
+
+
+cap= cv2.VideoCapture(0)
+#ret, frame = cap.read()
+#cv2.imwrite("webcam.jpg", frame)
+
+
+#plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+#plt.show()
+#cap.release()
+
+print(cap.isOpened())
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+   # plt.imshow(gray)
+    #plt.imshow(frame)
+    
+   # gray = cv2.cvtColor(img, code)
+    bfilter = cv2.bilateralFilter(gray, 11, 17, 17)
+    edged = cv2.Canny(bfilter, 30, 200)
+    
+    plt.imshow(edged)
+    plt.show()
+    
+    #Encontrar contornos
+    keypoints = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = imutils.grab_contours(keypoints)
+    
+    
+    
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+cap.release()
+cv2.destroyAllWindows()
+
+
+
+ModuleNotFoundError: No module named 'cv2'
+	Open Anaconda prompt then type the command
+	pip install opencv-python
+	
+ModuleNotFoundError: No module named 'imutils'
+	Open Anaconda prompt then type the command
+	pip install imutils

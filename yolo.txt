@@ -1,0 +1,13 @@
+Instalar Yolov8 (https://docs.ultralytics.com/es/quickstart/)
+
+# Install all packages together using conda
+conda install -c pytorch -c nvidia -c conda-forge pytorch torchvision pytorch-cuda=11.8 ultralytics
+
+
+Ejecutar ejemplo:
+
+https://docs.ultralytics.com/es/quickstart/#__tabbed_2_3
+
+yolo predict model=yolo11n-seg.pt source='https://youtu.be/LNwODJXcvt4' imgsz=320
+
+yolo predict model=yolo11n-seg.pt source=0 imgsz=320  show=True show_labels=True show_conf=True save_txt=True
