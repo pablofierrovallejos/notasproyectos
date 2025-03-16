@@ -11,59 +11,169 @@ Export
 
 kubectl config view 
 
+----
+- --runtime-config=miapi/v1
 ---------------------------------------  
 ReadinessProbe
 
 ReadinessProbe:
-	httpGet:
-		path: /api/ready
-		port: 8080
+  httpGet:
+    path: /api/ready
+    port: 8080
 
 ReadinessProbe:
-	tcpSocket:
-		port: 3306
+  tcpSocket:
+    port: 3306
 		
 ReadinessProbe:
-	exec:
-		command:
-			- cat
-			- /app/is_re
+  exec:
+    command:
+    - cat
+    - /app/is_re
+
+---------------------------------------
+./curl-test.sh
+
+for i in {1..20}; do
+   kubectl exec --namespace=kube-public curl -- sh -c 'test=`wget -qO- -T 2  http://webapp-service.default.svc.cluster.local:8080/ready 2>&1` && echo "$test OK" || echo "Failed"';
+   echo ""
+done
+   
+./crash-app.sh
+kubectl exec --namespace=kube-public curl -- wget -qO- http://webapp-service.default.svc.cluster.local:8080/crash
+
 ---------------------------------------
 CONFIGMAP
-
-	env:
-    - name: SPECIAL_LEVEL_KEY
-      valueFrom:
-        configMapKeyRef:
-          name: special-config
-          key: special.how
+    containers:
+    - name: test-container
+      image: registry.k8s.io/busybox
+      env:
+      - name: SPECIAL_LEVEL_KEY
+        valueFrom:
+          configMapKeyRef:
+            name: special-config
+            key: special.how
 			  
-
-	containers:
+    containers:
     - name: test-container
       image: registry.k8s.io/busybox
       envFrom:
       - configMapRef:
           name: special-config
-		  
 
-	volumes:
+
+    volumes:
     - name: config-volume
       configMap:
         name: special-config
 		
----------------------------------------		
+---------------------------------------
+SECRETS
+
+  containers:
+  - name: envars-test-container
+    image: nginx
+    env:
+    - name: BACKEND_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: backend-user
+          key: backend-username
+
+
+  containers:
+  - name: envars-test-container
+    image: nginx
+    envFrom:
+    - secretRef:
+        name: test-secret
+
+
+
+
+----------------------------------------
+Service account
+> kubectl create sa dashboard-sa
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default
+  name: pod-reader
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - watch
+  - list
+
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-pods
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: dashboard-sa # Name is case sensitive
+  namespace: default
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: pod-reader # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io
+
+
+
+kubectl create token dashboard-sa
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  serviceAccountName: build-robot
+
+----------------------------------------
+NetworkPolicy killercode
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: np
+  namespace: space1
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - ports:
+    - port: 53
+      protocol: TCP
+    - port: 53
+      protocol: UDP
+  - to:
+     - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: space2
+
+
+
+----------------------------------------
+
 Create the /root/Dockerfile :
 	FROM bash
 	CMD ["ping", "killercoda.com"]	
 	
 		
 Habilitar metricas
-git clone https://github.com/kubernetes-incubator/metrics-serve
-		  git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
-	k create -f deploy/1.8+/
-	> kubectl top node
-	> kubectl top pod
+git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
+
+> k create -f .
+> kubectl top node
+> kubectl top pod
 	
 ---------------------------------------
 https://jira.linuxfoundation.org/plugins/servlet/desk/user/requests?status=open&reporter=me

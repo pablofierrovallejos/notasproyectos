@@ -265,3 +265,168 @@ En origen
 	
 	ssh -p 22024 pi@localhost
 netstat -natup
+
+
+ wget https://cm.lf.training/LFD259/LFD259_V2024-02-22_SOLUTIONS.tar.xz --user=LFtraining --password=Penguin2014
+ 
+ 
+ 
+ --- desplegar ventas
+ >create namespace ventas
+ >kubectl create -f 0-roles.yaml
+ >kubectl create -f 1-servicio-productos-deploy.yaml
+ >kubectl create -f 2-servicio-productos-serv.yaml
+ >kubectl create -f 3-servicio-ng-front-vtas-deply.yaml
+ >kubectl create -f 4-servicio-ng-front-vtas-serv.yaml
+ >kubectl create -f 5-configmaps.yaml
+ 
+ 
+ io.fabric8.kubernetes.client.KubernetesClientException: Failure executing: GET at: https://10.96.0.1/api/v1/namespaces/ventas/configmaps. Message: 
+ Forbidden!Configured service account doesn't have access. Service account may have been revoked. 
+ configmaps is forbidden: User "system:serviceaccount:ventas:default" cannot list resource "configmaps" 
+ in API group "" in the namespace "ventas".
+ 
+####################################################################################################################### 
+ Manual para instalar keepalive y haproxy linux ubuntu
+ https://thelinuxforum.com/articles/706-how-to-set-up-haproxy-with-keepalived-for-high-availability
+ >sudo apt update
+ >sudo apt-get install haproxy
+ >sudo nano /etc/haproxy/haproxy.cfg  (Pegar lo siguiente)
+ 
+#Define front 
+frontend apache_front       
+        bind *:80									# Frontend listen port - 80
+        default_backend    apache_backend_servers	# Set the default backend
+        option             forwardfor				# Enable send X-Forwarded-For header
+
+# Define backend
+backend apache_backend_servers
+        balance            roundrobin							# Use roundrobin to balance traffic
+        server             backend01 192.168.2.209:30100 check	# Define the backend servers
+        server             backend02 172.16.0.201:80 check
+
+
+#Define API front
+frontend api_front
+        bind *:30600								# Frontend listen port - 30600
+        default_backend    api_backend_servers		# Set the default backend	
+        option             forwardfor				# Enable send X-Forwarded-For header
+
+# Define API backend
+backend api_backend_servers
+        balance            roundrobin							# Use roundrobin to balance traffic
+        server             backend01 192.168.2.209:30600 check	# Define the backend servers
+        server             backend02 172.16.0.201:80 check
+ 
+ 
+>sudo apt-get install keepalived
+>sudo nano /etc/keepalived/keepalived.conf  (Lo siguiente es ejemplo con 1 nodo)
+ 
+global_defs {
+        lvs_id haproxy01
+}
+
+vrrp_sync_group SyncGroup01 {
+        group {
+                VI_1
+        }
+}
+
+vrrp_script chkhaproxy {
+        script "/usr/bin/killall -0 haproxy"
+        script "/usr/sbin/service haproxy start"
+        interval 9
+        timeout 3
+        weight 20
+        rise 2
+        fall 4
+}
+
+vrrp_instance VI_1 {
+        interface ens18                # interface to monitor
+        state MASTER
+        virtual_router_id 51          # Assign one ID for this route
+        priority 101                  # 101 on MASTER, 100 on BACKUP
+        advert_int 5
+        authentication {
+                auth_type PASS
+                auth_pass 6c7448fdece8f61841c60293f9a8bd3c
+        }
+        virtual_ipaddress {
+                192.168.2.222         # the virtual IP
+        }
+        track_script {
+                chkhaproxy
+        }
+}
+
+ >sudo keepalived -t
+ >sudo systemctl start haproxy
+ >sudo systemctl start keepalived
+ ####################################################################################################################### 
+
+---------------------------------------------------
+Desactivar swapp
+
+sudo sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
+
+---------------------------------------------------
+Para instalar zip2john (obitiene el hash de un archivo zip)
+https://www.reddit.com/r/linux4noobs/comments/15nsckk/command_zip2john_not_found_help/
+
+>git clone "https://github.com/magnumripper/JohnTheRipper.git" 
+>cd JohnTheRipper/src 
+>./configure 
+>sudo make -s clean  
+>sudo make -sj2 
+>sudo mv JohnTheRipper /usr/local
+>sudo ln -s /usr/local/JohnTheRipper/run/zip2john /usr/local/bin/zip2john
+
+
+--------------------
+Encontrar el pass con hashcat modo diccionario
+    https://www.freecodecamp.org/news/hacking-with-hashcat-a-practical-guide/
+
+Ejemplos de hash a obtener la clave:
+MD5 hash -> 42f749ade7f9e195bf475f37a44cafcb > md5.txt
+SHA1 hash -> b2e98ad6f6eb8508dd6a14cfa704bad7f05f6fb1 > sha1.txt
+
+Para el md5
+>hashcat -m 0 -a 0 md5.txt rockyou.txt	    //el -m 0 indica md5
+
+Para el sha1
+>hashcat -m 100 -a 0 sha1.txt rockyou.txt   //El -m 100 indica sha1
+
+Ataque de diccionario (-a 0)
+Ataque combinador (-a 1)
+Ataque de máscara (-a 3)
+
+Link con listado de tipos de hashes
+https://hashcat.net/wiki/doku.php?id=example_hashes
+
+Comando para fuerza bruta a partir de hash <-----
+> hashcat -m 17225 hashes.txt -a 3 ?d?d?d?d?d?d?d?d  <-- Ataque solo numeros
+> hashcat -a 3 -m 17225 hashes.txt ?a?a?a?a?a?a?a?a  <-- Ataque alfabeto
+Tiempo estimado 11 días
+
+
+Patrón de ataque full
+Default mask
+If -a 3 is requested without specifying a mask, the following default mask is used:
+
+?1?2?2?2?2?2?2?3?3?3?3?d?d?d?d
+… where the custom character sets are:
+1 - ?l?d?u (lowercase, digits, and uppercase)
+2 - ?l?d (lowercase and digits)
+3 - ?l?d*!$@_ (lowercase, digits, and five selected special characters)
+
+
+-----
+Para ver el estado de la tarjeta gráfica nvidia 
+>nvidia-smi
+
+Esta es como un top
+>nvitop
+Se instala con:
+>sudo apt install nvitop
+-----
