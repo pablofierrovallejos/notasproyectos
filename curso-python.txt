@@ -1,0 +1,34 @@
+Instalación
+1.- Descargar de https://www.python.org/downloads/windows/
+Asegurar que esté checkeado "Add python to path"
+
+2.- Instalar pycharm Comunity: https://www.jetbrains.com/pycharm/
+Customize
+Cap1
+	print() input()
+Cap2
+	1.-string(str)
+	2.-integer(int)
+	3.-floating(float)
+	4.-listas(list)
+	5.-diccionarios(dic)  //pares clave valor
+	6.-tuples(tuple)
+	7.-sets(set)	
+	8.-booleanos(bool)
+Operadores
+  + , - , * , / , // (resultado division pero como entero, % (módulo o resto), ** (potencia)	
+  
+  
+ Cap13 Asistente de voz  ( - pyttsx3)
+Desde: File
+		Settings
+			Project
+				Python interpreter +
+					add pyttsx3
+					add SpeechRecognition (voz a texto)
+					add pywhatkit (para abrir sitios web como whatsao)
+					add yfinance  (para abrir yahoo finance)
+					add pyjokes   (para hacer chistes)
+
+					
+  
