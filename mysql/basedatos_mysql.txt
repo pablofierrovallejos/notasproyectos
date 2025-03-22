@@ -17,14 +17,23 @@ Notas:
 		
 		https://www.npmjs.com/package/apiconnect
 		
-<<<<<<< HEAD
-=======
 		
 Instalar Mysql en linux
 > sudo apt-get update
 > sudo apt-get install mysql-server mysql-client -y
-> sudo mysql_secure_installation		//Para asegurar el servidor y eliminar cuentas anonimas
+> sudo mysql_secure_installation		//Para asegurar el servidor y eliminar cuentas anonimas (no es necesario)
 
+Para habilitar acceso root remoto
+> use mysql;
+> select user,host from user;
+> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'sasa';
+> update user set host="%" where user="root";
+> sudo systemctl restart mysql
+> Para habilitar ip remota agregar linea
+> /etc/mysql/mysql.conf.d/mysqld.cnf
+  "bind-address    = 0.0.0.0" 
+
+Para instalar version 5.7.30
 sudo apt install -f mysql-client=5.7.30-1ubuntu18.04
 sudo apt install -f mysql-community-server=5.7.30-1ubuntu18.04
 sudo apt install -f mysql-server=5.7.30-1ubuntu18.04
@@ -194,7 +203,6 @@ shell> cp support-files/mysql.server /etc/init.d/mysql.server
 
 
 AL FINAL INSTALË MARIA DB con WebAdmin
->>>>>>> 11969f3c47337086f01d742ea12c6dc8237e245f
 https://docs.vultr.com/how-to-install-mariadb-on-ubuntu-24-04
 
 
