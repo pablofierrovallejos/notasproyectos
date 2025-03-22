@@ -19,7 +19,7 @@ Operadores
   + , - , * , / , // (resultado division pero como entero, % (módulo o resto), ** (potencia)	
   
   
- Cap13 Asistente de voz  ( - pyttsx3)
+Cap13 Asistente de voz  ( - pyttsx3)
 Desde: File
 		Settings
 			Project
@@ -32,3 +32,18 @@ Desde: File
 
 					
   
+Cap14
+Reconocimiento facial
+1.-descargar visual studio comunity https://visualstudio.microsoft.com/es/downloads/
+  >opcion Desarrollo para escritorio con C++
+
+2.-File ->settings->project-> Python interpreter -> +
+	Agregar-> cmake
+	Agregar->dlib
+	Agregar->face-recognition
+	Agregar->numpy
+	Agregar->opencv-python
+	
+	
+	
+	
