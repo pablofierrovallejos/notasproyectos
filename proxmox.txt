@@ -1,0 +1,2 @@
+Para hacer PassTrhu de GPU en windows desde proxmox
+https://gist.github.com/KasperSkytte/6a2d4e8c91b7117314bceec84c30016b
