@@ -30,8 +30,22 @@ Desde: File
 					add yfinance  (para abrir yahoo finance)
 					add pyjokes   (para hacer chistes)
 
-					
-  
+Cap11
+WebScraping
+import bs4  /beautifullsoup
+import requests
+
+resultado = requests.get('https://www.mipagina.cl')
+
+soap = bs4.BeautifulSoup(resultado.text, 'lxml')
+print(soap.select('title')) 	//retorna una lista
+print(soap.select('title')[0].getText()) 	//Retorna el primer title y sin tags html
+
+soup.select('#estilo_4')	//elementos que contengan id='estilo4'
+soup.select('.columna_der')	//elementos que contengan class='columna_der'
+soup.select('div span')		//cualquier elemento llamado span dentro  de un elemento div
+soup.select('div>span')		//cualquier elemento llamado 'span' directamente dentro de un elemento div, sin nada en el medio
+-------------------------------------------------------------------------  
 Cap14
 Reconocimiento facial
 1.-descargar visual studio comunity https://visualstudio.microsoft.com/es/downloads/
@@ -46,4 +60,59 @@ Reconocimiento facial
 	
 	
 	
+--- Base de datos mysql
+#pip install PyMySql
+import pymysql
+
+db = pymysql.connect(host='192.168.0.100', user='root', password='sasa')
+
+cursor = db.cursor()
+cursor.execute("SHOW DATABASES")
+cursor.close()
+db.close()
+
+for database in cursor:
+    print(database)
+
+
+
+------------------
+//PaRA crear un entorno virtual
+py -m venv miproyecto	
+
+
+Instalar FastAPI
+>pip install fastapi uvicorn
+
+from fastapi import FastAPI
+app = FastAPI()
+
+@app.get('/hola')
+def read_root():
+	return {'Hello','World'}
 	
+subir con:
+> uvicorn main:app --reload				 //desplegado en puerto default 8000
+> uvicorn main:app --reload --port 4000  //para desplegarlo en puerto 4000
+> uvicorn miapi:app --reload --port 4000 //cuando mi archivo principal con api se llama miapi.py
+
+Doc automatica
+Abrir en navegador
+> 127.0.0.1:4000/docs
+
+Para ver las lib instaladas
+> py -m pip freeze
+> py -m pip freeze > requirements.txt   //Para crear el archivo requerimientos que va en el Dockerfile
+
+
+Dokerfile
+---------------------------------
+FROM python:3.13.2
+COPY ./requirements.txt ./requirements.txt
+RUN pip install -Ur requirements.txt
+
+COPY . .
+CMD ["uvicorn", "miapi:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+--
+Ejecutar con:
+> docker run -p 8000:8000 -t v1:latest

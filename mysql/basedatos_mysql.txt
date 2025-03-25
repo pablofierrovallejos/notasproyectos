@@ -24,13 +24,14 @@ Instalar Mysql en linux
 > sudo mysql_secure_installation		//Para asegurar el servidor y eliminar cuentas anonimas (no es necesario)
 
 Para habilitar acceso root remoto
+> sudo mysql -u root -p
 > use mysql;
 > select user,host from user;
 > ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'sasa';
 > update user set host="%" where user="root";
 > sudo systemctl restart mysql
 > Para habilitar ip remota agregar linea
-> /etc/mysql/mysql.conf.d/mysqld.cnf
+> sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
   "bind-address    = 0.0.0.0" 
 
 Para instalar version 5.7.30
