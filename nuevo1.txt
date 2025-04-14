@@ -1,0 +1,37 @@
+ROS
+
+sudo apt update
+sudo apt upgrade
+sudo apt install build-essential
+sudo apt install gcc make perl dkms
+
+>>devices->insert guest adicion
+>Abrir cd-> abir terminal -> 
+>sudo ./VBoxLinuxAdditions.run
+>sudo apt install terminator
+Ctrol+shift+o (dividir pantalla horizontal)
+Ctrl +shift+e (divide vertical)
+Ctrl +shift + x Zom in ZOm out
+Ctrl +shift + w para salir
+
+Para instalar visual studio
+> sudo snap install code --classic
+
+Instalar ROS extension en visual studio
+> buscar ros (microsoft develop robot operating system)
+> buscar c/c++ from microsoft
+> buscar cmake de twxs
+> python from microsoft
+> 
+
+Instalar ROS
+https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html
+>locale  # check for UTF-8
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+
+sudo apt update && sudo apt install curl -y
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+Then add the repository to your sources list.
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http
