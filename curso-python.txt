@@ -116,3 +116,27 @@ CMD ["uvicorn", "miapi:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 --
 Ejecutar con:
 > docker run -p 8000:8000 -t v1:latest
+
+
+Para flask
+Dokerfile
+---------------------------------------
+FROM python:3.10.11-slim-bullseye
+COPY ./requirements.txt ./requirements.txt
+RUN pip install -Ur requirements.txt
+
+COPY . .
+
+CMD [ "python3", "-m" , "flask", "--app","home","run", "--port=8080","--host=0.0.0.0"] 
+--
+Ejecutar con 
+docker run -p 8080:8080 -t toolkit:v1
+
+Para hacer el build
+> docker build -t toolkit:v2 
+
+Para guardar una imagen
+> docker save -o toolkitv2.tar 8dc8ca8758d
+
+Para cargar una imagen del disco
+> docker import toolkitv2.tar toolkit:v1
