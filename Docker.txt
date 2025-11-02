@@ -1,0 +1,7 @@
+Para compactar un vhdx
+
+Habilitar hiper-V (powershell como admin)
+> dism /online /enable-feature /featurename:Microsoft-Hyper-V-Management-PowerShell /all
+
+Optimizar o reducir espacio en vhdx
+> Optimize-VHD -Path "C:\Users\pablo\AppData\Local\Docker\wsl\disk\docker_data.vhdx"
