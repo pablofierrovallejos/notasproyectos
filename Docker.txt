@@ -1,5 +1,8 @@
 Para compactar un vhdx
 
+Prune:
+> docker system prune -f
+
 Habilitar hiper-V (powershell como admin)
 > dism /online /enable-feature /featurename:Microsoft-Hyper-V-Management-PowerShell /all
 
